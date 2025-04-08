@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/rainyhe/Desktop/USC/CSCI580/Fluid-Simulation/src",
+      "program": "/Users/rainyhe/Desktop/USC/CSCI580/Fluid-Simulation/src/build/Debug/outDebug"
+    }
+  ]
+}
