@@ -1,5 +1,8 @@
 # Fluid-Simulation
 
+## Sample Usage
+
+## Directory Structure
 ```bash
 ├── scr
 │   ├── main.cpp
