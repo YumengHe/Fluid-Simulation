@@ -8,6 +8,7 @@
 │   ├── main.cpp
 │   ├── input.cpp
 │   ├── grid.cpp
+│   ├── grid.h
 │   └── partial.cpp
 ├── include
 │   └── Eigen
