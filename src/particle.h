@@ -1,9 +1,8 @@
-#ifndef PARTICLE_H
-#define PARTICLE_H
-
+#pragma once
 #include <vector>
-#include "Vec2.h"
+#include <include/eigen-3.4.0/Eigen/Dense>
 
+class Fluid_Particle{
 // Represents a fluid particle with position and velocity
 struct Particle {
     Vec2 pos;
@@ -22,4 +21,4 @@ struct Spring {
 	Spring(int i, int j, float restLength);
 };
 
-#endif // PARTICLE_H
+};

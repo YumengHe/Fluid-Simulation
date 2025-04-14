@@ -150,5 +150,9 @@
     "xtr1common": "cpp",
     "xtree": "cpp",
     "xutility": "cpp"
+    "memory": "cpp",
+    "forward_list": "cpp",
+    "print": "cpp",
+    "stack": "cpp"
   }
 }
