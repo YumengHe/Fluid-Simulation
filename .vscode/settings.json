@@ -116,6 +116,10 @@
     "valarray": "cpp",
     "variant": "cpp",
     "vector": "cpp",
-    "algorithm": "cpp"
+    "algorithm": "cpp",
+    "memory": "cpp",
+    "forward_list": "cpp",
+    "print": "cpp",
+    "stack": "cpp"
   }
 }
