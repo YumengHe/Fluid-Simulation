@@ -1,0 +1,25 @@
+#ifndef PARTICLE_H
+#define PARTICLE_H
+
+#include <vector>
+#include "Vec2.h"
+
+// Represents a fluid particle with position and velocity
+struct Particle {
+    Vec2 pos;
+    Vec2 vel;
+    // Constructors
+    Particle();
+    Particle(const Vec2& pos, const Vec2& vel = Vec2());
+};
+
+// Represents an elastic spring connecting two particles (indices a and b)
+struct Spring {
+    int a;          // index of first particle
+	int b;		    // index of second particle
+    float restLength;
+	// Constructor
+	Spring(int i, int j, float restLength);
+};
+
+#endif // PARTICLE_H

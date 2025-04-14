@@ -1,3 +1,18 @@
+# Visual Studio project-specific files
+.vs/
+*.VC.db
+*.VC.opendb
+
+# VS Code settings (optional to ignore)
+.vscode/
+
+# CMake build artifacts
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
 # Prerequisites
 *.d
 
