@@ -1,8 +1,9 @@
 #pragma once
 #include <vector>
-#include <include/eigen-3.4.0/Eigen/Dense>
+#include <eigen/Eigen/Dense>
 
-class Fluid_Particle{
+using Vec2 = Eigen::Vector2f;
+
 // Represents a fluid particle with position and velocity
 struct Particle {
     Vec2 pos;
@@ -21,4 +22,3 @@ struct Spring {
 	Spring(int i, int j, float restLength);
 };
 
-};

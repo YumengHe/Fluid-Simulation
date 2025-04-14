@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/rainyhe/Desktop/USC/CSCI580/Fluid-Simulation/src",
-      "program": "/Users/rainyhe/Desktop/USC/CSCI580/Fluid-Simulation/src/build/Debug/outDebug"
+      "cwd": "${workspaceFolder}/src",
+      "program": "${workspaceFolder}/src/build/Debug/outDebug"
     }
   ]
 }

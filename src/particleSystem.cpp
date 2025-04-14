@@ -1,4 +1,5 @@
 #include "particleSystem.h"
+#include "particle.h"
 #include <cmath>
 
 ParticleSystem::ParticleSystem() {

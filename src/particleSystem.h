@@ -1,8 +1,10 @@
 #ifndef PARTICLESYSTEM_H
 #define PARTICLESYSTEM_H
 
+#pragma once
+
 #include <vector>
-#include "Particle.h"
+#include "particle.h"
 
 class ParticleSystem {
 public:

@@ -1,4 +1,4 @@
-#include "Particle.h"
+#include "particle.h"
 
 Particle::Particle() : pos(), vel() {}
 Particle::Particle(const Vec2& pos, const Vec2& vel) : pos(pos), vel(vel) {}
