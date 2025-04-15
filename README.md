@@ -13,6 +13,9 @@ xcode-select --install
 ```bash
 clang++ ./src/main.cpp -framework OpenGL -framework GLUT -o fluid
 ```
+```bash
+g++ -std=c++14 src/*.cpp -Iinclude -o fluid -framework OpenGL -framework GLUT
+```
 ### Step 3: Run:
 ```bash
 ./fluid
