@@ -11,12 +11,19 @@ xcode-select --install
 ```
 ### Step 2: Compile:
 ```bash
-clang++ src/main.cpp -framework OpenGL -framework GLUT -o app
+clang++ ./src/main.cpp -framework OpenGL -framework GLUT -o fluid
 ```
 ### Step 3: Run:
 ```bash
-./app 
+./fluid
 ```
+### Particle Initialization
+To generate initial particle configurations, use the included script:
+```bash
+python particle_init.py
+```
+This will generate a particles.json file with a grid of particles placed at a specified region within the simulation domain.
+
 ## Directory Structure
 ```bash
 ├── src
@@ -30,5 +37,6 @@ clang++ src/main.cpp -framework OpenGL -framework GLUT -o app
 │   └── 
 ├── LICENSE
 ├── README.md
+├── particle_init.py
 └── .gitignore
 ```
