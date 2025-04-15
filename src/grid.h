@@ -1,29 +1,28 @@
 #pragma once
 #include <vector>
-#include <include/eigen-3.4.0/Eigen/Dense>
 
 class Fluid_Grid{
 public:
     // grid dimension
-    int grid_w; // number of cells in horizontal direction
-    int grid_h; // number of cells in vertical direction
+    int g_width; // number of cells in horizontal direction
+    int g_height; // number of cells in vertical direction
 
     // physics parameter
-    float dt; // time step
-    float diffusion; // coefficient for diffusion
-    float viscosity; // coefficient for viscosity
-    int num_iteration; // number of iteration for linear solver
+    float g_dt; // time step
+    float g_diffusion; // coefficient for diffusion
+    float g_viscosity; // coefficient for viscosity
+    int g_num_iteration; // number of iteration for linear solver
 
     //stored at the boundary of the cell
-    std::vector<std::vector<float>> velocity_x;// Velocity in the x direction
-    std::vector<std::vector<float>> velocity_y;// Velocity in the y direction
+    std::vector<std::vector<float>> g_velocity_x;// Velocity in the x direction
+    std::vector<std::vector<float>> g_velocity_y;// Velocity in the y direction
 
     //stored at the center of the cell
-    std::vector<std::vector<float>> pressure;
-    std::vector<std::vector<float>> density;
+    std::vector<std::vector<float>> g_pressure;
+    std::vector<std::vector<float>> g_density;
 
     //Constructor
-    Fluid_Grid(int width,int height) {
+    Fluid_Grid(int width,int height, float dt, float diffusion, float viscosity, int num_iteration) {
         
     };
 
@@ -31,7 +30,6 @@ public:
     void initializeGrid();
 
     //add core function
-    
     //Step 1: Advection（对密度和速度进行推进）
     void advect();
     //Step 2: Apply Forces
