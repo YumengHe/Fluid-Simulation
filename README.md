@@ -43,6 +43,7 @@ This will generate a particles.json file with a grid of particles placed at a sp
 
 ## References
 ### Particles
+```bash
 @inproceedings{clavet2005viscoelastic,
   title={Particle-based viscoelastic fluid simulation},
   author={Clavet, Simon and Beaudoin, Philippe and Poulin, Pierre},
@@ -50,3 +51,4 @@ This will generate a particles.json file with a grid of particles placed at a sp
   pages={219--228},
   year={2005}
 }
+```
