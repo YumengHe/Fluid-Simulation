@@ -40,3 +40,15 @@ This will generate a particles.json file with a grid of particles placed at a sp
 ├── particle_init.py
 └── .gitignore
 ```
+
+## References
+### Particles
+```bash
+@inproceedings{clavet2005viscoelastic,
+  title={Particle-based viscoelastic fluid simulation},
+  author={Clavet, Simon and Beaudoin, Philippe and Poulin, Pierre},
+  booktitle={Proceedings of the 2005 ACM SIGGRAPH/Eurographics Symposium on Computer Animation},
+  pages={219--228},
+  year={2005}
+}
+```
