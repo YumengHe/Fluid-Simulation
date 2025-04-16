@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <iostream>
 
 class Fluid_Grid{
 public:
@@ -16,28 +17,56 @@ public:
     //stored at the boundary of the cell
     std::vector<std::vector<float>> g_velocity_x;// Velocity in the x direction
     std::vector<std::vector<float>> g_velocity_y;// Velocity in the y direction
+    std::vector<std::vector<float>> g_velocity_x0;// Old velocity in the x direction
+    std::vector<std::vector<float>> g_velocity_y0;// Old velocity in the y direction
 
     //stored at the center of the cell
     std::vector<std::vector<float>> g_pressure;
     std::vector<std::vector<float>> g_density;
 
     //Constructor
-    Fluid_Grid(int width,int height, float dt, float diffusion, float viscosity, int num_iteration) {
-        
-    };
+    Fluid_Grid();
+    Fluid_Grid(int width,int height, float dt, float diffusion, float viscosity, int num_iteration);
 
-    //Initialize
-    void initializeGrid();
+    // initialize grid
+    void initialization();
+    // the main simulation function
+    void simulation(Fluid_Grid &grid);
 
-    //add core function
-    //Step 1: Advection（对密度和速度进行推进）
+    // core functions
+    // Step 1: Advection（对密度和速度进行推进）
     void advect();
-    //Step 2: Apply Forces
+    // Step 2: Apply Forces
     void diffuse();
-    //Step 3: Projection（解 Poisson 方程）  
+    // Step 3: Projection（解 Poisson 方程）  
     void project();
     // apply boundary conditions (e.g. walls)
-    void setBoundary();
+    void set_bnd();
+    // linear solver
+    void lin_solve();
 
-    void simulation();
+    
 };
+
+// overload cout to print every element of velocity
+std::ostream& operator<<(std::ostream& os, const Fluid_Grid &grid) {
+    os << "g_velocity_x:\n";
+    for (int j = 0; j < grid.g_height; j++) {
+        for (int i = 0; i < grid.g_width; i++) {
+            os << grid.g_velocity_x[j][i] << " ";
+        }
+        os << "\n";
+    }
+
+    os << "\n";
+
+    os << "g_velocity_y:\n";
+    for (int j = 0; j < grid.g_height; j++) {
+        for (int i = 0; i < grid.g_width; i++) {
+            os << grid.g_velocity_y[j][i] << " ";
+        }
+        os << "\n";
+    }
+
+    return os;
+}
