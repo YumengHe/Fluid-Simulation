@@ -8,6 +8,7 @@ Fluid_Grid::Fluid_Grid() {
 
 }
 
+// looks like not necessary, but keep it here for now
 Fluid_Grid::Fluid_Grid(int width,int height, float dt, float diffusion, float viscosity, int num_iteration) {
   g_width = width;
   g_height = height;
@@ -20,21 +21,61 @@ Fluid_Grid::Fluid_Grid(int width,int height, float dt, float diffusion, float vi
 // ------------------------------------------------------------
 // Advection
 // ------------------------------------------------------------
-void Fluid_Grid::advect() {
+// N: number of grid
+// b: case
+// d: destination
+// d0: source
+// v_x: velocity_x
+// v_y: velocity_y
+// dt: time step
+void advect(int N, int b, std::vector< std::vector<float> > d, std::vector< std::vector<float> > d0, std::vector< std::vector<float> > v_x, std::vector< std::vector<float> > v_y, float dt) {
+  float dt0 = dt * N;
 
+  for (int i = 1; i <= N; i ++) {
+    for (int j = 1; j <= N; j ++) {
+      // backward trace step
+      float x = i - dt0 * v_x[i][j];
+      float y = j - dt0 * v_y[i][j];
+
+      if (x < 0.5) x = 0.5; // clamp
+      if (x > N + 0.5) x = N + 0.5; // clamp
+      int i0 = (int)x;
+      int i1 = i0 + 1;
+
+      if (y < 0.5) y = 0.5; // clamp
+      if (y > N + 0.5) y = N + 0.5; // clamp
+      int j0 = (int)y;
+      int j1 = j0 + 1;
+
+      float s1 = x - i0;
+      float s0 = 1 - s1;
+      float t1 = y - j0;
+      float t0 = 1 - t1;
+      // bilinear interpolation
+      d[i][j] = s0 * (t0 * d0[i0][j0] + t1 * d0[i0][j1]) + s1 * (t0 * d0[i1][j0] + t1 * d0[i1][j1]);
+    }
+  }
+  set_bnd(N, b, d);
 }
 
 // ------------------------------------------------------------
 // Diffusion
 // ------------------------------------------------------------
-void Fluid_Grid::diffuse() {
-  
+// N: number of grid
+// b: case
+// x: destination
+// x0: source
+// diff: diffusion coefficient
+// dt: time step
+void diffuse(int N, int b, std::vector< std::vector<float> > &x, std::vector< std::vector<float> > &x0, float diff, float dt) {
+  float a = dt * diff * N * N;
+  set_bnd(N, b, x);
 }
 
 // ------------------------------------------------------------
 // Projection
 // ------------------------------------------------------------
-void Fluid_Grid::project() {
+void project() {
   
 }
 
@@ -95,8 +136,9 @@ void lin_solve(int b, std::vector< std::vector<float> > &x, std::vector< std::ve
 void Fluid_Grid::initialization(){
   // note: we only consider equal length of each side -> width = height
   // +2 -> the grid contains an extra layer of cells to account for the boundary conditions
-  g_width = 5 + 2;
-  g_height = 5 + 2;
+  int N = 5;
+  g_width = N + 2;
+  g_height = N + 2;
 
   g_dt = 0.1;
   g_diffusion = 10;

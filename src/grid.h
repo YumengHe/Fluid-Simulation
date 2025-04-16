@@ -23,6 +23,7 @@ public:
     //stored at the center of the cell
     std::vector< std::vector<float> > g_pressure;
     std::vector< std::vector<float> > g_density;
+    std::vector< std::vector<float> > g_density0;
 
     //Constructor
     Fluid_Grid();
@@ -37,7 +38,6 @@ public:
     // Step 1: Advection（对密度和速度进行推进）
     void advect();
     // Step 2: Apply Forces
-    void diffuse();
     // Step 3: Projection（解 Poisson 方程）  
     void project();
 
