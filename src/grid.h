@@ -15,14 +15,14 @@ public:
     int g_num_iteration; // number of iteration for linear solver
 
     //stored at the boundary of the cell
-    std::vector<std::vector<float>> g_velocity_x;// Velocity in the x direction
-    std::vector<std::vector<float>> g_velocity_y;// Velocity in the y direction
-    std::vector<std::vector<float>> g_velocity_x0;// Old velocity in the x direction
-    std::vector<std::vector<float>> g_velocity_y0;// Old velocity in the y direction
+    std::vector< std::vector<float> > g_velocity_x;// Velocity in the x direction
+    std::vector< std::vector<float> > g_velocity_y;// Velocity in the y direction
+    std::vector< std::vector<float> > g_velocity_x0;// Old velocity in the x direction
+    std::vector< std::vector<float> > g_velocity_y0;// Old velocity in the y direction
 
     //stored at the center of the cell
-    std::vector<std::vector<float>> g_pressure;
-    std::vector<std::vector<float>> g_density;
+    std::vector< std::vector<float> > g_pressure;
+    std::vector< std::vector<float> > g_density;
 
     //Constructor
     Fluid_Grid();
@@ -31,7 +31,7 @@ public:
     // initialize grid
     void initialization();
     // the main simulation function
-    void simulation(Fluid_Grid &grid);
+    void simulation();
 
     // core functions
     // Step 1: Advection（对密度和速度进行推进）
@@ -40,10 +40,6 @@ public:
     void diffuse();
     // Step 3: Projection（解 Poisson 方程）  
     void project();
-    // apply boundary conditions (e.g. walls)
-    void set_bnd();
-    // linear solver
-    void lin_solve();
 
     
 };
