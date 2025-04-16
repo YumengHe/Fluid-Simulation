@@ -35,13 +35,9 @@ public:
     void simulation();
 
     // core functions
-    // Step 1: Advection（对密度和速度进行推进）
-    void advect();
+    // Step 1: Advection（对密度和速度进行推进
     // Step 2: Apply Forces
-    // Step 3: Projection（解 Poisson 方程）  
-    void project();
-
-    
+    // Step 3: Projection（解 Poisson 方程）
 };
 
 // overload cout to print every element of velocity
