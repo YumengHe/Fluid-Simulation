@@ -248,7 +248,7 @@ void Fluid_Grid::simulation() {
   dens_step(N,g_density,g_density0,g_velocity_x,g_velocity_y,g_diffusion,g_dt,g_num_iteration);
   std::cout << *this << std::endl;
 }
-
+/*
 // temporary main function
 int main() {
   Fluid_Grid grid;
@@ -256,3 +256,4 @@ int main() {
   grid.simulation();
   return 0;
 }
+*/
