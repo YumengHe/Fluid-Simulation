@@ -47,7 +47,17 @@ This will generate a particles.json file with a grid of particles placed at a sp
 └── .gitignore
 ```
 
+## Grid
+Based on stable fluid method [[1]](#1)[[2]](#2).
+
 ## References
+<a id="1">[1]</a> 
+Stam, J. & Alias wavefront. (1999b). Stable fluids. In Alias Wavefront (p. 121) [Journal-article]. Alias wavefront. https://pages.cs.wisc.edu/~chaol/data/cs777/stam-stable_fluids.pdf
+
+<a id="1">[2]</a> 
+Stam, J. (2003, March). Real-time fluid dynamics for games. In Proceedings of the game developer conference (Vol. 18, No. 11). https://graphics.cs.cmu.edu/nsp/course/15-464/Fall09/papers/StamFluidforGames.pdf 
+
+
 ### Particles
 ```bash
 @inproceedings{clavet2005viscoelastic,
