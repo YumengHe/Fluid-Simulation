@@ -55,7 +55,8 @@
             "includePath": [
                 "/System/Library/Frameworks/OpenGL.framework/Headers",
                 "/System/Library/Frameworks/GLUT.framework/Headers",
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/include"
             ],
             "defines": [],
             "macFrameworkPath": [
