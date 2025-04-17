@@ -3,7 +3,8 @@
 
 #pragma once
 #include <vector>
-#include <eigen/Eigen/Dense>
+#include <iostream>
+#include "Eigen/Dense"
 
 using Vec2 = Eigen::Vector2f;
 
