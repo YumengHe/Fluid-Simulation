@@ -3,6 +3,8 @@
         {
             "name": "macos-clang-arm64",
             "includePath": [
+                "/System/Library/Frameworks/OpenGL.framework/Headers",
+                "/System/Library/Frameworks/GLUT.framework/Headers",
                 "${workspaceFolder}/**"
             ],
             "compilerPath": "cl.exe",
@@ -51,7 +53,8 @@
             "name": "macOS",
             "includePath": [
                 "/System/Library/Frameworks/OpenGL.framework/Headers",
-                "/System/Library/Frameworks/GLUT.framework/Headers"
+                "/System/Library/Frameworks/GLUT.framework/Headers",
+                "${workspaceFolder}/**"
             ],
             "defines": [],
             "macFrameworkPath": [

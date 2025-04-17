@@ -1,6 +1,9 @@
+#ifndef GRID_H
+#define GRID_H
+
 #pragma once
 #include <vector>
-#include <include/eigen-3.4.0/Eigen/Dense>
+#include <eigen/Eigen/Dense>
 
 class Fluid_Grid{
 public:
@@ -43,3 +46,5 @@ public:
 
     void simulation();
 };
+
+#endif // GRID_H

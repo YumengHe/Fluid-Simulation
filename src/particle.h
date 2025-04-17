@@ -1,3 +1,6 @@
+#ifndef PARTICLE_H
+#define PARTICLE_H
+
 #pragma once
 #include <vector>
 #include <eigen/Eigen/Dense>
@@ -22,3 +25,4 @@ struct Spring {
 	Spring(int i, int j, float restLength);
 };
 
+#endif // PARTICLE_H
