@@ -1,50 +1,73 @@
-#ifndef GRID_H
-#define GRID_H
-
 #pragma once
 #include <vector>
-#include <eigen/Eigen/Dense>
+#include <iostream>
 
 class Fluid_Grid{
 public:
     // grid dimension
-    int grid_w; // number of cells in horizontal direction
-    int grid_h; // number of cells in vertical direction
+    int g_width; // number of cells in horizontal direction
+    int g_height; // number of cells in vertical direction
 
     // physics parameter
-    float dt; // time step
-    float diffusion; // coefficient for diffusion
-    float viscosity; // coefficient for viscosity
-    int num_iteration; // number of iteration for linear solver
+    float g_dt; // time step
+    float g_diffusion; // coefficient for diffusion
+    float g_viscosity; // coefficient for viscosity
+    int g_num_iteration; // number of iteration for linear solver
 
     //stored at the boundary of the cell
-    std::vector<std::vector<float>> velocity_x;// Velocity in the x direction
-    std::vector<std::vector<float>> velocity_y;// Velocity in the y direction
+    std::vector< std::vector<float> > g_velocity_x;// Velocity in the x direction
+    std::vector< std::vector<float> > g_velocity_y;// Velocity in the y direction
+    std::vector< std::vector<float> > g_velocity_x0;// Old velocity in the x direction
+    std::vector< std::vector<float> > g_velocity_y0;// Old velocity in the y direction
 
     //stored at the center of the cell
-    std::vector<std::vector<float>> pressure;
-    std::vector<std::vector<float>> density;
+    std::vector< std::vector<float> > g_pressure;
+    std::vector< std::vector<float> > g_density;
+    std::vector< std::vector<float> > g_density0;
 
     //Constructor
-    Fluid_Grid(int width,int height) {
-        
-    };
+    Fluid_Grid();
+    Fluid_Grid(int width,int height, float dt, float diffusion, float viscosity, int num_iteration);
 
-    //Initialize
-    void initializeGrid();
-
-    //add core function
-    
-    //Step 1: Advection（对密度和速度进行推进）
-    void advect();
-    //Step 2: Apply Forces
-    void diffuse();
-    //Step 3: Projection（解 Poisson 方程）  
-    void project();
-    // apply boundary conditions (e.g. walls)
-    void setBoundary();
-
+    // initialize grid
+    void initialization();
+    // the main simulation function
     void simulation();
 };
 
-#endif // GRID_H
+// helper functions
+void set_bnd(int N, int b, std::vector< std::vector<float> > &x);
+void lin_solve(int b, std::vector< std::vector<float> > &x, std::vector< std::vector<float> > &x0, float a, float c, int num_iteration, int N);
+void add_source(int N, std::vector< std::vector<float> > &x, std::vector< std::vector<float> > &s, float dt);
+
+// physics functions
+void advect(int N, int b, std::vector< std::vector<float> > d, std::vector< std::vector<float> > d0, std::vector< std::vector<float> > v_x, std::vector< std::vector<float> > v_y, float dt);
+void diffuse(int N, int b, std::vector< std::vector<float> > &x, std::vector< std::vector<float> > &x0, float diff, float dt, int num_iteration);
+void project(int N, std::vector< std::vector<float> > &velocity_x, std::vector< std::vector<float> > &velocity_y, std::vector< std::vector<float> > &p, std::vector< std::vector<float> > &div, int num_iteration);
+
+// core functions
+void dens_step();
+void vel_step();
+
+// overload cout to print every element of velocity
+std::ostream& operator<<(std::ostream& os, const Fluid_Grid &grid) {
+    os << "g_velocity_x:\n";
+    for (int j = 0; j < grid.g_height; j++) {
+        for (int i = 0; i < grid.g_width; i++) {
+            os << grid.g_velocity_x[j][i] << " ";
+        }
+        os << "\n";
+    }
+
+    os << "\n";
+
+    os << "g_velocity_y:\n";
+    for (int j = 0; j < grid.g_height; j++) {
+        for (int i = 0; i < grid.g_width; i++) {
+            os << grid.g_velocity_y[j][i] << " ";
+        }
+        os << "\n";
+    }
+
+    return os;
+}
