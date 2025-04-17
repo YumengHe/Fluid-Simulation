@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <iostream>
-#include "Eigen/Dense"
+#include "../include/Eigen/Dense"
 
 using Vec2 = Eigen::Vector2f;
 
