@@ -4,14 +4,14 @@
 *.VC.opendb
 
 # VS Code settings (optional to ignore)
-.vscode/
+# .vscode/
 
 # CMake build artifacts
 build/
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
-Makefile
+# Makefile
 
 # Prerequisites
 *.d
