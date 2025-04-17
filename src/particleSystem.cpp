@@ -30,21 +30,24 @@ void ParticleSystem::step(float dt) {
 	// Apply gravity to all particles
 	// Algorithm 1 (3)
 	for (size_t i = 0; i < n; i++) {
+		// Apply gravity
 		particles[i].vel += gravity * dt;
 	}
 
-	// Apply pairwise viscosity damping
+	// Modify velocities with pairwise viscosity impulses
 	// Algorithm 5 (5.3)
 	for (size_t i = 0; i < n; i++) {
 		for (size_t j = i + 1; j < n; j++) {
-			Vec2 rij = particles[j].pos - particles[i].pos;	// relative position
-			float dist2 = rij.squaredNorm();	// squared distance
+			Vec2 rij = particles[j].pos - particles[i].pos;
+			float dist2 = rij.squaredNorm();
 			if (dist2 < radius * radius) {		// if within interaction radius
 				float dist = std::sqrt(dist2);
 				if (dist < 1e-6f) continue;
-				Vec2 dir = rij / dist;	// direction vector
+				Vec2 dir = rij / dist;
+				// Inward radial velocity
 				float relativeVel = (particles[j].vel - particles[i].vel).dot(dir);	// relative velocity along the direction
 				if (relativeVel > 0) {
+					// Linear and quadratic impulses
 					float damping = (1 - dist / radius) * (viscosityLinear * relativeVel + viscosityQuadratic * relativeVel * relativeVel);
 					Vec2 impulse = dir * (damping * dt);
 					particles[i].vel += impulse * 0.5f;
@@ -58,8 +61,10 @@ void ParticleSystem::step(float dt) {
 	// Algorithm 1 (3)
 	std::vector<Vec2> prevPos(n);
 	for (size_t i = 0; i < n; i++) {
-		prevPos[i] = particles[i].pos;				// save previous position
-		particles[i].pos += particles[i].vel * dt;	// advance to predicted position
+		// save previous position
+		prevPos[i] = particles[i].pos;
+		// advance to predicted position
+		particles[i].pos += particles[i].vel * dt;
 	}
 
 	// Viscoelastic plasticity control, spring adjustment
@@ -86,10 +91,11 @@ void ParticleSystem::step(float dt) {
 		Vec2 rij = particles[j].pos - particles[i].pos;
 		float dist = rij.norm();
 		float L0 = it->restLength;
+		// tolerable deformation = yield ratio * rest length
 		float yieldThresh = springYield * L0;
-		if (dist > L0 + yieldThresh)
+		if (dist > L0 + yieldThresh)		// stretch
 			it->restLength += plasticity * (dist - L0 - yieldThresh);
-		else if (dist < L0 - yieldThresh)
+		else if (dist < L0 - yieldThresh)	// compress
 			it->restLength -= plasticity * (L0 - yieldThresh - dist);
 
 		if (it->restLength > radius) {
