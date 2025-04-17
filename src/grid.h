@@ -33,12 +33,21 @@ public:
     void initialization();
     // the main simulation function
     void simulation();
-
-    // core functions
-    // Step 1: Advection（对密度和速度进行推进
-    // Step 2: Apply Forces
-    // Step 3: Projection（解 Poisson 方程）
 };
+
+// helper functions
+void set_bnd(int N, int b, std::vector< std::vector<float> > &x);
+void lin_solve(int b, std::vector< std::vector<float> > &x, std::vector< std::vector<float> > &x0, float a, float c, int num_iteration, int N);
+void add_source(int N, std::vector< std::vector<float> > &x, std::vector< std::vector<float> > &s, float dt);
+
+// physics functions
+void advect(int N, int b, std::vector< std::vector<float> > d, std::vector< std::vector<float> > d0, std::vector< std::vector<float> > v_x, std::vector< std::vector<float> > v_y, float dt);
+void diffuse(int N, int b, std::vector< std::vector<float> > &x, std::vector< std::vector<float> > &x0, float diff, float dt, int num_iteration);
+void project(int N, std::vector< std::vector<float> > &velocity_x, std::vector< std::vector<float> > &velocity_y, std::vector< std::vector<float> > &p, std::vector< std::vector<float> > &div, int num_iteration);
+
+// core functions
+void dens_step();
+void vel_step();
 
 // overload cout to print every element of velocity
 std::ostream& operator<<(std::ostream& os, const Fluid_Grid &grid) {

@@ -67,16 +67,35 @@ void advect(int N, int b, std::vector< std::vector<float> > d, std::vector< std:
 // x0: source
 // diff: diffusion coefficient
 // dt: time step
-void diffuse(int N, int b, std::vector< std::vector<float> > &x, std::vector< std::vector<float> > &x0, float diff, float dt) {
+void diffuse(int N, int b, std::vector< std::vector<float> > &x, std::vector< std::vector<float> > &x0, float diff, float dt, int num_iteration) {
   float a = dt * diff * N * N;
-  set_bnd(N, b, x);
+  lin_solve(b, x, x0, a, 1 + 4 * a, num_iteration, N);
 }
 
 // ------------------------------------------------------------
 // Projection
 // ------------------------------------------------------------
-void project() {
-  
+void project(int N, std::vector< std::vector<float> > &velocity_x, std::vector< std::vector<float> > &velocity_y, std::vector< std::vector<float> > &p, std::vector< std::vector<float> > &div, int num_iteration) {
+  float h = 1.0 / N;
+  for (int i = 1; i <= N; i ++) {
+    for (int j = 1; j <= N; j ++) {
+      div[i][j] = -0.5 * h * (velocity_x[i + 1][j] - velocity_x[i - 1][j] + velocity_y[i][j + 1] - velocity_y[i][j - 1]);
+      p[i][j] = 0;
+    }
+  }
+  set_bnd(N, 0, div);
+  set_bnd(N, 0, p);
+
+  lin_solve(0, p, div, 1, 4, num_iteration, N);
+
+  for (int i = 1; i <= N; i ++) {
+    for (int j = 1; j <= N; j ++) {
+      velocity_x[i][j] -= 0.5 * (p[i + 1][j] - p[i - 1][j]) / h;
+      velocity_y[i][j] -= 0.5 * (p[i][j + 1] - p[i][j - 1]) / h;
+    }
+  }
+  set_bnd(N, 1, velocity_x);
+  set_bnd(N, 2, velocity_y);
 }
 
 // ------------------------------------------------------------
@@ -84,7 +103,7 @@ void project() {
 // ------------------------------------------------------------
 // apply boundary conditions (e.g. walls)
 // N: number of grid
-// b: case
+// b: 0->scalar, 1->horizontal velocity, 2->vertical velocity
 // x: velocity/density
 void set_bnd(int N, int b, std::vector< std::vector<float> > &x) {
   for (int i = 0; i <= N; i ++) {
@@ -117,18 +136,42 @@ void set_bnd(int N, int b, std::vector< std::vector<float> > &x) {
 // x: velocity/density
 // x0: old velocity/density
 // a: diffusion rate
+// c: ??
 // num_iteration: number of iterations (more iteration -> more accurate)
 // N: number of grid
-void lin_solve(int b, std::vector< std::vector<float> > &x, std::vector< std::vector<float> > &x0, float a, int num_iteration, int N) {
+void lin_solve(int b, std::vector< std::vector<float> > &x, std::vector< std::vector<float> > &x0, float a, float c, int num_iteration, int N) {
   for (int k = 0; k < num_iteration; k ++) {
     for (int j = 1; j <= N; j ++) { // y
       for (int i = 1; i <= N; i++) { // x
-        x[j][i] = (x0[j][i] + a * (x[j - 1][j] + x[j + 1][i] + x[j][i - 1] + x[j][i + 1])) / (1 + 4 * a);
+        x[j][i] = (x0[j][i] + a * (x[j - 1][j] + x[j + 1][i] + x[j][i - 1] + x[j][i + 1])) / c;
       }
     }
     set_bnd(N, b, x);
   }
 };
+
+// for user input (such as mouse drag), not necessary for our program but keep it here for now
+// N: number of grid
+// s: source of input density
+// x: density
+void add_source(int N, std::vector< std::vector<float> > &x, std::vector< std::vector<float> > &s, float dt) {
+  for (int i = 0; i < N + 2; i ++) {
+    for (int j = 0; j < N + 2; j ++) {
+      x[i][j] += dt * s[i][j];
+    }
+  }
+}
+
+// ------------------------------------------------------------
+// Core functions
+// ------------------------------------------------------------
+void dens_step() {
+
+}
+
+void vel_step() {
+  
+}
 
 // ------------------------------------------------------------
 // Initialization & Simulation
