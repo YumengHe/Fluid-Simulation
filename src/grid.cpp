@@ -210,7 +210,7 @@ void Fluid_Grid::initialization(){
 void Fluid_Grid::simulation() {
   std::cout << *this << std::endl;
 }
-
+/*
 // temporary main function
 int main() {
   Fluid_Grid grid;
@@ -218,3 +218,4 @@ int main() {
   grid.simulation();
   return 0;
 }
+*/
