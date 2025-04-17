@@ -143,7 +143,7 @@ void lin_solve(int b, std::vector< std::vector<float> > &x, std::vector< std::ve
   for (int k = 0; k < num_iteration; k ++) {
     for (int j = 1; j <= N; j ++) { // y
       for (int i = 1; i <= N; i++) { // x
-        x[j][i] = (x0[j][i] + a * (x[j - 1][j] + x[j + 1][i] + x[j][i - 1] + x[j][i + 1])) / c;
+        x[j][i] = (x0[j][i] + a * (x[j - 1][i] + x[j + 1][i] + x[j][i - 1] + x[j][i + 1])) / c;
       }
     }
     set_bnd(N, b, x);
@@ -165,12 +165,47 @@ void add_source(int N, std::vector< std::vector<float> > &x, std::vector< std::v
 // ------------------------------------------------------------
 // Core functions
 // ------------------------------------------------------------
-void dens_step() {
-
+//N:number of grid
+//den:Current density
+//den_pre:previous density
+//v_x:velocity_x
+//v_y:velocity_yf
+//diff:diffusion coefficient
+//dt:time step
+//num_iter:number of iterations
+void dens_step(int N,std::vector<std::vector<float>> &den,std::vector<std::vector<float>> &den_pre,std::vector<std::vector<float>> &v_x,std::vector<std::vector<float>> &v_y,float diff,float dt,int num_iter) {
+  add_source(N,den,den_pre,dt);
+  std::swap(den,den_pre);
+  diffuse(N,0,den,den_pre,diff,dt,num_iter);
+  std::swap(den,den_pre);
+  advect(N,0,den,den_pre,v_x,v_y,dt);
 }
 
-void vel_step() {
-  
+//visc:viscosity
+void vel_step(int N,std::vector<std::vector<float>>& v_x,std::vector<std::vector<float>>& v_y,
+  std::vector<std::vector<float>>& v_x0,std::vector<std::vector<float>>& v_y0,float visc,float dt,int num_iter) {
+    add_source(N,v_x,v_x0,dt);
+    add_source(N,v_y,v_y0,dt);
+
+    //diffuse 
+    std::swap(v_x,v_x0);
+    std::swap(v_y,v_y0);
+    diffuse(N,1,v_x,v_x0,visc,dt,num_iter);//b=1
+    diffuse(N,2,v_y,v_y0,visc,dt,num_iter);//b=2
+
+    //projection
+    std::vector<std::vector<float>> p(v_x.size(),std::vector<float>(v_x[0].size(),0.0f));//used to correct velocity
+    std::vector<std::vector<float>> div(v_x.size(),std::vector<float>(v_x[0].size(),0.0f));//Divergence of velocity
+    project(N,v_x,v_y,p,div,num_iter);
+
+    //advect
+    std::swap(v_x,v_x0);
+    std::swap(v_y,v_y0);
+    advect(N,1,v_x,v_x0,v_x0,v_y0,dt);//b=1
+    advect(N,2,v_y,v_y0,v_x0,v_y0,dt);//b=2
+
+    //projection again
+    project(N,v_x,v_y,p,div,num_iter); 
 }
 
 // ------------------------------------------------------------
@@ -208,6 +243,9 @@ void Fluid_Grid::initialization(){
 }
 
 void Fluid_Grid::simulation() {
+  int N = g_width - 2;
+  vel_step(N,g_velocity_x,g_velocity_y,g_velocity_x0,g_velocity_y0,g_viscosity,g_dt,g_num_iteration);
+  dens_step(N,g_density,g_density0,g_velocity_x,g_velocity_y,g_diffusion,g_dt,g_num_iteration);
   std::cout << *this << std::endl;
 }
 /*
