@@ -1,5 +1,7 @@
 # Fluid-Simulation
-We compare grid based method (Stable Fluids) with particle based method (Smoothed Particle Hydrodynamics)
+We compare grid based method (Stable Fluids), particle based method (Smoothed Particle Hydrodynamics), particle-in-cell method and APIC.
+
+![fluid simualtion methods](/images/fluid_simulation_methods.png)
 
 ## Sample Usage
 
