@@ -9,11 +9,11 @@ public:
     int g_height; // number of cells in vertical direction
 
     // physics parameter
+    int g_num_iteration; // number of iteration for linear solver
     float g_dt; // time step
     float g_diffusion; // coefficient for diffusion
     float g_viscosity; // coefficient for viscosity
-    int g_num_iteration; // number of iteration for linear solver
-
+    
     //stored at the boundary of the cell
     std::vector< std::vector<float> > g_velocity_x;// Velocity in the x direction
     std::vector< std::vector<float> > g_velocity_y;// Velocity in the y direction
