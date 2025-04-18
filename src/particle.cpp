@@ -5,6 +5,17 @@ Particle::Particle(const Vec2& pos, const Vec2& vel) : pos(pos), vel(vel) {}
 
 Spring::Spring(int i, int j, float restLen) : a(i), b(j), restLength(restLen) {}
 
+// ------------------------------------------------------------
+// Initialization & Simulation
+// ------------------------------------------------------------
+void Particle::initialization() {
+
+}
+
+void Particle::simulation() {
+  
+}
+
 int main() {
   // test for eigen
   Eigen::MatrixXd m(2,2);

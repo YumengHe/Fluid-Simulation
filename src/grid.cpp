@@ -165,14 +165,14 @@ void add_source(int N, std::vector< std::vector<float> > &x, std::vector< std::v
 // ------------------------------------------------------------
 // Core functions
 // ------------------------------------------------------------
-//N:number of grid
-//den:Current density
-//den_pre:previous density
-//v_x:velocity_x
-//v_y:velocity_yf
-//diff:diffusion coefficient
-//dt:time step
-//num_iter:number of iterations
+// N:number of grid
+// den:Current density
+// den_pre:previous density
+// v_x:velocity_x
+// v_y:velocity_yf
+// diff:diffusion coefficient
+// dt:time step
+// num_iter:number of iterations
 void dens_step(int N,std::vector<std::vector<float>> &den,std::vector<std::vector<float>> &den_pre,std::vector<std::vector<float>> &v_x,std::vector<std::vector<float>> &v_y,float diff,float dt,int num_iter) {
   add_source(N,den,den_pre,dt);
   std::swap(den,den_pre);

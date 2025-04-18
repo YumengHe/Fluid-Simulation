@@ -19,16 +19,16 @@ struct Particle {
     Particle(const Vec2& pos, const Vec2& vel = Vec2());
 
     // initialize
-    void InitSPH();
+    void initialization();
+
+    // core functions
+    void simulation();
 };
 
 // physics functions
 void ComputeDensityPressure();
 void ComputeForces();
 void Integrate();
-
-// core functions
-void Update();
 
 // Represents an elastic spring connecting two particles (indices a and b)
 struct Spring {
