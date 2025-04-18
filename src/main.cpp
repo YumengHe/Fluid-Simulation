@@ -1,16 +1,10 @@
-
-/*
-Linux c console program
-gcc f.c -lglut -lGL
-./a.out
-*/
-
 #include <stdio.h>     /* printf */
 #include <GLUT/glut.h> /* glut graphics library */
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include "input.h"
 #include "../include/json.hpp"
 
 using json = nlohmann::json;
@@ -54,26 +48,6 @@ void display(){ // change to particles later
     glEnd();
 
     glutSwapBuffers();
-}
-
-void mouseClick(int button, int state, int x, int y) {
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-        // 将屏幕坐标 (x, y) 转换为 OpenGL 0~1 区域
-        float xf = (float)x / glutGet(GLUT_WINDOW_WIDTH);
-        float yf = 1.0f - (float)y / glutGet(GLUT_WINDOW_HEIGHT); // 注意y坐标需要反转
-
-        printf("🖱️ Click at: screen = (%d, %d), normalized = (%.3f, %.3f)\n", x, y, xf, yf);
-    }
-}
-
-void handleKeypress(unsigned char key, int x, int y) {
-    if (key == 27) { // 27 is the ASCII value of ESC
-        exit(0); // esc 
-    }
-}
-
-void idle(){
-    glutPostRedisplay(); // request a redraw when cpu is idle
 }
 
 void initGL(){

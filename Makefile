@@ -9,8 +9,8 @@ LDFLAGS := -framework OpenGL -framework GLUT
 
 # === Source, object, and target names ===
 # SRCS := $(SRC_DIR)/particle.cpp
-SRCS := $(SRC_DIR)/main.cpp
-# SRCS := $(wildcard $(SRC_DIR)/*.cpp)
+# SRCS := $(SRC_DIR)/main.cpp
+SRCS := $(wildcard $(SRC_DIR)/*.cpp)
 OBJS := $(SRCS:%.cpp=%.o)
 TARGET := fluid
 

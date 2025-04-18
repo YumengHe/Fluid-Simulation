@@ -1,4 +1,5 @@
-#ifndef INPUT_H
-#define INPUT_H
+#pragma once
 
-#endif // INPUT_H
+void mouseClick(int button, int state, int x, int y);
+void handleKeypress(unsigned char key, int x, int y);
+void idle();
