@@ -11,10 +11,14 @@ xcode-select --install
 ```
 ### Step 2: Compile:
 ```bash
-clang++ ./src/main.cpp -std=c++17 -framework OpenGL -framework GLUT -o fluid
+make
 ```
-```bash
+<!-- ```bash
 g++ -std=c++14 src/*.cpp -Iinclude -o fluid -framework OpenGL -framework GLUT
+``` -->
+Clean Build Files
+```bash
+make clean
 ```
 ### Step 3: Run:
 ```bash
