@@ -240,6 +240,12 @@ void Fluid_Grid::initialization(){
       g_velocity_y0[j][i] = velocity;
     }
   }
+  //initialize pressure
+  g_pressure.resize(g_height, std::vector<float>(g_width, 0.0f));
+  //initialize density
+  g_density.resize(g_height, std::vector<float>(g_width, 0.0f));
+  g_density0.resize(g_height, std::vector<float>(g_width, 0.0f));
+
 }
 
 void Fluid_Grid::simulation() {
