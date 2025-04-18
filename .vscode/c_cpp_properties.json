@@ -5,8 +5,7 @@
             "includePath": [
                 "/System/Library/Frameworks/OpenGL.framework/Headers",
                 "/System/Library/Frameworks/GLUT.framework/Headers",
-                "${workspaceFolder}/**",
-                "${workspaceFolder}/include"
+                "${workspaceFolder}/**"
             ],
             "compilerPath": "cl.exe",
             "intelliSenseMode": "macos-clang-x64",
@@ -55,8 +54,7 @@
             "includePath": [
                 "/System/Library/Frameworks/OpenGL.framework/Headers",
                 "/System/Library/Frameworks/GLUT.framework/Headers",
-                "${workspaceFolder}/**",
-                "${workspaceFolder}/include"
+                "${workspaceFolder}/**"
             ],
             "defines": [],
             "macFrameworkPath": [
