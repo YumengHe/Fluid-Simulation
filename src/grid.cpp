@@ -211,17 +211,16 @@ void vel_step(int N,std::vector<std::vector<float>>& v_x,std::vector<std::vector
 // ------------------------------------------------------------
 // Initialization & Simulation
 // ------------------------------------------------------------
-void Fluid_Grid::initialization(){
+void Fluid_Grid::initialization(int N, int num_iteration, int dt, float diffusion, float viscosity, std::vector< std::vector<float> >  &velocity_x, std::vector< std::vector<float> >  velocity_y, std::vector< std::vector<float> >  pressure, std::vector< std::vector<float> >  density) {
   // note: we only consider equal length of each side -> width = height
   // +2 -> the grid contains an extra layer of cells to account for the boundary conditions
-  int N = 5;
   g_width = N + 2;
   g_height = N + 2;
 
-  g_dt = 0.1;
-  g_diffusion = 10;
-  g_viscosity = 10;
-  g_num_iteration = 20;
+  g_dt = dt;
+  g_num_iteration = num_iteration;
+  g_diffusion = diffusion;
+  g_viscosity = viscosity;
 
   // resize
   // g_velocity[row/width][column/height]
@@ -229,23 +228,34 @@ void Fluid_Grid::initialization(){
   g_velocity_y.resize(g_height, std::vector<float>(g_width, 0.0f));
   g_velocity_x0.resize(g_height, std::vector<float>(g_width, 0.0f));
   g_velocity_y0.resize(g_height, std::vector<float>(g_width, 0.0f));
+  g_pressure.resize(g_height, std::vector<float>(g_width, 0.0f));
+  g_density.resize(g_height, std::vector<float>(g_width, 0.0f));
+  g_density0.resize(g_height, std::vector<float>(g_width, 0.0f));
 
   // initialize velocity
   float velocity = 0.0;
   for (int j = 0; j < g_height; j ++) {
     for (int i = 0; i < g_width; i ++) {
-      g_velocity_x[j][i] = velocity;
-      g_velocity_y[j][i] = velocity;
-      g_velocity_x0[j][i] = velocity;
-      g_velocity_y0[j][i] = velocity;
+      if (i == 0 || j == 0 || i == g_height - 1 || j == g_width - 1) {
+        g_velocity_x[j][i] = 0.0;
+        g_velocity_x0[j][i] = 0.0;
+        g_velocity_y[j][i] = 0.0;
+        g_velocity_y0[j][i] = 0.0;
+        g_pressure[j][i] = 0.0;
+        g_density[j][i] = 0.0;
+        g_density0[j][i] = 0.0;
+      } else {
+        g_velocity_x[j][i] = velocity_x[j - 1][i - 1];
+        g_velocity_x0[j][i] = velocity_x[j - 1][i - 1];
+        g_velocity_y[j][i] = velocity_y[j - 1][i - 1];
+        g_velocity_y0[j][i] = velocity_y[j - 1][i - 1];
+        g_pressure[j][i] = pressure[j - 1][i - 1];
+        g_density[j][i] = density[j - 1][i - 1];
+        g_density0[j][i] = density[j - 1][i - 1];
+      }
+      
     }
   }
-  //initialize pressure
-  g_pressure.resize(g_height, std::vector<float>(g_width, 0.0f));
-  //initialize density
-  g_density.resize(g_height, std::vector<float>(g_width, 0.0f));
-  g_density0.resize(g_height, std::vector<float>(g_width, 0.0f));
-
 }
 
 void Fluid_Grid::simulation() {

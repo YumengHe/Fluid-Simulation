@@ -30,7 +30,7 @@ public:
     Fluid_Grid(int width,int height, float dt, float diffusion, float viscosity, int num_iteration);
 
     // initialize grid
-    void initialization();
+    void Fluid_Grid::initialization(int N, int num_iteration, int dt, float diffusion, float viscosity, std::vector< std::vector<float> >  &velocity_x, std::vector< std::vector<float> >  velocity_y, std::vector< std::vector<float> >  pressure, std::vector< std::vector<float> >  density);
     // the main simulation function
     void simulation();
 };
