@@ -45,8 +45,6 @@ This will generate a particles.json file with a grid of particles placed at a sp
 ├── include
 │   ├── Eigen
 │   └── json
-├── shaders
-│   └── 
 ├── LICENSE
 ├── README.md
 ├── particle_init.py
@@ -55,6 +53,9 @@ This will generate a particles.json file with a grid of particles placed at a sp
 
 ## Grid
 Based on stable fluid method [[1]](#1)[[2]](#2).
+
+## Particle
+Based on SPH.
 
 ## References
 <a id="1">[1]</a> 
