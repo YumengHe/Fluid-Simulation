@@ -15,9 +15,6 @@ xcode-select --install
 ```bash
 make
 ```
-<!-- ```bash
-g++ -std=c++14 src/*.cpp -Iinclude -o fluid -framework OpenGL -framework GLUT
-``` -->
 Clean Build Files
 ```bash
 make clean
@@ -26,12 +23,12 @@ make clean
 ```bash
 ./fluid
 ```
-### Particle Initialization
-To generate initial particle configurations, use the included script:
+### Grid File Generation
 ```bash
-python particle_init.py
+cd fluids
+g++ -o grid_generator gridGenerator.cpp
+./grid_generator template.grid
 ```
-This will generate a particles.json file with a grid of particles placed at a specified region within the simulation domain.
 ### Interaction Features
 	•	Mouse Click: Position Output
 	•	Esc Key: Exit Program
@@ -45,9 +42,12 @@ This will generate a particles.json file with a grid of particles placed at a sp
 ├── include
 │   ├── Eigen
 │   └── json
+├── fluids
+│   ├── gridGenerator.cpp
+│   └── template.grid
+├── images
 ├── LICENSE
 ├── README.md
-├── particle_init.py
 └── .gitignore
 ```
 

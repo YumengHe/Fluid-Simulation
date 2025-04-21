@@ -26,3 +26,13 @@ void idle()
 {
     glutPostRedisplay(); // request a redraw when cpu is idle
 }
+
+bool endsWith(const std::string &str, const std::string &suffix)
+{
+    return str.size() >= suffix.size() &&
+           str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0;
+}
+
+// void loadGrid(const std::string &filename, Fluid_Grid &grid){
+
+// }

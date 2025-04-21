@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include "input.h"
+#include "grid.h"
 #include "../include/json.hpp"
 
 using json = nlohmann::json;
@@ -50,6 +51,7 @@ void display(){ // change to particles later
     glutSwapBuffers();
 }
 
+
 void initGL(){
     glClearColor(0, 0, 0, 1); // black background
     glMatrixMode(GL_PROJECTION);
@@ -58,6 +60,27 @@ void initGL(){
 }
 
 int main(int argc, char **argv){
+    // if (argc < 2){
+    //     std::cerr << "Please input initial particle/grid file" << std::endl;
+    //     return 1;
+    // }
+
+    // std::string filename = argv[1];
+    // if (endsWith(filename, ".grid")){
+    //     std::cout << "Loading a .grid file\n";
+    //     Fluid_Grid grid;
+    //     loadGrid(filename, grid); // 从 .grid 文件读取参数填充 grid 成员变量
+    //     grid.simulation();
+    // }
+    // else if (endsWith(filename, ".par")){
+    //     std::cout << "Loading a .par file\n";
+    //     // loadParticles(filename);
+    // }
+    // else{
+    //     std::cerr << "Unsupported file type. Please use a .grid or .par file.\n";
+    //     return 1;
+    // }
+
     glutInit(&argc, argv); // initialize GLUT
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB); // double buffering and RGB color
     glutInitWindowSize(800, 800); // window size
