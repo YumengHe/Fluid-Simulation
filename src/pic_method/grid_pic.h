@@ -8,8 +8,8 @@ struct Grid_PIC{
     int grid_height;//number of grids in y direction
     float grid_dx;//size of single grid
 
-    std::vector<std::vector<float>> g_velocity_x;//velocity in the x direction
-    std::vector<std::vector<float>> g_velocity_y;//velocity in the y direction
+    std::vector<std::vector<float>> g_velocity_x;//velocity in the x direction,Stored on the left boundary of the cell
+    std::vector<std::vector<float>> g_velocity_y;//velocity in the y direction,Stored on the bottom boundary of the cell
 
     std::vector<std::vector<float>> g_pressure;
 
