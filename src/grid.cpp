@@ -264,6 +264,29 @@ void Fluid_Grid::simulation() {
   dens_step(N,g_density,g_density0,g_velocity_x,g_velocity_y,g_diffusion,g_dt,g_num_iteration);
   std::cout << *this << std::endl;
 }
+
+std::ostream& operator<<(std::ostream& os, const Fluid_Grid &grid) {
+    os << "g_velocity_x:\n";
+    for (int j = 0; j < grid.g_height; j++) {
+        for (int i = 0; i < grid.g_width; i++) {
+            os << grid.g_velocity_x[j][i] << " ";
+        }
+        os << "\n";
+    }
+
+    os << "\n";
+
+    os << "g_velocity_y:\n";
+    for (int j = 0; j < grid.g_height; j++) {
+        for (int i = 0; i < grid.g_width; i++) {
+            os << grid.g_velocity_y[j][i] << " ";
+        }
+        os << "\n";
+    }
+
+    return os;
+}
+
 /*
 // temporary main function
 int main() {

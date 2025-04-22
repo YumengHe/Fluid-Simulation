@@ -6,48 +6,39 @@
 #include <vector>
 #include "input.h"
 #include "grid.h"
-#include "../include/json.hpp"
 
-using json = nlohmann::json;
-
-struct Particle{
-    float x, y;
-};
-
-std::vector<Particle> particles;
-
-// read particles.json 
-void loadParticles(const std::string &filename){
-    std::ifstream file(filename);
-    if (!file){
-        std::cerr << "Failed to open " << filename << std::endl;
-        return;
-    }
-
-    json data;
-    file >> data;
-
-    for (const auto &p : data["particles"]){
-        Particle particle;
-        particle.x = p["position"][0];
-        particle.y = p["position"][1];
-        particles.push_back(particle);
-    }
-
-    std::cout << "Loaded " << particles.size() << " particles.\n";
-}
+Fluid_Grid* current_grid = nullptr; 
 
 void display(){ // change to particles later
     glClear(GL_COLOR_BUFFER_BIT);
+    if (current_grid) {
+        // Draw grid
+        glBegin(GL_QUADS);
+        float cell_width = 1.0f / current_grid->g_width;
+        float cell_height = 1.0f / current_grid->g_height;
+        // std::cout << "Grid size: " << current_grid->g_width << "x" << current_grid->g_height << std::endl;  // 注释掉
+        for (int i = 0; i < current_grid->g_height; i++) {
+            for (int j = 0; j < current_grid->g_width; j++) {
+                // std::cout << current_grid->g_density[i][j] << " ";  // 注释掉
 
-    glColor3f(0.0f, 0.6f, 1.0f); // blue color
-    glPointSize(8.0f);
-    glBegin(GL_POINTS);
-    for (const auto &p : particles){
-        glVertex2f(p.x, p.y); 
+                float x = j * cell_width;
+                float y = (current_grid->g_height - 1 - i) * cell_height;
+                
+                float density = current_grid->g_density[i][j];
+                float color = density / 2.0f;
+                color = std::min(1.0f, std::max(0.0f, color));
+                
+                glColor3f(color, color, color);
+                
+                glVertex2f(x, y);
+                glVertex2f(x + cell_width, y);
+                glVertex2f(x + cell_width, y + cell_height);
+                glVertex2f(x, y + cell_height);
+            }
+            // std::cout << std::endl;  // 注释掉
+        }
+        glEnd();
     }
-    glEnd();
-
     glutSwapBuffers();
 }
 
@@ -60,26 +51,26 @@ void initGL(){
 }
 
 int main(int argc, char **argv){
-    // if (argc < 2){
-    //     std::cerr << "Please input initial particle/grid file" << std::endl;
-    //     return 1;
-    // }
+    if (argc < 2){
+        std::cerr << "Please input initial particle/grid file" << std::endl;
+        return 1;
+    }
 
-    // std::string filename = argv[1];
-    // if (endsWith(filename, ".grid")){
-    //     std::cout << "Loading a .grid file\n";
-    //     Fluid_Grid grid;
-    //     loadGrid(filename, grid); // 从 .grid 文件读取参数填充 grid 成员变量
-    //     grid.simulation();
-    // }
-    // else if (endsWith(filename, ".par")){
-    //     std::cout << "Loading a .par file\n";
-    //     // loadParticles(filename);
-    // }
-    // else{
-    //     std::cerr << "Unsupported file type. Please use a .grid or .par file.\n";
-    //     return 1;
-    // }
+    std::string filename = argv[1];
+    if (endsWith(filename, ".grid")){
+        std::cout << "Loading a .grid file\n";
+        static Fluid_Grid grid;
+        loadGrid(filename, grid); 
+        current_grid = &grid; 
+    }
+    else if (endsWith(filename, ".par")){
+        std::cout << "Loading a .par file\n";
+        // loadParticles(filename);
+    }
+    else{
+        std::cerr << "Unsupported file type. Please use a .grid or .par file.\n";
+        return 1;
+    }
 
     glutInit(&argc, argv); // initialize GLUT
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB); // double buffering and RGB color
@@ -87,7 +78,6 @@ int main(int argc, char **argv){
     glutCreateWindow("2D OpenGL Fluid Framework");
 
     initGL();
-    loadParticles("./particles.json");
     glutDisplayFunc(display);
     glutIdleFunc(idle);
     glutMouseFunc(mouseClick);

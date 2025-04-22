@@ -1,7 +1,10 @@
 #include <GLUT/glut.h>
 #include <cstdio>
 #include <cstdlib>
+#include <fstream>
+#include <iostream>
 #include "input.h"
+#include "grid.h"
 
 void mouseClick(int button, int state, int x, int y)
 {
@@ -24,6 +27,9 @@ void handleKeypress(unsigned char key, int x, int y)
 
 void idle()
 {
+    if (current_grid) {
+        current_grid->simulation();  // run simulation
+    }
     glutPostRedisplay(); // request a redraw when cpu is idle
 }
 
@@ -33,6 +39,69 @@ bool endsWith(const std::string &str, const std::string &suffix)
            str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0;
 }
 
-// void loadGrid(const std::string &filename, Fluid_Grid &grid){
+void loadGrid(const std::string &filename, Fluid_Grid &grid){
+    std::ifstream file(filename);
+    if (!file) {
+        std::cerr << "Failed to open grid file: " << filename << std::endl;
+        return;
+    }
 
-// }
+    // Read basic parameters
+    int width, height, num_iteration;
+    float dt, diffusion, viscosity;
+    
+    file >> width >> height >> num_iteration;
+    file >> dt >> diffusion >> viscosity;
+    
+    // Initialize grid dimensions and parameters
+    grid.g_width = width;
+    grid.g_height = height;
+    grid.g_num_iteration = num_iteration;
+    grid.g_dt = dt;
+    grid.g_diffusion = diffusion;
+    grid.g_viscosity = viscosity;
+
+    // Read velocity field x component
+    grid.g_velocity_x.resize(height);
+    for (int i = 0; i < height; ++i) {
+        grid.g_velocity_x[i].resize(width);
+        for (int j = 0; j < width; ++j) {
+            file >> grid.g_velocity_x[i][j];
+        }
+    }
+
+    // Read velocity field y component
+    grid.g_velocity_y.resize(height);
+    for (int i = 0; i < height; ++i) {
+        grid.g_velocity_y[i].resize(width);
+        for (int j = 0; j < width; ++j) {
+            file >> grid.g_velocity_y[i][j];
+        }
+    }
+
+    // Read pressure field
+    grid.g_pressure.resize(height);
+    for (int i = 0; i < height; ++i) {
+        grid.g_pressure[i].resize(width);
+        for (int j = 0; j < width; ++j) {
+            file >> grid.g_pressure[i][j];
+        }
+    }
+
+    // Read density field
+    grid.g_density.resize(height);
+    for (int i = 0; i < height; ++i) {
+        grid.g_density[i].resize(width);
+        for (int j = 0; j < width; ++j) {
+            file >> grid.g_density[i][j];
+        }
+    }
+    grid.initialization(width, num_iteration, dt, diffusion, viscosity,
+                       grid.g_velocity_x, grid.g_velocity_y,
+                       grid.g_pressure, grid.g_density);
+    file.close();
+    
+    std::cout << "Loaded grid configuration from: " << filename 
+              << "\nGrid size: " << width << "x" << height 
+              << "\nIterations: " << num_iteration << std::endl;
+}

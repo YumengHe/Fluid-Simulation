@@ -30,7 +30,7 @@ public:
     Fluid_Grid(int width,int height, float dt, float diffusion, float viscosity, int num_iteration);
 
     // initialize grid
-    void Fluid_Grid::initialization(int N, int num_iteration, int dt, float diffusion, float viscosity, std::vector< std::vector<float> >  &velocity_x, std::vector< std::vector<float> >  velocity_y, std::vector< std::vector<float> >  pressure, std::vector< std::vector<float> >  density);
+    void initialization(int N, int num_iteration, int dt, float diffusion, float viscosity, std::vector< std::vector<float> >  &velocity_x, std::vector< std::vector<float> >  velocity_y, std::vector< std::vector<float> >  pressure, std::vector< std::vector<float> >  density);
     // the main simulation function
     void simulation();
 };
@@ -50,24 +50,4 @@ void dens_step();
 void vel_step();
 
 // overload cout to print every element of velocity
-std::ostream& operator<<(std::ostream& os, const Fluid_Grid &grid) {
-    os << "g_velocity_x:\n";
-    for (int j = 0; j < grid.g_height; j++) {
-        for (int i = 0; i < grid.g_width; i++) {
-            os << grid.g_velocity_x[j][i] << " ";
-        }
-        os << "\n";
-    }
-
-    os << "\n";
-
-    os << "g_velocity_y:\n";
-    for (int j = 0; j < grid.g_height; j++) {
-        for (int i = 0; i < grid.g_width; i++) {
-            os << grid.g_velocity_y[j][i] << " ";
-        }
-        os << "\n";
-    }
-
-    return os;
-}
+std::ostream& operator<<(std::ostream& os, const Fluid_Grid &grid);

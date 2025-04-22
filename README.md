@@ -21,7 +21,7 @@ make clean
 ```
 ### Step 3: Run:
 ```bash
-./fluid
+./fluid ./fluids/grid_or_particle_file_name
 ```
 ### Grid File Generation
 ```bash
