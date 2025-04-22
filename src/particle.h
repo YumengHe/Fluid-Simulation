@@ -7,34 +7,14 @@ using Vec2 = Eigen::Vector2f;
 
 // Represents a fluid particle with position and velocity
 struct Particle {
-    // physics parameter
-    Vec2 pos;
-    Vec2 vel;
-    Vec2 force;
-    float density;
-    float pressure;
-
-    // constructors
-    Particle();
-    Particle(const Vec2& pos, const Vec2& vel = Vec2());
-
-    // initialize
-    void initialization();
-
-    // core functions
-    void simulation();
+    Particle(float _x, float _y) : x(_x, _y), v(0.f, 0.f), rho(0), p(0.f) {}
+    Vec2 x, v, f;   // position, velocity, force
+    float rho, p;   // density, pressure
 };
 
 // physics functions
+void InitSPH();
+void Integrate();
 void ComputeDensityPressure();
 void ComputeForces();
-void Integrate();
-
-// Represents an elastic spring connecting two particles (indices a and b)
-struct Spring {
-    int a;          // index of first particle
-	int b;		    // index of second particle
-    float restLength;
-	// Constructor
-	Spring(int i, int j, float restLength);
-};
+void Update();

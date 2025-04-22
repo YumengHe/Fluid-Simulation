@@ -120,6 +120,7 @@
     "unordered_set": "cpp",
     "valarray": "cpp",
     "variant": "cpp",
-    "__config": "cpp"
+    "__config": "cpp",
+    "numbers": "cpp"
   }
 }
