@@ -5,6 +5,8 @@
 #include <iostream>
 #include "input.h"
 #include "grid.h"
+#include "particle.h"  // 首先需要包含头文件
+extern std::vector<Particle> particles;  // 声明这是一个外部变量
 
 void mouseClick(int button, int state, int x, int y)
 {
@@ -28,7 +30,10 @@ void handleKeypress(unsigned char key, int x, int y)
 void idle()
 {
     if (current_grid) {
-        current_grid->simulation();  // run simulation
+        current_grid->simulation();  // run simulation for grid-based fluid
+    }
+    else if (!particles.empty()) {
+        Update();  // run simulation for particle-based fluid
     }
     glutPostRedisplay(); // request a redraw when cpu is idle
 }
@@ -104,4 +109,16 @@ void loadGrid(const std::string &filename, Fluid_Grid &grid){
     std::cout << "Loaded grid configuration from: " << filename 
               << "\nGrid size: " << width << "x" << height 
               << "\nIterations: " << num_iteration << std::endl;
+}
+
+void loadParticles(const std::string& filename) {
+    particles.clear();
+    std::ifstream file(filename);
+    std::string line;
+    float x, y;
+    while (file >> x >> y) {
+        particles.push_back(Particle(x, y));
+    }
+    
+    std::cout << "Loaded " << particles.size() << " particles from " << filename << std::endl;
 }

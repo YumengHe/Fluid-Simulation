@@ -29,6 +29,12 @@ cd fluids
 g++ -o grid_generator gridGenerator.cpp
 ./grid_generator template.grid
 ```
+### Particle File Generation
+```bash
+cd fluids
+g++ -o particle_gen particleGenerator.cpp
+./particle_gen
+```
 ### Interaction Features
 	•	Mouse Click: Position Output
 	•	Esc Key: Exit Program

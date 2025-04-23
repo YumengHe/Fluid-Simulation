@@ -6,6 +6,9 @@
 #include <vector>
 #include "input.h"
 #include "grid.h"
+#include "particle.h"
+#include "constants.h"
+extern std::vector<Particle> particles;  // 声明这是一个外部变量
 
 Fluid_Grid* current_grid = nullptr; 
 
@@ -16,11 +19,10 @@ void display(){ // change to particles later
         glBegin(GL_QUADS);
         float cell_width = 1.0f / current_grid->g_width;
         float cell_height = 1.0f / current_grid->g_height;
-        // std::cout << "Grid size: " << current_grid->g_width << "x" << current_grid->g_height << std::endl;  // 注释掉
+        // Commented out: Print grid size
         for (int i = 0; i < current_grid->g_height; i++) {
             for (int j = 0; j < current_grid->g_width; j++) {
-                // std::cout << current_grid->g_density[i][j] << " ";  // 注释掉
-
+                // Commented out: Print density values
                 float x = j * cell_width;
                 float y = (current_grid->g_height - 1 - i) * cell_height;
                 
@@ -35,9 +37,30 @@ void display(){ // change to particles later
                 glVertex2f(x + cell_width, y + cell_height);
                 glVertex2f(x, y + cell_height);
             }
-            // std::cout << std::endl;  // 注释掉
+            // Commented out: Line break
         }
         glEnd();
+    } else if (!particles.empty()) {  // Check if there are particles to display
+        // Enable point smoothing for circular particles
+        glEnable(GL_POINT_SMOOTH);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        
+        glPointSize(8.0f);  // Set point size
+        glBegin(GL_POINTS); 
+        glColor3f(0.0f, 0.4f, 1.0f);  // Blue particles
+        
+        for(const auto& p : particles) { 
+            // Map particle coordinates to [0,1] range
+            float x = p.x[0] / VIEW_WIDTH; 
+            float y = p.x[1] / VIEW_HEIGHT; 
+            glVertex2f(x, y); 
+        } 
+        glEnd();
+        
+        // Disable point smoothing after drawing
+        glDisable(GL_BLEND);
+        glDisable(GL_POINT_SMOOTH);
     }
     glutSwapBuffers();
 }
@@ -65,7 +88,9 @@ int main(int argc, char **argv){
     }
     else if (endsWith(filename, ".par")){
         std::cout << "Loading a .par file\n";
-        // loadParticles(filename);
+        InitSPH();  // Initialize particle system
+        // loadParticles(filename) will load particle data into the global particles vector
+        loadParticles(filename);
     }
     else{
         std::cerr << "Unsupported file type. Please use a .grid or .par file.\n";

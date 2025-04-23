@@ -1,8 +1,7 @@
 #include "particle.h"
+#include "constants.h"
 
 constexpr int DAM_PARTICLES = 10;
-constexpr float VIEW_WIDTH = 800.f;
-constexpr float VIEW_HEIGHT = 600.f;
 constexpr float REST_DENS = 300.0f;     // rest density
 constexpr float GAS_CONST = 2000.0f;    // const for equation of state
 constexpr float H = 16.0f;              // smoothing length (kernel radius)
@@ -41,7 +40,7 @@ void InitSPH()
     }
 }
 
-void ComputeDensityPressue()
+void ComputeDensityPressure()
 {
     for (auto &pi : particles) {
         pi.rho = 0.f;
@@ -100,7 +99,7 @@ void Integrate()
             p.v(0) *= BOUND_DAMPING;
             p.x(0) = VIEW_WIDTH - EPS;
         } 
-        if (p.x(0) - EPS < 0.f) {   // Bottom wall
+        if (p.x(1) - EPS < 0.f) {   // Bottom wall
             p.v(1) *= BOUND_DAMPING;
             p.x(1) = EPS;
         }
