@@ -17,5 +17,5 @@ void solve_pressure(Grid_PIC& grid,float dt);
 //grid to particle
 void g2p(std::vector<Particle_PIC>& particles, const Grid_PIC& grid);
 //advection
-void advect(std::vector<Particle_PIC>& particles, float dt);
+void advect(std::vector<Particle_PIC>& particles, float dt,const Grid_PIC& grid);
 
