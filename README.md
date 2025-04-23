@@ -44,7 +44,12 @@ g++ -o particle_gen particleGenerator.cpp
 │   ├── main.cpp
 │   ├── input.h ── input.cpp
 │   ├── grid.h ── grid.cpp
-│   └── particle.h ── particle.cpp
+│   ├── particle.h ── particle.cpp
+│   └── pic_method
+│       ├──grid_pic.h
+│       ├──particle_pic.h
+│       └── pic.h ── pic.cpp   
+│
 ├── include
 │   ├── Eigen
 │   └── json
@@ -69,6 +74,9 @@ Stam, J. & Alias wavefront. (1999b). Stable fluids. In Alias Wavefront (p. 121) 
 
 <a id="1">[2]</a> 
 Stam, J. (2003, March). Real-time fluid dynamics for games. In Proceedings of the game developer conference (Vol. 18, No. 11). https://graphics.cs.cmu.edu/nsp/course/15-464/Fall09/papers/StamFluidforGames.pdf 
+
+<a id="3">[3]</a> 
+Robert Bridson. (2015). Fluid Simulation for Computer Graphics (2nd ed., Chapter 7.6). CRC Press. [Book]. 
 
 
 ### Particles
