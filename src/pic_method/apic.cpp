@@ -3,6 +3,11 @@
 #include "../../include/Eigen/IterativeLinearSolvers"
 using namespace Eigen;
 
+// Define global variables
+std::vector<Particle_PIC> apic_particles;
+Grid_PIC apic_grid(0, 0, 0.0f);  // 初始化为默认值
+float dt = 0.1f;  // 设置默认时间步长
+
 // helper function
 // Compute B-spline weights and their gradients for APIC interpolation
 // x_f: Fractional part of x coordinate
@@ -12,6 +17,7 @@ using namespace Eigen;
 // dweights_x: Array to store x-direction weight gradients
 // dweights_y: Array to store y-direction weight gradients
 // dx: Grid cell size
+
 void compute_weights_and_gradients(float x_f, float y_f, 
                                  float* weights_x, float* weights_y,
                                  float* dweights_x, float* dweights_y,

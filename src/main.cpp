@@ -9,7 +9,10 @@
 #include "particle.h"
 #include "constants.h"
 extern std::vector<Particle> particles;  // 声明这是一个外部变量
-
+#include "./pic_method/apic.h"
+extern std::vector<Particle_PIC> apic_particles;
+extern Grid_PIC apic_grid;
+extern float dt;
 Fluid_Grid* current_grid = nullptr; 
 
 void display(){ // change to particles later
@@ -61,7 +64,28 @@ void display(){ // change to particles later
         // Disable point smoothing after drawing
         glDisable(GL_BLEND);
         glDisable(GL_POINT_SMOOTH);
+    }else if (!apic_particles.empty()) {  // 添加APIC粒子的渲染
+        // Enable point smoothing for circular particles
+        glEnable(GL_POINT_SMOOTH);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        
+        glPointSize(8.0f);
+        glBegin(GL_POINTS); 
+        glColor3f(0.0f, 0.6f, 0.8f);  // 使用不同的蓝色来区分APIC粒子
+        
+        for(const auto& p : apic_particles) { 
+            float x = p.x / VIEW_WIDTH; 
+            float y = p.y / VIEW_HEIGHT; 
+            glVertex2f(x, y); 
+        } 
+        glEnd();
+        
+        glDisable(GL_BLEND);
+        glDisable(GL_POINT_SMOOTH);
     }
+
+
     glutSwapBuffers();
 }
 
@@ -91,6 +115,10 @@ int main(int argc, char **argv){
         InitSPH();  // Initialize particle system
         // loadParticles(filename) will load particle data into the global particles vector
         loadParticles(filename);
+    }
+    else if (endsWith(filename, ".apic")){
+        std::cout << "Loading a .apic file\n";
+        loadAPIC(filename); // Load APIC data
     }
     else{
         std::cerr << "Unsupported file type. Please use a .grid or .par file.\n";

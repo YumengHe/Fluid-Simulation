@@ -35,6 +35,12 @@ cd fluids
 g++ -o particle_gen particleGenerator.cpp
 ./particle_gen
 ```
+### APIC File Generation
+```bash
+cd fluids
+g++ -o apic_gen apicGenerator.cpp
+./apic_gen
+```
 ### Interaction Features
 	•	Mouse Click: Position Output
 	•	Esc Key: Exit Program
