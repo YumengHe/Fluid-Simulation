@@ -48,14 +48,16 @@ g++ -o particle_gen particleGenerator.cpp
 │   └── pic_method
 │       ├──grid_pic.h
 │       ├──particle_pic.h
-│       └── pic.h ── pic.cpp   
+│       ├──pic.h ── pic.cpp  
+│       └──apic.h ── apic.cpp 
 │
 ├── include
-│   ├── Eigen
-│   └── json
+│   └── Eigen
 ├── fluids
 │   ├── gridGenerator.cpp
 │   └── template.grid
+│   └── particleGenerator.cpp
+│   └── test.par
 ├── images
 ├── LICENSE
 ├── README.md
@@ -68,6 +70,9 @@ Based on stable fluid method [[1]](#1)[[2]](#2).
 ## Particle
 Based on SPH.
 
+## APIC
+Based on PIC and APIC method [[4]](#4).
+
 ## References
 <a id="1">[1]</a> 
 Stam, J. & Alias wavefront. (1999b). Stable fluids. In Alias Wavefront (p. 121) [Journal-article]. Alias wavefront. https://pages.cs.wisc.edu/~chaol/data/cs777/stam-stable_fluids.pdf
@@ -77,6 +82,9 @@ Stam, J. (2003, March). Real-time fluid dynamics for games. In Proceedings of th
 
 <a id="3">[3]</a> 
 Robert Bridson. (2015). Fluid Simulation for Computer Graphics (2nd ed., Chapter 7.6). CRC Press. [Book]. 
+
+<a id="4">[4]</a>
+Jiang, C., Schroeder, C., Selle, A., Teran, J., & Stomakhin, A. (2015). The affine particle-in-cell method. ACM Transactions on Graphics, 34(4), Article 51. https://doi.org/10.1145/2766996
 
 
 ### Particles
