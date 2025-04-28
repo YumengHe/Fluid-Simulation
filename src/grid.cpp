@@ -28,7 +28,7 @@ Fluid_Grid::Fluid_Grid(int width,int height, float dt, float diffusion, float vi
 // v_x: velocity_x
 // v_y: velocity_y
 // dt: time step
-void advect(int N, int b, std::vector< std::vector<float> > d, std::vector< std::vector<float> > d0, std::vector< std::vector<float> > v_x, std::vector< std::vector<float> > v_y, float dt) {
+void advect(int N, int b, std::vector< std::vector<float> > &d, std::vector< std::vector<float> > &d0, std::vector< std::vector<float> > &v_x, std::vector< std::vector<float> > &v_y, float dt) {
   float dt0 = dt * N;
 
   for (int i = 1; i <= N; i ++) {
@@ -211,7 +211,7 @@ void vel_step(int N,std::vector<std::vector<float>>& v_x,std::vector<std::vector
 // ------------------------------------------------------------
 // Initialization & Simulation
 // ------------------------------------------------------------
-void Fluid_Grid::initialization(int N, int num_iteration, int dt, float diffusion, float viscosity, std::vector< std::vector<float> >  &velocity_x, std::vector< std::vector<float> >  velocity_y, std::vector< std::vector<float> >  pressure, std::vector< std::vector<float> >  density) {
+void Fluid_Grid::initialization(int N, int num_iteration, int dt, float diffusion, float viscosity, std::vector< std::vector<float> > &velocity_x, std::vector< std::vector<float> > &velocity_y, std::vector< std::vector<float> > &pressure, std::vector< std::vector<float> > &density) {
   // note: we only consider equal length of each side -> width = height
   // +2 -> the grid contains an extra layer of cells to account for the boundary conditions
   g_width = N + 2;
@@ -253,7 +253,10 @@ void Fluid_Grid::initialization(int N, int num_iteration, int dt, float diffusio
         g_density[j][i] = density[j - 1][i - 1];
         g_density0[j][i] = density[j - 1][i - 1];
       }
-      
+      if (i == 1 && j == 1) {
+        g_density[j][i] = 1.0;
+        g_density0[j][i] = 1.0;
+      }
     }
   }
 }
@@ -262,7 +265,7 @@ void Fluid_Grid::simulation() {
   int N = g_width - 2;
   vel_step(N,g_velocity_x,g_velocity_y,g_velocity_x0,g_velocity_y0,g_viscosity,g_dt,g_num_iteration);
   dens_step(N,g_density,g_density0,g_velocity_x,g_velocity_y,g_diffusion,g_dt,g_num_iteration);
-  std::cout << *this << std::endl;
+  // std::cout << *this << std::endl;
 }
 
 std::ostream& operator<<(std::ostream& os, const Fluid_Grid &grid) {
@@ -286,13 +289,3 @@ std::ostream& operator<<(std::ostream& os, const Fluid_Grid &grid) {
 
     return os;
 }
-
-/*
-// temporary main function
-int main() {
-  Fluid_Grid grid;
-  grid.initialization();
-  grid.simulation();
-  return 0;
-}
-*/

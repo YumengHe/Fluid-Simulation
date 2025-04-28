@@ -30,7 +30,7 @@ public:
     Fluid_Grid(int width,int height, float dt, float diffusion, float viscosity, int num_iteration);
 
     // initialize grid
-    void initialization(int N, int num_iteration, int dt, float diffusion, float viscosity, std::vector< std::vector<float> >  &velocity_x, std::vector< std::vector<float> >  velocity_y, std::vector< std::vector<float> >  pressure, std::vector< std::vector<float> >  density);
+    void initialization(int N, int num_iteration, int dt, float diffusion, float viscosity, std::vector< std::vector<float> > &velocity_x, std::vector< std::vector<float> > &velocity_y, std::vector< std::vector<float> > &pressure, std::vector< std::vector<float> > &density);
     // the main simulation function
     void simulation();
 };
@@ -41,7 +41,7 @@ void lin_solve(int b, std::vector< std::vector<float> > &x, std::vector< std::ve
 void add_source(int N, std::vector< std::vector<float> > &x, std::vector< std::vector<float> > &s, float dt);
 
 // physics functions
-void advect(int N, int b, std::vector< std::vector<float> > d, std::vector< std::vector<float> > d0, std::vector< std::vector<float> > v_x, std::vector< std::vector<float> > v_y, float dt);
+void advect(int N, int b, std::vector< std::vector<float> > &d, std::vector< std::vector<float> > &d0, std::vector< std::vector<float> > &v_x, std::vector< std::vector<float> > &v_y, float dt);
 void diffuse(int N, int b, std::vector< std::vector<float> > &x, std::vector< std::vector<float> > &x0, float diff, float dt, int num_iteration);
 void project(int N, std::vector< std::vector<float> > &velocity_x, std::vector< std::vector<float> > &velocity_y, std::vector< std::vector<float> > &p, std::vector< std::vector<float> > &div, int num_iteration);
 

@@ -16,7 +16,7 @@ private:
     float g_density;
 
 public:
-    GridGenerator(int w = 5, int h = 5, int iter = 40, float dt = 0.1f,
+    GridGenerator(int w = 10, int h = 10, int iter = 40, float dt = 0.1f,
                  float diff = 10.0f, float visc = 20.0f, float vel_x = 0.0f,
                  float vel_y = 0.0f, float pres = 1.0f, float dens = 2.0f)
         : g_width(w), g_height(h), g_num_iteration(iter), g_dt(dt),

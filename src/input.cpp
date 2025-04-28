@@ -135,8 +135,8 @@ void loadGrid(const std::string &filename, Fluid_Grid &grid){
         }
     }
     grid.initialization(width, num_iteration, dt, diffusion, viscosity,
-                       grid.g_velocity_x, grid.g_velocity_y,
-                       grid.g_pressure, grid.g_density);
+                        grid.g_velocity_x, grid.g_velocity_y,
+                        grid.g_pressure, grid.g_density);
     file.close();
     
     std::cout << "Loaded grid configuration from: " << filename 

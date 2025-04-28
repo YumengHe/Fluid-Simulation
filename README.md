@@ -78,9 +78,15 @@ g++ -o apic_gen apicGenerator.cpp
 
 ## Grid
 Based on stable fluid method [[1]](#1)[[2]](#2).
+```bash
+
+```
 
 ## Particle
 Based on SPH.
+```bash
+./fluid ./fluids/400particles.par
+```
 
 ## APIC
 Based on PIC and APIC method [[4]](#4).
