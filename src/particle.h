@@ -2,9 +2,11 @@
 
 #include <vector>
 #include <iostream>
+#include <GLUT/glut.h>
 #include "../include/Eigen/Dense"
 
 using namespace Eigen;
+using namespace std;
 
 // Represents a fluid particle with position and velocity
 struct Particle {
@@ -15,17 +17,14 @@ struct Particle {
     float p; // pressure
 
     // constructor
-    Particle(float _x, float _y){
-        x(_x, _y);
-        v(0.0, 0.0);
-        rho = 0.0; 
-        p = 0.0;
-    }
+    Particle(float _x, float _y) : x(_x, _y), v(0.f, 0.f), f(0.f, 0.f), rho(0), p(0.f) {}
 };
 
 // physics functions
-void InitSPH();
-void Integrate();
-void ComputeDensityPressure();
-void ComputeForces();
-void Update();
+void InitSPH(void);
+void Integrate(void);
+void ComputeDensityPressure(void);
+void ComputeForces(void);
+void Update(void);
+
+extern std::vector<Particle> particles;

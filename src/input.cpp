@@ -9,7 +9,6 @@
 #include "./pic_method/particle_pic.h"
 #include "./pic_method/grid_pic.h"
 #include "constants.h"
-extern std::vector<Particle> particles;  // 声明这是一个外部变量
 #include "./pic_method/apic.h"
 #include "./pic_method/pic.h"
 extern std::vector<Particle_PIC> apic_particles;
@@ -18,6 +17,7 @@ extern float dt;
 extern std::vector<Particle_PIC> pic_particles;
 extern Grid_PIC pic_grid;
 extern float dt_pic;
+int pause = 1;
 
 void mouseClick(int button, int state, int x, int y)
 {
@@ -36,22 +36,28 @@ void handleKeypress(unsigned char key, int x, int y)
     if (key == 27){            // 27 is the ASCII value of ESC
         exit(0); // esc
     }
+
+    if (key == 'p') {
+        pause = 1 - pause;
+    }
 }
 
 int frame_counter = 0;
-void idle()
-{
-    if (current_grid) {
-        current_grid->simulation();  // run simulation for grid-based fluid
+void idle() {
+    if (pause == 0) {
+        if (current_grid) {
+            current_grid->simulation();  // run simulation for grid-based fluid
+        }
+        else if (!particles.empty()) {
+            Update();  // run simulation for particle-based fluid
+        }else if (!apic_particles.empty()) {
+            simul_step_apic(apic_particles, apic_grid, dt);
+        }
+        else if (!pic_particles.empty()) {
+            simul_step(pic_particles, pic_grid, dt_pic);  // 添加PIC的模拟步骤
+        }
     }
-    else if (!particles.empty()) {
-        Update();  // run simulation for particle-based fluid
-    }else if (!apic_particles.empty()) {
-        simul_step_apic(apic_particles, apic_grid, dt);
-    }
-    else if (!pic_particles.empty()) {
-        simul_step(pic_particles, pic_grid, dt_pic);  // 添加PIC的模拟步骤
-    }
+    
     frame_counter++;
     // if (frame_counter % 10 == 0) { // 每模拟60帧，打印一次
     //     std::cout << "---- Particle Positions ----\n";
@@ -150,7 +156,8 @@ void loadParticles(const std::string& filename) {
     std::string line;
     float x, y;
     while (file >> x >> y) {
-        particles.push_back(Particle(x, y));
+        float jitter = static_cast<float>(arc4random()) / static_cast<float>(RAND_MAX);
+        particles.push_back(Particle(x + jitter, y));
     }
     
     std::cout << "Loaded " << particles.size() << " particles from " << filename << std::endl;

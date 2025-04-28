@@ -1,33 +1,34 @@
-# === Directory ===
-SRC_DIR := src
+# --- Paths ---
+SRC_DIR     := src
+PIC_DIR     := $(SRC_DIR)/pic_method
+OBJ_DIR     := obj
 INCLUDE_DIR := include
 
-# === Tool ===
-CXX := clang++
-CXXFLAGS := -std=c++17 -I$(INCLUDE_DIR)
-LDFLAGS := -framework OpenGL -framework GLUT
+# --- Tools ---
+CXX      ?= clang++
+CXXFLAGS := -std=c++17 -O2 -Wall -I$(INCLUDE_DIR) -I$(SRC_DIR)
+LDFLAGS  := -framework OpenGL -framework GLUT          # macOS
+# LDFLAGS := -lglut -lGL -lX11                         # linux
 
-# === Source, object, and target names ===
-# SRCS := $(SRC_DIR)/particle.cpp
-# SRCS := $(SRC_DIR)/main.cpp
-SRCS := $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/pic_method/*.cpp)
-OBJS := $(SRCS:%.cpp=%.o)
+# --- Sources & objects ---
+SRCS := $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(PIC_DIR)/*.cpp)
+OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRCS))
 TARGET := fluid
 
-
-# === Default ===
+# --- Default rule ---
 .PHONY: all
 all: $(TARGET)
 
-# === Link ===
+# --- Link step ---
 $(TARGET): $(OBJS)
-	$(CXX) $(OBJS) $(LDFLAGS) -o $@
+	$(CXX) $^ $(LDFLAGS) -o $@
 
-# === Compile ===
-$(SRC_DIR)/%.o: $(SRC_DIR)/%.cpp $(SRC_DIR)/%.h
+# --- Compile step (duplicate folder structure inside OBJ_DIR) ---
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# === Clean ===
+# --- Clean ---
 .PHONY: clean
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -rf $(OBJ_DIR) $(TARGET)

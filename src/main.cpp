@@ -8,7 +8,7 @@
 #include "grid.h"
 #include "particle.h"
 #include "constants.h"
-extern std::vector<Particle> particles;  // 声明这是一个外部变量
+std::vector<Particle> particles;  // 声明这是一个外部变量
 #include "./pic_method/apic.h"
 extern std::vector<Particle_PIC> apic_particles;
 extern Grid_PIC apic_grid;
@@ -17,10 +17,12 @@ Fluid_Grid* current_grid = nullptr;
 extern std::vector<Particle_PIC> pic_particles;
 extern Grid_PIC pic_grid;
 extern float dt_pic;
+int mode = 0; // 0 grid, 1 particle, 2 PIC, 3 APIC
+
 
 void display(){ // change to particles later
     glClear(GL_COLOR_BUFFER_BIT);
-    if (current_grid) {
+    if (mode == 0) {
         // Draw grid
         glBegin(GL_QUADS);
         float cell_width = 1.0f / current_grid->g_width;
@@ -46,7 +48,7 @@ void display(){ // change to particles later
             // Commented out: Line break
         }
         glEnd();
-    } else if (!particles.empty()) {  // Check if there are particles to display
+    } else if (mode == 1) {  // Check if there are particles to display
         // Enable point smoothing for circular particles
         glEnable(GL_POINT_SMOOTH);
         glEnable(GL_BLEND);
@@ -67,7 +69,7 @@ void display(){ // change to particles later
         // Disable point smoothing after drawing
         glDisable(GL_BLEND);
         glDisable(GL_POINT_SMOOTH);
-    }else if (!apic_particles.empty()) {  // 添加APIC粒子的渲染
+    }else if (mode == 3) {  // 添加APIC粒子的渲染
         // Enable point smoothing for circular particles
         glEnable(GL_POINT_SMOOTH);
         glEnable(GL_BLEND);
@@ -87,7 +89,7 @@ void display(){ // change to particles later
         glDisable(GL_BLEND);
         glDisable(GL_POINT_SMOOTH);
     }
-    else if (!pic_particles.empty()) {  // 添加PIC粒子的渲染
+    else if (mode == 2) {  // 添加PIC粒子的渲染
         glEnable(GL_POINT_SMOOTH);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -120,37 +122,44 @@ void initGL(){
 }
 
 int main(int argc, char **argv){
-    if (argc < 2){
-        std::cerr << "Please input initial particle/grid file" << std::endl;
+    if (argc > 3){
+        std::cerr << "Please input single particle/grid file" << std::endl;
         return 1;
     }
 
-    std::string filename = argv[1];
-    if (endsWith(filename, ".grid")){
-        std::cout << "Loading a .grid file\n";
-        static Fluid_Grid grid;
-        loadGrid(filename, grid); 
-        current_grid = &grid; 
+    if (argc == 1) {
+        mode = 1;
+        InitSPH();
     }
-    else if (endsWith(filename, ".par")){
-        std::cout << "Loading a .par file\n";
-        // InitSPH();  // Initialize particle system
-        // loadParticles(filename) will load particle data into the global particles vector
-        loadParticles(filename);
+    else {
+        std::string filename = argv[1];
+        if (endsWith(filename, ".grid")){
+            mode = 0;
+            std::cout << "Loading a .grid file\n";
+            static Fluid_Grid grid;
+            loadGrid(filename, grid); 
+            current_grid = &grid; 
+        }
+        else if (endsWith(filename, ".par")){
+            mode = 1;
+            std::cout << "Loading a .par file\n";
+            loadParticles(filename);
+        }
+        else if (endsWith(filename, ".apic")){
+            mode = 3;
+            std::cout << "Loading a .apic file\n";
+            loadAPIC(filename); // Load APIC data
+        }
+        else if (endsWith(filename, ".pic")) {
+            mode = 2;
+            std::cout << "Loading a .pic file\n";
+            loadPIC(filename); // 加载PIC数据
+        }
+        else{
+            std::cerr << "Unsupported file type. Please use a .grid or .par file.\n";
+            return 1;
+        }
     }
-    else if (endsWith(filename, ".apic")){
-        std::cout << "Loading a .apic file\n";
-        loadAPIC(filename); // Load APIC data
-    }
-    else if (endsWith(filename, ".pic")) {
-        std::cout << "Loading a .pic file\n";
-        loadPIC(filename); // 加载PIC数据
-    }
-    else{
-        std::cerr << "Unsupported file type. Please use a .grid or .par file.\n";
-        return 1;
-    }
-
     glutInit(&argc, argv); // initialize GLUT
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB); // double buffering and RGB color
     glutInitWindowSize(800, 800); // window size

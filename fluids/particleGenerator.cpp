@@ -34,7 +34,9 @@ void generateParticles(
             // Calculate particle position
             float x = startX + j * spacing;
             float y = startY + i * spacing;
-            
+            if (i % 2 != 0) {
+                x += spacing / 2;
+            }
             // Write position to file
             file << x << " " << y;
             // Only add newline if this is not the last particle
