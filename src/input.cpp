@@ -11,9 +11,13 @@
 #include "constants.h"
 extern std::vector<Particle> particles;  // 声明这是一个外部变量
 #include "./pic_method/apic.h"
+#include "./pic_method/pic.h"
 extern std::vector<Particle_PIC> apic_particles;
 extern Grid_PIC apic_grid;
 extern float dt;
+extern std::vector<Particle_PIC> pic_particles;
+extern Grid_PIC pic_grid;
+extern float dt_pic;
 
 void mouseClick(int button, int state, int x, int y)
 {
@@ -45,16 +49,25 @@ void idle()
     }else if (!apic_particles.empty()) {
         simul_step_apic(apic_particles, apic_grid, dt);
     }
-    frame_counter++;
-    if (frame_counter % 60 == 0) { // 每模拟60帧，打印一次
-        std::cout << "---- Particle Positions ----\n";
-        for (size_t i = 0; i < apic_particles.size(); ++i) {
-            std::cout << "Particle " << i 
-                      << " : (x=" << apic_particles[i].x 
-                      << ", y=" << apic_particles[i].y << ")\n";
-        }
-        std::cout << "-----------------------------\n";
+    else if (!pic_particles.empty()) {
+        simul_step(pic_particles, pic_grid, dt_pic);  // 添加PIC的模拟步骤
     }
+    frame_counter++;
+    // if (frame_counter % 10 == 0) { // 每模拟60帧，打印一次
+    //     std::cout << "---- Particle Positions ----\n";
+    //     for (size_t i = 0; i < apic_particles.size(); ++i) {
+    //         std::cout << "Particle " << i 
+    //                   << " : (x=" << apic_particles[i].x 
+    //                   << ", y=" << apic_particles[i].y << ")\n";
+    //     }
+    //     std::cout << "-----------------------------\n";
+    // }
+    // for (size_t i = 0; i < apic_particles.size(); ++i) {
+    //     std::cout << "Particle " << i 
+    //                 << " : (x=" << apic_particles[i].x 
+    //                 << ", y=" << apic_particles[i].y << ")\n";
+    // }
+
     glutPostRedisplay(); // request a redraw when cpu is idle
 }
 
@@ -178,4 +191,38 @@ void loadAPIC(const std::string &filename) {
     std::cout << "Grid spacing: " << grid_size << "\n";
     std::cout << "dt = " << dt << "\n"; // ✅ 打印一下检查
 
+}
+
+void loadPIC(const std::string &filename) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Error: Cannot open file " << filename << std::endl;
+        return;
+    }
+
+    // 读取时间步长
+    file >> dt_pic;
+
+    // 读取网格信息
+    int grid_width_num, grid_height_num;
+    file >> grid_width_num >> grid_height_num;
+    float grid_size = VIEW_WIDTH / grid_width_num;
+    pic_grid = Grid_PIC(grid_width_num, grid_height_num, grid_size);
+
+    // 清空现有粒子数据
+    pic_particles.clear();
+
+    // 读取粒子数据
+    float x, y, vx, vy;
+    while (file >> x >> y >> vx >> vy) {
+        Particle_PIC particle(x, y, vx, vy);
+        pic_particles.push_back(particle);
+    }
+
+    file.close();
+
+    std::cout << "Loaded " << pic_particles.size() << " PIC particles\n";
+    std::cout << "Grid size: " << grid_width_num << "x" << grid_height_num << "\n";
+    std::cout << "Grid spacing: " << grid_size << "\n";
+    std::cout << "dt_pic = " << dt_pic << "\n";
 }

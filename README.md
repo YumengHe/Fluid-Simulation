@@ -35,6 +35,12 @@ cd fluids
 g++ -o particle_gen particleGenerator.cpp
 ./particle_gen
 ```
+### PIC File Generation
+```bash
+cd fluids
+g++ -o pic_gen picGenerator.cpp
+./pic_gen
+```
 ### APIC File Generation
 ```bash
 cd fluids

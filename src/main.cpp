@@ -14,6 +14,9 @@ extern std::vector<Particle_PIC> apic_particles;
 extern Grid_PIC apic_grid;
 extern float dt;
 Fluid_Grid* current_grid = nullptr; 
+extern std::vector<Particle_PIC> pic_particles;
+extern Grid_PIC pic_grid;
+extern float dt_pic;
 
 void display(){ // change to particles later
     glClear(GL_COLOR_BUFFER_BIT);
@@ -84,6 +87,25 @@ void display(){ // change to particles later
         glDisable(GL_BLEND);
         glDisable(GL_POINT_SMOOTH);
     }
+    else if (!pic_particles.empty()) {  // 添加PIC粒子的渲染
+        glEnable(GL_POINT_SMOOTH);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        
+        glPointSize(8.0f);
+        glBegin(GL_POINTS); 
+        glColor3f(1.0f, 0.4f, 0.0f);  // 使用橙色来区分PIC粒子
+        
+        for(const auto& p : pic_particles) { 
+            float x = p.x / VIEW_WIDTH; 
+            float y = p.y / VIEW_HEIGHT; 
+            glVertex2f(x, y); 
+        } 
+        glEnd();
+        
+        glDisable(GL_BLEND);
+        glDisable(GL_POINT_SMOOTH);
+    }
 
 
     glutSwapBuffers();
@@ -119,6 +141,10 @@ int main(int argc, char **argv){
     else if (endsWith(filename, ".apic")){
         std::cout << "Loading a .apic file\n";
         loadAPIC(filename); // Load APIC data
+    }
+    else if (endsWith(filename, ".pic")) {
+        std::cout << "Loading a .pic file\n";
+        loadPIC(filename); // 加载PIC数据
     }
     else{
         std::cerr << "Unsupported file type. Please use a .grid or .par file.\n";

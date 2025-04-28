@@ -11,3 +11,4 @@ bool endsWith(const std::string &str, const std::string &suffix);
 void loadParticles(const std::string &filename);
 void loadGrid(const std::string &filename, Fluid_Grid &grid);
 void loadAPIC(const std::string &filename); 
+void loadPIC(const std::string &filename); 

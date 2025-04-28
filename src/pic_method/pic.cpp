@@ -3,7 +3,9 @@
 #include <Eigen/IterativeLinearSolvers>
 using namespace Eigen;
 
-
+std::vector<Particle_PIC> pic_particles;
+Grid_PIC pic_grid(0, 0, 0.0f);  // 初始化为默认值
+float dt_pic = 0.1f; 
 
 
 // Initialize particles in a grid
@@ -191,6 +193,10 @@ void solve_pressure(Grid_PIC& grid,float dt){
     Eigen::ConjugateGradient<SPM,Eigen::Lower|Eigen::Upper> solver;
     solver.compute(A);
     VEC x=solver.solve(B);
+    if (solver.info() != Eigen::Success) {
+        std::cerr << "⚠️ Pressure solve failed! Setting pressure to zero.\n";
+        x.setZero();  // 万一solver失败，就不要让x是垃圾数，而是直接清零
+    }
 
     // Fill the solution into the perssure grid
     for (int i=1;i<w-1;i++){
@@ -313,13 +319,12 @@ void advect(std::vector<Particle_PIC>& particles, float dt,const Grid_PIC& grid)
 // Perform a full simulation step:reset grid, P2G, gravity, pressure solve, G2P, and advection.
 // particles: Particle array in simulation
 // grid: MAC grid storing velocity and pressure
-// dt: Time step size
-void simul_step(std::vector<Particle_PIC>& particles,Grid_PIC& grid, float dt){
+// dt_pic: Time step size
+void simul_step(std::vector<Particle_PIC>& particles,Grid_PIC& grid, float dt_pic){
     reset_grid(grid);
     p2g(particles,grid);
-    apply_gravity(grid,dt);
-    solve_pressure(grid,dt);
+    apply_gravity(grid,dt_pic);
+    solve_pressure(grid,dt_pic);
     g2p(particles,grid);
-    advect(particles,dt,grid);
+    advect(particles,dt_pic,grid);
 }
-
