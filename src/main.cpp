@@ -19,7 +19,6 @@ extern Grid_PIC pic_grid;
 extern float dt_pic;
 int mode = 0; // 0 grid, 1 particle, 2 PIC, 3 APIC
 
-
 void display(){ // change to particles later
     glClear(GL_COLOR_BUFFER_BIT);
     if (mode == 0) {
