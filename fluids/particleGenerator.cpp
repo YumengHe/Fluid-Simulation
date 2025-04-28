@@ -4,7 +4,6 @@
 #include <random>
 #include "../src/constants.h"
 
-
 /**
  * @brief Generate particles in a grid pattern
  * @param rows Number of rows in the particle grid
@@ -54,10 +53,10 @@ void generateParticles(
 int main() {
     // Example usage: Generate a 5x5 particle grid with 40 units spacing
     generateParticles(
-        5,          // Number of rows
-        5,          // Number of columns
-        40.0f,      // Spacing between particles
-        "test.par"  // Output file name
+        20,          // Number of rows
+        20,          // Number of columns
+        20.0,        // Spacing between particles
+        "400particles.par"  // Output file name
     );
     return 0;
 }

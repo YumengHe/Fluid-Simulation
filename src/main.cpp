@@ -134,7 +134,7 @@ int main(int argc, char **argv){
     }
     else if (endsWith(filename, ".par")){
         std::cout << "Loading a .par file\n";
-        InitSPH();  // Initialize particle system
+        // InitSPH();  // Initialize particle system
         // loadParticles(filename) will load particle data into the global particles vector
         loadParticles(filename);
     }
