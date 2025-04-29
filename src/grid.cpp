@@ -52,8 +52,11 @@ void advect(int N, int b, std::vector< std::vector<float> > &d, std::vector< std
       float s0 = 1 - s1;
       float t1 = y - j0;
       float t0 = 1 - t1;
+
       // bilinear interpolation
       d[i][j] = s0 * (t0 * d0[i0][j0] + t1 * d0[i0][j1]) + s1 * (t0 * d0[i1][j0] + t1 * d0[i1][j1]);
+      
+      std::cout << "Advect: d[" << i << "][" << j << "] = " << d[i][j] << std::endl;
     }
   }
   set_bnd(N, b, d);
@@ -202,6 +205,7 @@ void vel_step(int N,std::vector<std::vector<float>>& v_x,std::vector<std::vector
     //advect
     std::swap(v_x,v_x0);
     std::swap(v_y,v_y0);
+
     advect(N,1,v_x,v_x0,v_x0,v_y0,dt);//b=1
     advect(N,2,v_y,v_y0,v_x0,v_y0,dt);//b=2
 
@@ -263,10 +267,47 @@ void Fluid_Grid::initialization(int N, int num_iteration, int dt, float diffusio
 }
 
 void Fluid_Grid::simulation() {
+  static bool injected = false;  // ✅ only inject once
+
   int N = g_width - 2;
+
+  if (!injected) {
+    for (int j = 6; j <= 8; j++) {
+      for (int i = 6; i <= 8; i++) {
+          g_density0[j][i] += 0.5f;
+          g_velocity_x0[j][i] += 2.0f;
+          g_velocity_y0[j][i] += 1.0f;
+      }
+    }
+      injected = true;
+  }
+
+  // ✅ Step 2: Print AFTER injection
+  std::cout << "Injected: "
+    << "velocity_x0[7][7]=" << g_velocity_x0[7][7]
+    << ", velocity_y0[7][7]=" << g_velocity_y0[7][7]
+    << ", density0[7][7]=" << g_density0[7][7]
+    << std::endl;
+
   vel_step(N,g_velocity_x,g_velocity_y,g_velocity_x0,g_velocity_y0,g_viscosity,g_dt,g_num_iteration);
   dens_step(N,g_density,g_density0,g_velocity_x,g_velocity_y,g_diffusion,g_dt,g_num_iteration);
   // std::cout << *this << std::endl;
+
+  std::cout << "Moving: "
+    << "velocity_x[7][7]=" << g_velocity_x[7][7]
+    << ", velocity_y[7][7]=" << g_velocity_y[7][7]
+    << ", density[7][7]=" << g_density[7][7]
+    << std::endl;
+
+  // ✅ Step 4: Reset source arrays to zero after use
+  for (int j = 0; j < g_height; j++) {
+    for (int i = 0; i < g_width; i++) {
+      g_velocity_x0[j][i] = g_velocity_x[j][i];
+      g_velocity_y0[j][i] = g_velocity_y[j][i];
+      g_density0[j][i] = 0.0f;
+      // g_density0[j][i] = g_density[j][i];
+    }
+  }
 }
 
 std::ostream& operator<<(std::ostream& os, const Fluid_Grid &grid) {

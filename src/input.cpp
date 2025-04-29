@@ -41,6 +41,11 @@ int frame_counter = 0;
 void idle() {
     if (pause == 0) {
         if (current_grid) {
+            // std::cout << "Density[7][7] = " << current_grid->g_density[7][7] << std::endl;
+            // std::cout << "Density[6][7] = " << current_grid->g_density[6][7] << std::endl;
+            // std::cout << "Density[7][8] = " << current_grid->g_density[7][8] << std::endl;
+
+            // Add a small force every frame
             current_grid->simulation();  // run simulation for grid-based fluid
         }
         else if (!particles.empty()) {
