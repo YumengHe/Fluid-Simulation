@@ -56,7 +56,7 @@ void advect(int N, int b, std::vector< std::vector<float> > &d, std::vector< std
       // bilinear interpolation
       d[i][j] = s0 * (t0 * d0[i0][j0] + t1 * d0[i0][j1]) + s1 * (t0 * d0[i1][j0] + t1 * d0[i1][j1]);
       
-      std::cout << "Advect: d[" << i << "][" << j << "] = " << d[i][j] << std::endl;
+      // std::cout << "Advect: d[" << i << "][" << j << "] = " << d[i][j] << std::endl;
     }
   }
   set_bnd(N, b, d);
@@ -270,19 +270,19 @@ void Fluid_Grid::simulation() {
   static bool injected = false;  // ✅ only inject once
 
   int N = g_width - 2;
-
   if (!injected) {
     for (int j = 6; j <= 8; j++) {
       for (int i = 6; i <= 8; i++) {
-          g_density0[j][i] += 0.5f;
-          g_velocity_x0[j][i] += 2.0f;
-          g_velocity_y0[j][i] += 1.0f;
+          // g_density0[j][i] += 0.5f;
+          // g_velocity_x0[j][i] += 0.1f;
+          // g_velocity_y0[j][i] += 0.1f;
       }
     }
+    
       injected = true;
   }
 
-  // ✅ Step 2: Print AFTER injection
+  // Step 2: Print AFTER injection
   std::cout << "Injected: "
     << "velocity_x0[7][7]=" << g_velocity_x0[7][7]
     << ", velocity_y0[7][7]=" << g_velocity_y0[7][7]
@@ -299,15 +299,16 @@ void Fluid_Grid::simulation() {
     << ", density[7][7]=" << g_density[7][7]
     << std::endl;
 
-  // ✅ Step 4: Reset source arrays to zero after use
+  
+  // Step 4: Reset source arrays to zero after use
   for (int j = 0; j < g_height; j++) {
     for (int i = 0; i < g_width; i++) {
-      g_velocity_x0[j][i] = g_velocity_x[j][i];
-      g_velocity_y0[j][i] = g_velocity_y[j][i];
+      g_velocity_x0[j][i] = 0.0f;
+      g_velocity_y0[j][i] = 0.0f;
       g_density0[j][i] = 0.0f;
-      // g_density0[j][i] = g_density[j][i];
     }
   }
+  
 }
 
 std::ostream& operator<<(std::ostream& os, const Fluid_Grid &grid) {
