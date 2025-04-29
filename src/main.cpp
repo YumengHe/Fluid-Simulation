@@ -10,13 +10,7 @@
 #include "constants.h"
 std::vector<Particle> particles;  // 声明这是一个外部变量
 #include "./pic_method/apic.h"
-extern std::vector<Particle_PIC> apic_particles;
-extern Grid_PIC apic_grid;
-extern float dt;
-Fluid_Grid* current_grid = nullptr; 
-extern std::vector<Particle_PIC> pic_particles;
-extern Grid_PIC pic_grid;
-extern float dt_pic;
+#include "./pic_method/pic.h"
 int mode = 0; // 0 grid, 1 particle, 2 PIC, 3 APIC
 
 
@@ -80,8 +74,8 @@ void display(){ // change to particles later
         glColor3f(0.0f, 0.6f, 0.8f);  // 使用不同的蓝色来区分APIC粒子
         
         for(const auto& p : apic_particles) { 
-            float x = p.x / VIEW_WIDTH; 
-            float y = p.y / VIEW_HEIGHT; 
+            float x = p.x; 
+            float y = p.y; 
             glVertex2f(x, y); 
         } 
         glEnd();
@@ -99,8 +93,8 @@ void display(){ // change to particles later
         glColor3f(1.0f, 0.4f, 0.0f);  // 使用橙色来区分PIC粒子
         
         for(const auto& p : pic_particles) { 
-            float x = p.x / VIEW_WIDTH; 
-            float y = p.y / VIEW_HEIGHT; 
+            float x = p.x; 
+            float y = p.y; 
             glVertex2f(x, y); 
         } 
         glEnd();

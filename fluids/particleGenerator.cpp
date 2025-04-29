@@ -55,10 +55,10 @@ void generateParticles(
 int main() {
     // Example usage: Generate a 5x5 particle grid with 40 units spacing
     generateParticles(
-        20,          // Number of rows
-        20,          // Number of columns
+        10,          // Number of rows
+        10,          // Number of columns
         20.0,        // Spacing between particles
-        "400particles.par"  // Output file name
+        "100particles.par"  // Output file name
     );
     return 0;
 }

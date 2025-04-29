@@ -7,16 +7,13 @@ struct Particle_PIC {
 
     float velocity_x;//The velocity in the x direction
     float velocity_y;//The velocity in the y direction
-    
+    float new_velocity_x, new_velocity_y;
     // APIC affine velocity field
     Eigen::Matrix2f B; // affine matrix for velocity field
     
     //constructor
-    Particle_PIC(float position_x, float position_y, float v_x, float v_y) {
-        x = position_x;
-        y = position_y;
-        velocity_x = v_x;
-        velocity_y = v_y;
-        B.setZero(); // Initialize affine matrix to zero
+    Particle_PIC(float x = 0.0f, float y = 0.0f, float vx = 0.0f, float vy = 0.0f)
+        : x(x), y(y), velocity_x(vx), velocity_y(vy), new_velocity_x(0.0f), new_velocity_y(0.0f) {
+        B.setZero();
     }
 };

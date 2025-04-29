@@ -11,12 +11,7 @@
 #include "constants.h"
 #include "./pic_method/apic.h"
 #include "./pic_method/pic.h"
-extern std::vector<Particle_PIC> apic_particles;
-extern Grid_PIC apic_grid;
-extern float dt;
-extern std::vector<Particle_PIC> pic_particles;
-extern Grid_PIC pic_grid;
-extern float dt_pic;
+
 int pause = 1;
 
 void mouseClick(int button, int state, int x, int y)
@@ -58,16 +53,7 @@ void idle() {
         }
     }
     
-    frame_counter++;
-    // if (frame_counter % 10 == 0) { // 每模拟60帧，打印一次
-    //     std::cout << "---- Particle Positions ----\n";
-    //     for (size_t i = 0; i < apic_particles.size(); ++i) {
-    //         std::cout << "Particle " << i 
-    //                   << " : (x=" << apic_particles[i].x 
-    //                   << ", y=" << apic_particles[i].y << ")\n";
-    //     }
-    //     std::cout << "-----------------------------\n";
-    // }
+
     // for (size_t i = 0; i < apic_particles.size(); ++i) {
     //     std::cout << "Particle " << i 
     //                 << " : (x=" << apic_particles[i].x 
@@ -176,13 +162,13 @@ void loadAPIC(const std::string &filename) {
     // Read grid information
     int grid_width_num, grid_height_num;
     file >> grid_width_num >> grid_height_num;
-    float grid_size = VIEW_WIDTH / grid_width_num;
+    float grid_size =  1.0f / grid_width_num;
     apic_grid = Grid_PIC(grid_width_num, grid_height_num, grid_size);
     // Read all particle data
     float x, y, vx, vy;
     float B11, B12, B21, B22;
     while (file >> x >> y >> vx >> vy >> B11 >> B12 >> B21 >> B22) {
-        Particle_PIC particle(x, y, vx, vy);
+        Particle_PIC particle(x / VIEW_WIDTH, y / VIEW_WIDTH, vx, vy);
         particle.B(0,0) = B11;
         particle.B(0,1) = B12;
         particle.B(1,0) = B21;
@@ -193,10 +179,12 @@ void loadAPIC(const std::string &filename) {
 
     file.close();
 
-    std::cout << "Loaded " << apic_particles.size() << " particles\n";
+    std::cout << "Loaded " << apic_particles.size() << " apic_particles\n";
     std::cout << "Grid size: " << grid_width_num << "x" << grid_height_num << "\n";
     std::cout << "Grid spacing: " << grid_size << "\n";
     std::cout << "dt = " << dt << "\n"; // ✅ 打印一下检查
+    std::cout << "First particle: (" << apic_particles[0].x << ", " << apic_particles[0].y << "), "
+          << "vx: " << apic_particles[0].velocity_x << ", vy: " << apic_particles[0].velocity_y << std::endl;
 
 }
 
@@ -213,7 +201,7 @@ void loadPIC(const std::string &filename) {
     // 读取网格信息
     int grid_width_num, grid_height_num;
     file >> grid_width_num >> grid_height_num;
-    float grid_size = VIEW_WIDTH / grid_width_num;
+    float grid_size = 1 / grid_width_num;
     pic_grid = Grid_PIC(grid_width_num, grid_height_num, grid_size);
 
     // 清空现有粒子数据
@@ -222,7 +210,7 @@ void loadPIC(const std::string &filename) {
     // 读取粒子数据
     float x, y, vx, vy;
     while (file >> x >> y >> vx >> vy) {
-        Particle_PIC particle(x, y, vx, vy);
+        Particle_PIC particle(x / VIEW_WIDTH, y / VIEW_WIDTH, vx, vy);
         pic_particles.push_back(particle);
     }
 

@@ -51,3 +51,4 @@ void vel_step();
 
 // overload cout to print every element of velocity
 std::ostream& operator<<(std::ostream& os, const Fluid_Grid &grid);
+extern Fluid_Grid* current_grid;

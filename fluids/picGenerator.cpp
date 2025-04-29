@@ -66,10 +66,10 @@ int main() {
         0.01f,      // dt: Time step
         50,         // number of grids in x direction
         50,         // number of grids in y direction
-        5,          // rows: Number of particle rows
-        5,          // cols: Number of particle columns
+        10,          // rows: Number of particle rows
+        10,          // cols: Number of particle columns
         20.0f,      // spacing: Particle spacing
-        "test.pic"  // Output file name
+        "100par.pic"  // Output file name
     );
     return 0;
 }

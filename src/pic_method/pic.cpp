@@ -194,7 +194,7 @@ void solve_pressure(Grid_PIC& grid,float dt){
     solver.compute(A);
     VEC x=solver.solve(B);
     if (solver.info() != Eigen::Success) {
-        std::cerr << "⚠️ Pressure solve failed! Setting pressure to zero.\n";
+        // std::cerr << "⚠️ Pressure solve failed! Setting pressure to zero.\n";
         x.setZero();  // 万一solver失败，就不要让x是垃圾数，而是直接清零
     }
 

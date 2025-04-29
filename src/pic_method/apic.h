@@ -27,3 +27,7 @@ void g2p_apic(std::vector<Particle_PIC>& particles, const Grid_PIC& grid);
 
 // Complete APIC simulation step
 void simul_step_apic(std::vector<Particle_PIC>& particles, Grid_PIC& grid, float dt);
+
+extern std::vector<Particle_PIC> apic_particles;
+extern Grid_PIC apic_grid;
+extern float dt;

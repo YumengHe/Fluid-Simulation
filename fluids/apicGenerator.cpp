@@ -35,13 +35,13 @@ void generateAPICParticles(
     // 写入粒子部分标记
     
     // 计算起始位置（在视图中居中）
-    // float startX = (grid_width * grid_dx - (cols - 1) * spacing) / 2.0f;
-    // float startY = (grid_height * grid_dx - (rows - 1) * spacing) / 2.0f;
+    float grid_dx = VIEW_WIDTH / grid_width;
+    float startX = (grid_width * grid_dx - (cols - 1) * spacing) / 2.0f;
+    float startY = (grid_height * grid_dx - (rows - 1) * spacing) / 2.0f;
 
     // 计算起始位置（从左下角开始）
-    float grid_dx = VIEW_WIDTH / grid_width;
-    float startX = grid_dx;  // 从第一个网格开始
-    float startY = grid_dx;  // 从第一个网格开始
+    // float startX = grid_dx;  // 从第一个网格开始
+    // float startY = grid_dx;  // 从第一个网格开始
     
     // 在网格模式下生成粒子
     for (int i = 0; i < rows; ++i) {
@@ -80,10 +80,10 @@ int main() {
         0.01f,      // dt: 时间步长
         50,         // number of grids in x direction
         50,         // number of grids in y direction
-        5,          // rows: 粒子行数
-        5,          // cols: 粒子列数
-        20.0f,       // spacing: 粒子间距（设为2倍grid_dx以便观察）
-        "test.apic" // 输出文件名
+        20,          // rows: 粒子行数
+        20,          // cols: 粒子列数
+        10.0f,       // spacing: 粒子间距（设为2倍grid_dx以便观察）
+        "100center.apic" // 输出文件名
     );
     return 0;
 }

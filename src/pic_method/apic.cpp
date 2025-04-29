@@ -8,7 +8,7 @@ using namespace Eigen;
 // Define global variables
 std::vector<Particle_PIC> apic_particles;
 Grid_PIC apic_grid(0, 0, 0.0f);  // 初始化为默认值
-float dt = 0.1f;  // 设置默认时间步长
+float dt = 0.01f;  // 设置默认时间步长
 
 // helper function
 // Compute B-spline weights and their gradients for APIC interpolation
@@ -155,118 +155,168 @@ void transfer_velocity_apic(std::vector<std::vector<float>>& g_velocity,
 // particles: Array containing PIC/APIC particles
 // grid: MAC grid storing velocities, masses, and APIC specific weights
 void p2g_apic(const std::vector<Particle_PIC>& particles, Grid_PIC& grid) {
-    // reset_grid(grid);
-    
+    reset_grid(grid);
+    float dx = grid.grid_dx;
+
     for (const auto& p : particles) {
-        // transfer x direction velocity
-        transfer_velocity_apic(grid.g_velocity_x, grid.g_mass_x, grid.g_weights_x,
-                             p, p.velocity_x, 0.5f, 0.0f,
-                             grid.grid_width + 1, grid.grid_height, grid.grid_dx);
-        
-        // transfer y direction velocity
-        transfer_velocity_apic(grid.g_velocity_y, grid.g_mass_y, grid.g_weights_y,
-                             p, p.velocity_y, 0.0f, 0.5f,
-                             grid.grid_width, grid.grid_height + 1, grid.grid_dx);
+        // For velocity_x (offset 0.5,0)
+        {
+            float g_x = p.x / dx - 0.5f;
+            float g_y = p.y / dx;
+            int base_x = (int)g_x;
+            int base_y = (int)g_y;
+            float fx = g_x - base_x;
+            float fy = g_y - base_y;
+
+            float weights_x[3], weights_y[3];
+            float dweights_x[3], dweights_y[3];
+            compute_weights_and_gradients(fx, fy, weights_x, weights_y, dweights_x, dweights_y, dx);
+
+            for (int i = 0; i < 3; ++i) {
+                int ix = base_x + i;
+                if (ix < 0 || ix >= grid.grid_width + 1) continue;
+                for (int j = 0; j < 3; ++j) {
+                    int iy = base_y + j;
+                    if (iy < 0 || iy >= grid.grid_height) continue;
+
+                    float weight = weights_x[i] * weights_y[j];
+                    float dx_i = (ix + 0.5f) * dx - p.x;
+                    float dy_i = (iy + 0.0f) * dx - p.y;
+                    float affine = p.B(0,0) * dx_i + p.B(0,1) * dy_i;
+
+                    grid.g_velocity_x[ix][iy] += (p.velocity_x + affine) * weight;
+                    grid.g_mass_x[ix][iy] += weight;
+                }
+            }
+        }
+
+        // For velocity_y (offset 0,0.5)
+        {
+            float g_x = p.x / dx;
+            float g_y = p.y / dx - 0.5f;
+            int base_x = (int)g_x;
+            int base_y = (int)g_y;
+            float fx = g_x - base_x;
+            float fy = g_y - base_y;
+
+            float weights_x[3], weights_y[3];
+            float dweights_x[3], dweights_y[3];
+            compute_weights_and_gradients(fx, fy, weights_x, weights_y, dweights_x, dweights_y, dx);
+
+            for (int i = 0; i < 3; ++i) {
+                int ix = base_x + i;
+                if (ix < 0 || ix >= grid.grid_width) continue;
+                for (int j = 0; j < 3; ++j) {
+                    int iy = base_y + j;
+                    if (iy < 0 || iy >= grid.grid_height + 1) continue;
+
+                    float weight = weights_x[i] * weights_y[j];
+                    float dx_i = (ix + 0.0f) * dx - p.x;
+                    float dy_i = (iy + 0.5f) * dx - p.y;
+                    float affine = p.B(1,0) * dx_i + p.B(1,1) * dy_i;
+
+                    grid.g_velocity_y[ix][iy] += (p.velocity_y + affine) * weight;
+                    grid.g_mass_y[ix][iy] += weight;
+                }
+            }
+        }
     }
 
-    // normalize
-    for (int i = 0; i <= grid.grid_width; i++) {
-        for (int j = 0; j < grid.grid_height; j++) {
-            if (grid.g_mass_x[i][j] > 0.0f) {
+    // Normalize by mass
+    for (int i = 0; i <= grid.grid_width; ++i) {
+        for (int j = 0; j < grid.grid_height; ++j) {
+            if (grid.g_mass_x[i][j] > 1e-8f) {
                 grid.g_velocity_x[i][j] /= grid.g_mass_x[i][j];
-            } else {
-                grid.g_velocity_x[i][j] = 0.0f; // 🚑 mass=0时速度归零
             }
         }
     }
-
-    for (int i = 0; i < grid.grid_width; i++) {
-        for (int j = 0; j <= grid.grid_height; j++) {
-            if (grid.g_mass_y[i][j] > 0.0f) {
+    for (int i = 0; i < grid.grid_width; ++i) {
+        for (int j = 0; j <= grid.grid_height; ++j) {
+            if (grid.g_mass_y[i][j] > 1e-8f) {
                 grid.g_velocity_y[i][j] /= grid.g_mass_y[i][j];
-            } else {
-                grid.g_velocity_y[i][j] = 0.0f;
             }
         }
     }
-
 }
 
 // Update particle velocities and affine matrices by interpolating from the grid using APIC
 // particles: Array of particles to update
 // grid: MAC grid containing velocities and APIC specific weights
-void g2p_apic(std::vector<Particle_PIC>& particles, const Grid_PIC& grid, float apic_blending = 0.95f) {
+void g2p_apic(std::vector<Particle_PIC>& particles, const Grid_PIC& grid) {
+    float dx = grid.grid_dx;
+
     for (auto& p : particles) {
-        p.B.setZero();
-        float pic_vx = 0.0f, pic_vy = 0.0f;  // PIC 插值速度
-        float apic_vx = 0.0f, apic_vy = 0.0f;  // APIC affine 速度
+        p.new_velocity_x = 0.0f;
+        p.new_velocity_y = 0.0f;
+        p.B.setZero(); // Reset affine matrix
 
-        float p_x = p.x;
-        float p_y = p.y;
+        // For velocity_x (staggered at i+0.5,j)
+        {
+            float g_x = p.x / dx - 0.5f;
+            float g_y = p.y / dx;
+            int base_x = (int)g_x;
+            int base_y = (int)g_y;
+            float fx = g_x - base_x;
+            float fy = g_y - base_y;
 
-        // x direction
-        float g_x = p_x / grid.grid_dx - 0.5f;
-        float g_y = p_y / grid.grid_dx;
-        int int_x = static_cast<int>(g_x);
-        int int_y = static_cast<int>(g_y);
-        float x_f = g_x - int_x;
-        float y_f = g_y - int_y;
+            float weights_x[3], weights_y[3];
+            float dweights_x[3], dweights_y[3];
+            compute_weights_and_gradients(fx, fy, weights_x, weights_y, dweights_x, dweights_y, dx);
 
-        float weights_x[3], weights_y[3];
-        float dweights_x[3], dweights_y[3];
-        compute_weights_and_gradients(x_f, y_f, weights_x, weights_y, dweights_x, dweights_y, grid.grid_dx);
+            for (int i = 0; i < 3; ++i) {
+                int ix = base_x + i;
+                if (ix < 0 || ix >= grid.grid_width + 1) continue;
+                for (int j = 0; j < 3; ++j) {
+                    int iy = base_y + j;
+                    if (iy < 0 || iy >= grid.grid_height) continue;
 
-        for (int i = 0; i < 3; i++) {
-            int x_i = int_x + i;
-            if (x_i < 0 || x_i >= grid.grid_width + 1) continue;
-            for (int j = 0; j < 3; j++) {
-                int y_i = int_y + j;
-                if (y_i < 0 || y_i >= grid.grid_height) continue;
+                    float weight = weights_x[i] * weights_y[j];
+                    float v = grid.g_velocity_x[ix][iy];
 
-                float weight = weights_x[i] * weights_y[j];
-                if (std::isnan(weight)) continue;
-                Vector2f grid_pos((x_i - 0.5f) * grid.grid_dx, y_i * grid.grid_dx);
-                Vector2f delta = grid_pos - Vector2f(p.x, p.y);
+                    p.new_velocity_x += v * weight;
 
-                float v_grid = grid.g_velocity_x[x_i][y_i];
-                pic_vx += v_grid * weight;
-                apic_vx += (v_grid) * weight;
-                p.B += (v_grid * weight) * (delta * Vector2f(1.0f, 0.0f).transpose());
+                    Eigen::Vector2f dweight(dweights_x[i] * weights_y[j], weights_x[i] * dweights_y[j]);
+                    p.B(0,0) += v * dweight.x();
+                    p.B(0,1) += v * dweight.y();
+                }
             }
         }
 
-        // y direction
-        g_x = p_x / grid.grid_dx;
-        g_y = p_y / grid.grid_dx - 0.5f;
-        int_x = static_cast<int>(g_x);
-        int_y = static_cast<int>(g_y);
-        x_f = g_x - int_x;
-        y_f = g_y - int_y;
+        // For velocity_y (staggered at i,j+0.5)
+        {
+            float g_x = p.x / dx;
+            float g_y = p.y / dx - 0.5f;
+            int base_x = (int)g_x;
+            int base_y = (int)g_y;
+            float fx = g_x - base_x;
+            float fy = g_y - base_y;
 
-        compute_weights_and_gradients(x_f, y_f, weights_x, weights_y, dweights_x, dweights_y, grid.grid_dx);
+            float weights_x[3], weights_y[3];
+            float dweights_x[3], dweights_y[3];
+            compute_weights_and_gradients(fx, fy, weights_x, weights_y, dweights_x, dweights_y, dx);
 
-        for (int i = 0; i < 3; i++) {
-            int x_i = int_x + i;
-            if (x_i < 0 || x_i >= grid.grid_width) continue;
-            for (int j = 0; j < 3; j++) {
-                int y_i = int_y + j;
-                if (y_i < 0 || y_i >= grid.grid_height + 1) continue;
+            for (int i = 0; i < 3; ++i) {
+                int ix = base_x + i;
+                if (ix < 0 || ix >= grid.grid_width) continue;
+                for (int j = 0; j < 3; ++j) {
+                    int iy = base_y + j;
+                    if (iy < 0 || iy >= grid.grid_height + 1) continue;
 
-                float weight = weights_x[i] * weights_y[j];
-                if (std::isnan(weight)) continue;
-                Vector2f grid_pos(x_i * grid.grid_dx, (y_i - 0.5f) * grid.grid_dx);
-                Vector2f delta = grid_pos - Vector2f(p.x, p.y);
+                    float weight = weights_x[i] * weights_y[j];
+                    float v = grid.g_velocity_y[ix][iy];
 
-                float v_grid = grid.g_velocity_y[x_i][y_i];
-                pic_vy += v_grid * weight;
-                apic_vy += (v_grid) * weight;
-                p.B += (v_grid * weight) * (delta * Vector2f(0.0f, 1.0f).transpose());
+                    p.new_velocity_y += v * weight;
+
+                    Eigen::Vector2f dweight(dweights_x[i] * weights_y[j], weights_x[i] * dweights_y[j]);
+                    p.B(1,0) += v * dweight.x();
+                    p.B(1,1) += v * dweight.y();
+                }
             }
         }
 
-        // 🚀 最重要的一步：混合
-        p.velocity_x = apic_blending * (pic_vx + p.B(0,0)) + (1.0f - apic_blending) * pic_vx;
-        p.velocity_y = apic_blending * (pic_vy + p.B(1,1)) + (1.0f - apic_blending) * pic_vy;
+        // Update particle velocity (new_velocity) ✅
+        p.velocity_x = p.new_velocity_x;
+        p.velocity_y = p.new_velocity_y;
     }
 }
 
@@ -318,33 +368,45 @@ void check_particles(const std::vector<Particle_PIC>& particles, const std::stri
     std::cout << "------------------------------------\n";
 }
 
+void advect_apic(std::vector<Particle_PIC>& particles, const Grid_PIC& grid, float dt) {
+    float dx = grid.grid_dx;
+    float min_x = 0.0f;
+    float max_x = dx * (grid.grid_width);
+    float min_y = 0.0f;
+    float max_y = dx * (grid.grid_height);
 
-// void simul_step_apic(std::vector<Particle_PIC>& particles, Grid_PIC& grid, float dt) {
-//     reset_grid(grid);  
-//     check_particles(particles, "Before p2g_apic");
+    for (auto& p : particles) {
+        // Step 1: 半步，根据粒子自己的 velocity 做
+        float mid_x = p.x + 0.5f * dt * p.velocity_x;
+        float mid_y = p.y + 0.5f * dt * p.velocity_y;
 
-//     p2g_apic(particles, grid);
-//     check_particles(particles, "After p2g_apic");
+        // Step 2: 在 mid 位置插值新的速度
+        float vx1 = interp_velocity(grid.g_velocity_x, mid_x, mid_y, 0.5f, 0.0f, dx, grid.grid_width + 1, grid.grid_height);
+        float vy1 = interp_velocity(grid.g_velocity_y, mid_x, mid_y, 0.0f, 0.5f, dx, grid.grid_width, grid.grid_height + 1);
 
-//     apply_gravity(grid, dt);
-//     check_particles(particles, "After apply_gravity");
+        // Step 3: 全步更新位置
+        p.x += vx1 * dt;
+        p.y += vy1 * dt;
 
-//     solve_pressure(grid, dt);
-//     check_particles(particles, "After solve_pressure");
+        // Step 4: 更新粒子的 velocity
+        p.velocity_x = vx1;
+        p.velocity_y = vy1;
 
-//     g2p_apic(particles, grid);
-//     check_particles(particles, "After g2p_apic");
-
-//     advect(particles, dt, grid);
-//     check_particles(particles, "After advect");
-// }
+        // Step 5: 边界处理
+        if (p.x < min_x) { p.x = min_x; p.velocity_x = 0.0f; }
+        if (p.x > max_x) { p.x = max_x; p.velocity_x = 0.0f; }
+        if (p.y < min_y) { p.y = min_y; p.velocity_y = 0.0f; }
+        if (p.y > max_y) { p.y = max_y; p.velocity_y = 0.0f; }
+    }
+}
 
 void particle_collision_apic(std::vector<Particle_PIC>& particles, const Grid_PIC& grid) {
     float dx = grid.grid_dx;
-    float min_x = dx;
-    float max_x = dx * (grid.grid_width - 1);
-    float min_y = dx;
-    float max_y = dx * (grid.grid_height - 1);
+    float padding = 2.0f * dx;
+    float min_x = padding;
+    float max_x = dx * (grid.grid_width) - padding;
+    float min_y = padding;
+    float max_y = dx * (grid.grid_height) - padding;
 
     for (auto& p : particles) {
         if (p.x < min_x) {
@@ -402,29 +464,129 @@ void check_grid(const Grid_PIC& grid, const std::string& stage) {
     std::cout << "------------------------------------\n";
 }
 
+
+void clamp_velocity(Grid_PIC& grid) {
+    int w = grid.grid_width;
+    int h = grid.grid_height;
+
+    // 左右边界：x方向速度设0
+    for (int j = 0; j < h; j++) {
+        grid.g_velocity_x[0][j] = 0.0f;
+        grid.g_velocity_x[w][j] = 0.0f;
+    }
+
+    // 上下边界：y方向速度设0
+    for (int i = 0; i < w; i++) {
+        grid.g_velocity_y[i][0] = 0.0f;
+        grid.g_velocity_y[i][h] = 0.0f;
+    }
+}
+
+void solve_pressure_apic(Grid_PIC& grid, float dt) {
+    using SPM = Eigen::SparseMatrix<float>;
+    using Triplet = Eigen::Triplet<float>;
+    using VEC = Eigen::VectorXf;
+
+    int w = grid.grid_width;
+    int h = grid.grid_height;
+    int N = w * h;
+    float dx = grid.grid_dx;
+
+    SPM A(N, N);
+    std::vector<Triplet> coef;
+    VEC B(N);
+
+    // Build matrix A and vector B
+    for (int i = 0; i < w; i++) {
+        for (int j = 0; j < h; j++) {
+            int idx = transfer_index(i, j, h);
+
+            // Solid walls：边界格子处理
+            if (i == 0 || i == w-1 || j == 0) { 
+                coef.emplace_back(idx, idx, 1.0f);
+                B[idx] = 0.0f;
+                continue;
+            }
+
+            coef.emplace_back(idx, idx, 4.0f);
+            coef.emplace_back(idx, transfer_index(i-1, j, h), -1.0f);
+            coef.emplace_back(idx, transfer_index(i+1, j, h), -1.0f);
+            coef.emplace_back(idx, transfer_index(i, j-1, h), -1.0f);
+            coef.emplace_back(idx, transfer_index(i, j+1, h), -1.0f);
+
+            // Compute divergence (∇·u)
+            float div = (grid.g_velocity_x[i+1][j] - grid.g_velocity_x[i][j]) / dx +
+                        (grid.g_velocity_y[i][j+1] - grid.g_velocity_y[i][j]) / dx;
+            B[idx] = div;
+        }
+    }
+
+    A.setFromTriplets(coef.begin(), coef.end());
+
+    Eigen::ConjugateGradient<SPM, Eigen::Lower|Eigen::Upper> solver;
+    solver.compute(A);
+    VEC x = solver.solve(B);
+
+    if (solver.info() != Eigen::Success) {
+        x.setZero();
+    }
+
+    // Fill pressure
+    for (int i = 0; i < w; i++) {
+        for (int j = 0; j < h; j++) {
+            grid.g_pressure[i][j] = x[transfer_index(i, j, h)];
+        }
+    }
+
+    // Correct velocity
+    for (int i = 1; i < w; i++) {
+        for (int j = 0; j < h; j++) {
+            grid.g_velocity_x[i][j] -= (grid.g_pressure[i][j] - grid.g_pressure[i-1][j]) / dx;
+        }
+    }
+    for (int i = 0; i < w; i++) {
+        for (int j = 1; j < h; j++) {
+            grid.g_velocity_y[i][j] -= (grid.g_pressure[i][j] - grid.g_pressure[i][j-1]) / dx;
+        }
+    }
+}
+
+void apply_gravity_grid(Grid_PIC& grid, float gravity, float dt) {
+    for (int i = 0; i < grid.grid_width; i++) {
+        for (int j = 0; j <= grid.grid_height; j++) {
+            grid.g_velocity_y[i][j] += gravity * dt;  // y方向有重力
+        }
+    }
+}
+
+void apply_damping(Grid_PIC& grid, float damping) {
+    for (int i = 0; i <= grid.grid_width; i++) {
+        for (int j = 0; j < grid.grid_height; j++) {
+            grid.g_velocity_x[i][j] *= damping;
+        }
+    }
+    for (int i = 0; i < grid.grid_width; i++) {
+        for (int j = 0; j <= grid.grid_height; j++) {
+            grid.g_velocity_y[i][j] *= damping;
+        }
+    }
+}
+
+
+
 void simul_step_apic(std::vector<Particle_PIC>& particles, Grid_PIC& grid, float dt) {
-    reset_grid(grid);  
-    
-    check_particles(particles, "Before p2g_apic");
+    // reset_grid(grid);
+
     p2g_apic(particles, grid);
 
-    check_particles(particles, "After p2g_apic");
-    apply_gravity(grid, dt);
+    apply_gravity_grid(grid, -9.8f, dt);
+    solve_pressure_apic(grid, dt);
+    clamp_velocity(grid);
+    apply_damping(grid, 0.99f);
+    g2p_apic(particles, grid);   
 
-    check_particles(particles, "After apply_gravity");
-    solve_pressure(grid, dt);
-
-    check_particles(particles, "After solve_pressure");
-    check_grid(grid, "After solve_pressure");
-    g2p_apic(particles, grid);
-
-    check_particles(particles, "After g2p_apic");
-
-    // ✅ 先 advect 移动粒子
-    advect(particles, dt, grid);
-
-    // ✅ 然后处理粒子撞墙反弹
+    advect_apic(particles, grid, dt);   // ✅ 用grid里的速度advect
     particle_collision_apic(particles, grid);
-
-    check_particles(particles, "After advect+collision");
+    // g2p_apic(particles, grid);
+    // 然后 g2p！ 让粒子拿到新的velocity
 }
