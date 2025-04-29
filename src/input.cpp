@@ -41,6 +41,7 @@ int frame_counter = 0;
 void idle() {
     if (pause == 0) {
         if (current_grid) {
+            // std::cout << "doing grid simulation" << std::endl;
             current_grid->simulation();  // run simulation for grid-based fluid
         }
         else if (!particles.empty()) {

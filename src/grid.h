@@ -37,7 +37,6 @@ public:
 
 // helper functions
 void set_bnd(int N, int b, std::vector< std::vector<float> > &x);
-void lin_solve(int b, std::vector< std::vector<float> > &x, std::vector< std::vector<float> > &x0, float a, float c, int num_iteration, int N);
 void add_source(int N, std::vector< std::vector<float> > &x, std::vector< std::vector<float> > &s, float dt);
 
 // physics functions
@@ -46,8 +45,8 @@ void diffuse(int N, int b, std::vector< std::vector<float> > &x, std::vector< st
 void project(int N, std::vector< std::vector<float> > &velocity_x, std::vector< std::vector<float> > &velocity_y, std::vector< std::vector<float> > &p, std::vector< std::vector<float> > &div, int num_iteration);
 
 // core functions
-void dens_step();
-void vel_step();
+void dens_step(int N,std::vector<std::vector<float>> &den,std::vector<std::vector<float>> &den_pre,std::vector<std::vector<float>> &v_x,std::vector<std::vector<float>> &v_y,float diff,float dt,int num_iter);
+void vel_step(int N,std::vector<std::vector<float>>& v_x,std::vector<std::vector<float>>& v_y, std::vector<std::vector<float>>& v_x0,std::vector<std::vector<float>>& v_y0,float visc,float dt,int num_iter);
 
 // overload cout to print every element of velocity
 std::ostream& operator<<(std::ostream& os, const Fluid_Grid &grid);
