@@ -73,7 +73,15 @@ void advect(int N, int b, std::vector< std::vector<float> > &d, std::vector< std
 // dt: time step
 void diffuse(int N, int b, std::vector< std::vector<float> > &x, std::vector< std::vector<float> > &x0, float diff, float dt, int num_iteration) {
   float a = dt * diff * N * N;
-  lin_solve(b, x, x0, a, 1 + 4 * a, num_iteration, N);
+  
+  for (int k = 0; k < 20; k ++) {
+    for (int i = 1; i <= N; i ++) {
+      for (int j = 1; j <= N; j ++) {
+        x[i][j] = (x0[i][j] + a * (x[i - 1][j] + x[i + 1][j] + x[i][j - 1] + x[i][j + 1])) / (1 + 4 * a);
+      }
+    }
+    set_bnd(N, b, x);
+  }
 }
 
 // ------------------------------------------------------------
@@ -90,7 +98,14 @@ void project(int N, std::vector< std::vector<float> > &velocity_x, std::vector< 
   set_bnd(N, 0, div);
   set_bnd(N, 0, p);
 
-  lin_solve(0, p, div, 1, 4, num_iteration, N);
+  for (int k = 0; k < 20; k ++) {
+    for (int i = 1; i <= N; i ++) {
+      for (int j = 1; j <= N; j ++) {
+        p[i][j] = (div[i][j] + p[i - 1][j] + p[i + 1][j] + p[i][j - 1] + p[i][j + 1]) / 4;
+      }
+    }
+    set_bnd(N, 0, p);
+  }
 
   for (int i = 1; i <= N; i ++) {
     for (int j = 1; j <= N; j ++) {
@@ -126,33 +141,13 @@ void set_bnd(int N, int b, std::vector< std::vector<float> > &x) {
       x[i][0] = x[i][1]; // left wall
       x[i][N + 1] = x[i][N]; // right wall
     }
-
-    // 4 corners
-    x[0][0] = 0.5 * (x[1][0] + x[0][1]);
-    x[0][N + 1] = 0.5 * (x[1][N + 1] + x[0][N]);
-    x[N + 1][0] = 0.5 * (x[N][0] + x[N + 1][1]);
-    x[N + 1][N + 1] = 0.5 * (x[N][N + 1] + x[N + 1][N]);
   }
+  // 4 corners
+  x[0][0] = 0.5 * (x[1][0] + x[0][1]);
+  x[0][N + 1] = 0.5 * (x[1][N + 1] + x[0][N]);
+  x[N + 1][0] = 0.5 * (x[N][0] + x[N + 1][1]);
+  x[N + 1][N + 1] = 0.5 * (x[N][N + 1] + x[N + 1][N]);
 }
-
-// linear solver
-// b: case
-// x: velocity/density
-// x0: old velocity/density
-// a: diffusion rate
-// c: ??
-// num_iteration: number of iterations (more iteration -> more accurate)
-// N: number of grid
-void lin_solve(int b, std::vector< std::vector<float> > &x, std::vector< std::vector<float> > &x0, float a, float c, int num_iteration, int N) {
-  for (int k = 0; k < num_iteration; k ++) {
-    for (int j = 1; j <= N; j ++) { // y
-      for (int i = 1; i <= N; i++) { // x
-        x[j][i] = (x0[j][i] + a * (x[j - 1][i] + x[j + 1][i] + x[j][i - 1] + x[j][i + 1])) / c;
-      }
-    }
-    set_bnd(N, b, x);
-  }
-};
 
 // for user input (such as mouse drag), not necessary for our program but keep it here for now
 // N: number of grid
@@ -238,29 +233,34 @@ void Fluid_Grid::initialization(int N, int num_iteration, int dt, float diffusio
   g_density0.resize(g_height, std::vector<float>(g_width, 0.0f));
 
   // initialize velocity
-  float velocity = 0.0;
-  for (int j = 0; j < g_height; j ++) {
-    for (int i = 0; i < g_width; i ++) {
-      if (i == 0 || j == 0 || i == g_height - 1 || j == g_width - 1) {
-        g_velocity_x[j][i] = 0.0;
-        g_velocity_x0[j][i] = 0.0;
-        g_velocity_y[j][i] = 0.0;
-        g_velocity_y0[j][i] = 0.0;
-        g_pressure[j][i] = 0.0;
-        g_density[j][i] = 0.0;
-        g_density0[j][i] = 0.0;
+  // float velocity = 0.0;
+  for (int i = 0; i < N + 2; i ++) {
+    for (int j = 0; j < N + 2; j ++) {
+      if (i == 0 || j == 0 || i == N + 1 || j == N + 1) {
+        g_velocity_x[i][j] = 0.0;
+        g_velocity_x0[i][j] = 0.0;
+        g_velocity_y[i][j] = 0.0;
+        g_velocity_y0[i][j] = 0.0;
+        g_pressure[i][j] = 0.0;
+        g_density[i][j] = 0.0;
+        g_density0[i][j] = 0.0;
       } else {
-        g_velocity_x[j][i] = velocity_x[j - 1][i - 1];
-        g_velocity_x0[j][i] = velocity_x[j - 1][i - 1];
-        g_velocity_y[j][i] = velocity_y[j - 1][i - 1];
-        g_velocity_y0[j][i] = velocity_y[j - 1][i - 1];
-        g_pressure[j][i] = pressure[j - 1][i - 1];
-        g_density[j][i] = density[j - 1][i - 1];
-        g_density0[j][i] = density[j - 1][i - 1];
+        g_velocity_x[i][j] = velocity_x[j - 1][i - 1];
+        g_velocity_x0[i][j] = velocity_x[j - 1][i - 1];
+        g_velocity_y[i][j] = velocity_y[j - 1][i - 1];
+        g_velocity_y0[i][j] = velocity_y[j - 1][i - 1];
+        g_pressure[i][j] = pressure[j - 1][i - 1];
+        g_density[i][j] = density[j - 1][i - 1];
+        g_density0[i][j] = density[j - 1][i - 1];
       }
-      if (i == 1 && j == 1) {
+      // a bigger blob in the center
+      if (i > N/4 && i < 3*N/4 && j > N/4 && j < 3*N/4) {
         g_density[j][i] = 1.0;
         g_density0[j][i] = 1.0;
+      }
+      if (i > N/2 - 1 && i < N/2 + 1 && j > N/2 - 1 && j < N/2 + 1) {
+        g_velocity_x[j][i] = 1.0f;
+        g_velocity_y[j][i] = 0.0f;
       }
     }
   }
