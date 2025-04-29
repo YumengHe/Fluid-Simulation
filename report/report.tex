@@ -1,0 +1,27 @@
+% letter size 
+\documentclass[12pt,twocolumn]{extarticle}
+% page margin
+\usepackage[margin=0.1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{CJKutf8}
+\usepackage{import}
+\usepackage{hyperref} 
+
+\begin{document}
+CSCI580 Report
+
+% \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+% Grid
+% \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\import{./sections}{grid.tex}
+\hrule
+
+% \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+% Particle
+% \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\import{./sections}{particle.tex}
+\hrule
+
+\end{document}
