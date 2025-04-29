@@ -18,8 +18,8 @@ void display(){ // change to particles later
     if (mode == 0) {
         // Draw grid
         glBegin(GL_QUADS);
-        float cell_width = 1.0f / current_grid->g_width;
-        float cell_height = 1.0f / current_grid->g_height;
+        float cell_width = 1.0f / (current_grid->g_width-1);
+        float cell_height = 1.0f / (current_grid->g_height-1);
         // Commented out: Print grid size
         for (int i = 0; i < current_grid->g_height; i++) {
             for (int j = 0; j < current_grid->g_width; j++) {
@@ -29,6 +29,7 @@ void display(){ // change to particles later
                 
                 float density = current_grid->g_density[i][j];
                 float color = density / 2.0f;
+                // float color = density;
                 color = std::min(1.0f, std::max(0.0f, color));
                 
                 glColor3f(color, color, color);

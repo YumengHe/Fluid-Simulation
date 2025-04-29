@@ -92,6 +92,12 @@ void loadGrid(const std::string &filename, Fluid_Grid &grid){
     grid.g_diffusion = diffusion;
     grid.g_viscosity = viscosity;
 
+    // Initialize velocity and pressure to 0
+    grid.g_velocity_x.assign(height, std::vector<float>(width, 0.0f));
+    grid.g_velocity_y.assign(height, std::vector<float>(width, 0.0f));
+    grid.g_pressure.assign(height, std::vector<float>(width, 0.0f));
+
+    /*
     // Read velocity field x component
     grid.g_velocity_x.resize(height);
     for (int i = 0; i < height; ++i) {
@@ -118,6 +124,7 @@ void loadGrid(const std::string &filename, Fluid_Grid &grid){
             file >> grid.g_pressure[i][j];
         }
     }
+    */
 
     // Read density field
     grid.g_density.resize(height);
@@ -125,6 +132,10 @@ void loadGrid(const std::string &filename, Fluid_Grid &grid){
         grid.g_density[i].resize(width);
         for (int j = 0; j < width; ++j) {
             file >> grid.g_density[i][j];
+            if (grid.g_density[i][j] != 0) {
+                std::cout << "Cell [" << i << "][" << j << "] has density :" << 
+                grid.g_density[i][j] << std::endl;
+            }
         }
     }
     grid.initialization(width, num_iteration, dt, diffusion, viscosity,

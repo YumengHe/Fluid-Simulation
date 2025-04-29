@@ -6,7 +6,7 @@ INCLUDE_DIR := include
 
 # --- Tools ---
 CXX      ?= clang++
-CXXFLAGS := -std=c++17 -O2 -Wall -I$(INCLUDE_DIR) -I$(SRC_DIR)
+CXXFLAGS := -std=c++17 -g -Wall -I$(INCLUDE_DIR) -I$(SRC_DIR)
 LDFLAGS  := -framework OpenGL -framework GLUT          # macOS
 # LDFLAGS := -lglut -lGL -lX11                         # linux
 

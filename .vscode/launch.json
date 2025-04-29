@@ -2,12 +2,16 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "C/C++ Runner: Debug Session",
-      "type": "lldb",
+      "name": "Debug Fluid Simulation",
+      "type": "cppdbg",
       "request": "launch",
-      "args": [],
-      "cwd": "${workspaceFolder}/src",
-      "program": "${workspaceFolder}/src/build/Debug/outDebug"
+      "program": "${workspaceFolder}/fluid",
+      "args": ["/Users/reiirene/Documents/GitHub/Fluid-Simulation/fluids/grid/50.grid"],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "externalConsole": true,
+      "MIMode": "lldb"
     }
   ]
 }

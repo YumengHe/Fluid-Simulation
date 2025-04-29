@@ -250,55 +250,31 @@ void Fluid_Grid::initialization(int N, int num_iteration, int dt, float diffusio
         g_velocity_y[i][j] = velocity_y[j - 1][i - 1];
         g_velocity_y0[i][j] = velocity_y[j - 1][i - 1];
         g_pressure[i][j] = pressure[j - 1][i - 1];
-        g_density[i][j] = density[j - 1][i - 1];
-        g_density0[i][j] = density[j - 1][i - 1];
       }
       // a bigger blob in the center
-      if (i > N/4 && i < 3*N/4 && j > N/4 && j < 3*N/4) {
-        g_density[j][i] = 1.0;
-        g_density0[j][i] = 1.0;
+      // Properly centered square block:
+      if (i >= N/4 + 1 && i <= 3*N/4 + 1 &&
+        j >= N/4 + 1 && j <= 3*N/4 + 1) {
+        g_density[i][j] = 1.0;
+        g_density0[i][j] = 1.0;
       }
+      
       if (i > N/2 - 1 && i < N/2 + 1 && j > N/2 - 1 && j < N/2 + 1) {
         g_velocity_x[j][i] = 1.0f;
         g_velocity_y[j][i] = 0.0f;
       }
+      
     }
   }
 }
 
 void Fluid_Grid::simulation() {
-  static bool injected = false;  // ✅ only inject once
 
   int N = g_width - 2;
-  if (!injected) {
-    for (int j = 6; j <= 8; j++) {
-      for (int i = 6; i <= 8; i++) {
-          // g_density0[j][i] += 0.5f;
-          // g_velocity_x0[j][i] += 0.1f;
-          // g_velocity_y0[j][i] += 0.1f;
-      }
-    }
-    
-      injected = true;
-  }
-
-  // Step 2: Print AFTER injection
-  std::cout << "Injected: "
-    << "velocity_x0[7][7]=" << g_velocity_x0[7][7]
-    << ", velocity_y0[7][7]=" << g_velocity_y0[7][7]
-    << ", density0[7][7]=" << g_density0[7][7]
-    << std::endl;
 
   vel_step(N,g_velocity_x,g_velocity_y,g_velocity_x0,g_velocity_y0,g_viscosity,g_dt,g_num_iteration);
   dens_step(N,g_density,g_density0,g_velocity_x,g_velocity_y,g_diffusion,g_dt,g_num_iteration);
   // std::cout << *this << std::endl;
-
-  std::cout << "Moving: "
-    << "velocity_x[7][7]=" << g_velocity_x[7][7]
-    << ", velocity_y[7][7]=" << g_velocity_y[7][7]
-    << ", density[7][7]=" << g_density[7][7]
-    << std::endl;
-
   
   // Step 4: Reset source arrays to zero after use
   for (int j = 0; j < g_height; j++) {
