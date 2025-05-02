@@ -11,6 +11,7 @@
 std::vector<Particle> particles;  // 声明这是一个外部变量
 #include "./pic_method/apic.h"
 #include "./pic_method/pic.h"
+#include "./pic_method/picflip.h"
 int mode = 0; // 0 grid, 1 particle, 2 PIC, 3 APIC
 
 void display(){ // change to particles later

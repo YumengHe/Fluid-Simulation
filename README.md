@@ -23,6 +23,11 @@ make clean
 ```bash
 ./fluid ./fluids/grid_or_particle_file_name
 ```
+Run PIC/FLIP Demo
+```bash
+make picflip_demo
+./picflip_demo
+```
 ### Grid File Generation
 ```bash
 cd fluids
@@ -60,8 +65,10 @@ g++ -o apic_gen apicGenerator.cpp
 │   └── pic_method
 │       ├──grid_pic.h
 │       ├──particle_pic.h
-│       ├──pic.h ── pic.cpp  
-│       └──apic.h ── apic.cpp 
+│       ├──pic.h ── pic.cpp
+│       ├──apic.h ── apic.cpp
+│       ├──picflip.h ── picflip.cpp
+│       └──picflip_main.cpp
 │
 ├── include
 │   └── Eigen
@@ -87,6 +94,13 @@ Based on SPH.
 ```bash
 ./fluid ./fluids/400particles.par
 ```
+## PIC/FLIP
+Based on PIC and FLIP method [[3]](#3)
+```bash
+make picflip_demo
+./picflip_demo
+```
+
 
 ## APIC
 Based on PIC and APIC method [[4]](#4).
