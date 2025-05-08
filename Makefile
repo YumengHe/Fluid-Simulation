@@ -15,6 +15,11 @@ SRCS := $(filter-out $(PIC_DIR)/picflip.cpp $(PIC_DIR)/picflip_main.cpp, $(wildc
 OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRCS))
 TARGET := fluid
 
+# --- APIC Demo Build ---
+APIC_DIR := $(SRC_DIR)/apic_method
+APIC_SRCS := $(wildcard $(APIC_DIR)/*.cpp)
+APIC_TARGET := apic_demo
+
 # --- Default rule ---
 .PHONY: all
 all: $(TARGET)
@@ -41,3 +46,7 @@ clean:
 .PHONY: picflip_demo
 picflip_demo:
 	$(CXX) $(CXXFLAGS) src/pic_method/picflip_main.cpp src/pic_method/picflip.cpp $(LDFLAGS) -o picflip_demo
+
+.PHONY: apic_demo
+apic_demo:
+	$(CXX) $(CXXFLAGS) -O3 -I$(APIC_DIR) $(APIC_SRCS) $(LDFLAGS) -o $(APIC_TARGET)

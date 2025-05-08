@@ -20,6 +20,7 @@ Clean Build Files
 make clean
 ```
 ### Step 3: Run:
+Run Grid/Particle Demo
 ```bash
 ./fluid ./fluids/grid_or_particle_file_name
 ```
@@ -27,6 +28,11 @@ Run PIC/FLIP Demo
 ```bash
 make picflip_demo
 ./picflip_demo
+```
+Run APIC Demo
+```bash
+make apic_demo
+./apic_demo
 ```
 ### Grid File Generation
 ```bash
@@ -40,18 +46,6 @@ cd fluids
 g++ -o particle_gen particleGenerator.cpp
 ./particle_gen
 ```
-### PIC File Generation
-```bash
-cd fluids
-g++ -o pic_gen picGenerator.cpp
-./pic_gen
-```
-### APIC File Generation
-```bash
-cd fluids
-g++ -o apic_gen apicGenerator.cpp
-./apic_gen
-```
 ### Interaction Features
 	•	Mouse Click: Position Output
 	•	Esc Key: Exit Program
@@ -62,14 +56,17 @@ g++ -o apic_gen apicGenerator.cpp
 │   ├── input.h ── input.cpp
 │   ├── grid.h ── grid.cpp
 │   ├── particle.h ── particle.cpp
-│   └── pic_method
-│       ├──grid_pic.h
-│       ├──particle_pic.h
-│       ├──pic.h ── pic.cpp
-│       ├──apic.h ── apic.cpp
-│       ├──picflip.h ── picflip.cpp
-│       └──picflip_main.cpp
-│
+│   ├── pic_method
+│   │   ├──grid_pic.h
+│   │   ├──particle_pic.h
+│   │   ├──pic.h ── pic.cpp
+│   │   ├──apic.h ── apic.cpp
+│   │   ├──picflip.h ── picflip.cpp
+│   │   └──picflip_main.cpp
+│   └── apic_method
+│       ├──fluidsim.h
+│       ├──fluidsim.cpp
+│       └──main_apic.cpp
 ├── include
 │   └── Eigen
 ├── fluids
