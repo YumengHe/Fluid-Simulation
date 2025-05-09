@@ -1,7 +1,5 @@
 % Packages & Document Configurations
 \documentclass[twocolumn]{NobArticle}
-\runninghead{Shortened Running Article Title}
-\footertext{\textit{Journal X} (2023) 12:684}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{amsmath}
@@ -20,6 +18,11 @@
     YUCHEN CHEN, University of Southern California, USA \\
     XU CHEN, University of Southern California, USA
 }
+
+% Remove date
+\predate{}
+\postdate{}
+\date{}
 
 % Abstract
 \renewcommand{\maketitlehookd}{%

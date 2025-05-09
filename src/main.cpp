@@ -9,10 +9,9 @@
 #include "particle.h"
 #include "constants.h"
 std::vector<Particle> particles;  // 声明这是一个外部变量
-#include "./pic_method/apic.h"
 #include "./pic_method/pic.h"
 #include "./pic_method/picflip.h"
-int mode = 0; // 0 grid, 1 particle, 2 PIC, 3 APIC
+int mode = 0; // 0 grid, 1 particle, 2 PIC
 
 void display(){ // change to particles later
     glClear(GL_COLOR_BUFFER_BIT);
@@ -62,25 +61,6 @@ void display(){ // change to particles later
         glEnd();
         
         // Disable point smoothing after drawing
-        glDisable(GL_BLEND);
-        glDisable(GL_POINT_SMOOTH);
-    }else if (mode == 3) {  // 添加APIC粒子的渲染
-        // Enable point smoothing for circular particles
-        glEnable(GL_POINT_SMOOTH);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        
-        glPointSize(8.0f);
-        glBegin(GL_POINTS); 
-        glColor3f(0.0f, 0.6f, 0.8f);  // 使用不同的蓝色来区分APIC粒子
-        
-        for(const auto& p : apic_particles) { 
-            float x = p.x; 
-            float y = p.y; 
-            glVertex2f(x, y); 
-        } 
-        glEnd();
-        
         glDisable(GL_BLEND);
         glDisable(GL_POINT_SMOOTH);
     }
@@ -139,11 +119,6 @@ int main(int argc, char **argv){
             mode = 1;
             std::cout << "Loading a .par file\n";
             loadParticles(filename);
-        }
-        else if (endsWith(filename, ".apic")){
-            mode = 3;
-            std::cout << "Loading a .apic file\n";
-            loadAPIC(filename); // Load APIC data
         }
         else if (endsWith(filename, ".pic")) {
             mode = 2;
