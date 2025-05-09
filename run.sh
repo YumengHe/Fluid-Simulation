@@ -1,5 +1,5 @@
 ##### Grid #####
-./fluid ./fluids/grid/20.grid
+./fluid ./fluids/grid/50.grid
 # ./fluid ./fluids/grid/10.grid
 
 ##### Particle #####

@@ -1,5 +1,5 @@
 % $ biblatex auxiliary file $
-% $ biblatex bbl format version 3.2 $
+% $ biblatex bbl format version 3.3 $
 % Do not modify the above lines!
 %
 % This is an auxiliary file used by the 'biblatex' package.
@@ -18,8 +18,8 @@
 
 
 \refsection{0}
-  \datalist[entry]{nyt/global//global/global}
-    \entry{bardenhagen2000material}{article}{}
+  \datalist[entry]{nyt/global//global/global/global}
+    \entry{bardenhagen2000material}{article}{}{}
       \name{author}{3}{}{%
         {{un=0,uniquepart=base,hash=a352aa85c875a60818e0435ba9f56cbc}{%
            family={Bardenhagen},
@@ -45,10 +45,12 @@
       }
       \strng{namehash}{b34d368d3f0c7c79538828c7e57c5f15}
       \strng{fullhash}{5d7b2b8f33224642241c1b496e415913}
+      \strng{fullhashraw}{5d7b2b8f33224642241c1b496e415913}
       \strng{bibnamehash}{5d7b2b8f33224642241c1b496e415913}
       \strng{authorbibnamehash}{5d7b2b8f33224642241c1b496e415913}
       \strng{authornamehash}{b34d368d3f0c7c79538828c7e57c5f15}
       \strng{authorfullhash}{5d7b2b8f33224642241c1b496e415913}
+      \strng{authorfullhashraw}{5d7b2b8f33224642241c1b496e415913}
       \field{sortinit}{B}
       \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
       \field{extradatescope}{labelyear}
@@ -63,7 +65,7 @@
       \field{pages}{529\bibrangedash 541}
       \range{pages}{13}
     \endentry
-    \entry{brackbill1988flip}{article}{}
+    \entry{brackbill1988flip}{article}{}{}
       \name{author}{3}{}{%
         {{un=0,uniquepart=base,hash=9d8960c722d94616d7ba6c6cbb95ecee}{%
            family={Brackbill},
@@ -89,10 +91,12 @@
       }
       \strng{namehash}{3ac026d341e7ccfc028d9e9e9717bdff}
       \strng{fullhash}{0d9572520219a163c1827edafe563470}
+      \strng{fullhashraw}{0d9572520219a163c1827edafe563470}
       \strng{bibnamehash}{0d9572520219a163c1827edafe563470}
       \strng{authorbibnamehash}{0d9572520219a163c1827edafe563470}
       \strng{authornamehash}{3ac026d341e7ccfc028d9e9e9717bdff}
       \strng{authorfullhash}{0d9572520219a163c1827edafe563470}
+      \strng{authorfullhashraw}{0d9572520219a163c1827edafe563470}
       \field{sortinit}{B}
       \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
       \field{extradatescope}{labelyear}
@@ -107,7 +111,7 @@
       \field{pages}{25\bibrangedash 38}
       \range{pages}{14}
     \endentry
-    \entry{feng2022impulse}{article}{}
+    \entry{feng2022impulse}{article}{}{}
       \name{author}{6}{}{%
         {{un=0,uniquepart=base,hash=15c80a7f0a2ec9fe3503e295758ec8ff}{%
            family={Feng},
@@ -151,10 +155,12 @@
       }
       \strng{namehash}{79ddfce731e957ab69112d004331d477}
       \strng{fullhash}{43046106ebd7edeb5f08f69087cd59b1}
+      \strng{fullhashraw}{43046106ebd7edeb5f08f69087cd59b1}
       \strng{bibnamehash}{79ddfce731e957ab69112d004331d477}
       \strng{authorbibnamehash}{79ddfce731e957ab69112d004331d477}
       \strng{authornamehash}{79ddfce731e957ab69112d004331d477}
       \strng{authorfullhash}{43046106ebd7edeb5f08f69087cd59b1}
+      \strng{authorfullhashraw}{43046106ebd7edeb5f08f69087cd59b1}
       \field{sortinit}{F}
       \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
       \field{extradatescope}{labelyear}
@@ -169,7 +175,7 @@
       \field{pages}{3081\bibrangedash 3092}
       \range{pages}{12}
     \endentry
-    \entry{fu2017polynomial}{article}{}
+    \entry{fu2017polynomial}{article}{}{}
       \name{author}{5}{}{%
         {{un=0,uniquepart=base,hash=d87ab0524383602462ed9ee7bc30aac6}{%
            family={Fu},
@@ -207,10 +213,12 @@
       }
       \strng{namehash}{35aea5613f3a4458559120959fe844c2}
       \strng{fullhash}{b03faa4825985760c119841f5e3d2561}
+      \strng{fullhashraw}{b03faa4825985760c119841f5e3d2561}
       \strng{bibnamehash}{35aea5613f3a4458559120959fe844c2}
       \strng{authorbibnamehash}{35aea5613f3a4458559120959fe844c2}
       \strng{authornamehash}{35aea5613f3a4458559120959fe844c2}
       \strng{authorfullhash}{b03faa4825985760c119841f5e3d2561}
+      \strng{authorfullhashraw}{b03faa4825985760c119841f5e3d2561}
       \field{sortinit}{F}
       \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
       \field{extradatescope}{labelyear}
@@ -225,7 +233,7 @@
       \field{pages}{1\bibrangedash 12}
       \range{pages}{12}
     \endentry
-    \entry{hu2018moving}{article}{}
+    \entry{hu2018moving}{article}{}{}
       \name{author}{7}{}{%
         {{un=0,uniquepart=base,hash=131527255bb9bfe7da590ffe5d97cd8e}{%
            family={Hu},
@@ -275,10 +283,12 @@
       }
       \strng{namehash}{979d4db00a483bed045f23d804215fcf}
       \strng{fullhash}{34c04de879019a97c03a49eb304a396b}
+      \strng{fullhashraw}{34c04de879019a97c03a49eb304a396b}
       \strng{bibnamehash}{979d4db00a483bed045f23d804215fcf}
       \strng{authorbibnamehash}{979d4db00a483bed045f23d804215fcf}
       \strng{authornamehash}{979d4db00a483bed045f23d804215fcf}
       \strng{authorfullhash}{34c04de879019a97c03a49eb304a396b}
+      \strng{authorfullhashraw}{34c04de879019a97c03a49eb304a396b}
       \field{sortinit}{H}
       \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
       \field{extradatescope}{labelyear}
@@ -293,7 +303,7 @@
       \field{pages}{1\bibrangedash 14}
       \range{pages}{14}
     \endentry
-    \entry{jiang2015affine}{article}{}
+    \entry{jiang2015affine}{article}{}{}
       \name{author}{5}{}{%
         {{un=0,uniquepart=base,hash=e23acb91338712715b1e858a29723c6b}{%
            family={Jiang},
@@ -331,10 +341,12 @@
       }
       \strng{namehash}{3867c7e05479b6789104869f732e215a}
       \strng{fullhash}{56b3784e1675866978a6a37133006260}
+      \strng{fullhashraw}{56b3784e1675866978a6a37133006260}
       \strng{bibnamehash}{3867c7e05479b6789104869f732e215a}
       \strng{authorbibnamehash}{3867c7e05479b6789104869f732e215a}
       \strng{authornamehash}{3867c7e05479b6789104869f732e215a}
       \strng{authorfullhash}{56b3784e1675866978a6a37133006260}
+      \strng{authorfullhashraw}{56b3784e1675866978a6a37133006260}
       \field{sortinit}{J}
       \field{sortinithash}{b2f54a9081ace9966a7cb9413811edb4}
       \field{extradatescope}{labelyear}
@@ -349,7 +361,7 @@
       \field{pages}{1\bibrangedash 10}
       \range{pages}{10}
     \endentry
-    \entry{monaghan1992smoothed}{article}{}
+    \entry{monaghan1992smoothed}{article}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=149e5a5d1cc738697762480865226f39}{%
            family={Monaghan},
@@ -360,10 +372,12 @@
       }
       \strng{namehash}{149e5a5d1cc738697762480865226f39}
       \strng{fullhash}{149e5a5d1cc738697762480865226f39}
+      \strng{fullhashraw}{149e5a5d1cc738697762480865226f39}
       \strng{bibnamehash}{149e5a5d1cc738697762480865226f39}
       \strng{authorbibnamehash}{149e5a5d1cc738697762480865226f39}
       \strng{authornamehash}{149e5a5d1cc738697762480865226f39}
       \strng{authorfullhash}{149e5a5d1cc738697762480865226f39}
+      \strng{authorfullhashraw}{149e5a5d1cc738697762480865226f39}
       \field{sortinit}{M}
       \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
       \field{extradatescope}{labelyear}
@@ -377,7 +391,7 @@
       \field{pages}{543\bibrangedash 574}
       \range{pages}{32}
     \endentry
-    \entry{stam2023stable}{incollection}{}
+    \entry{stam2023stable}{incollection}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=989eb4efa3f78c25c89fbf848445d952}{%
            family={Stam},
@@ -388,10 +402,12 @@
       }
       \strng{namehash}{989eb4efa3f78c25c89fbf848445d952}
       \strng{fullhash}{989eb4efa3f78c25c89fbf848445d952}
+      \strng{fullhashraw}{989eb4efa3f78c25c89fbf848445d952}
       \strng{bibnamehash}{989eb4efa3f78c25c89fbf848445d952}
       \strng{authorbibnamehash}{989eb4efa3f78c25c89fbf848445d952}
       \strng{authornamehash}{989eb4efa3f78c25c89fbf848445d952}
       \strng{authorfullhash}{989eb4efa3f78c25c89fbf848445d952}
+      \strng{authorfullhashraw}{989eb4efa3f78c25c89fbf848445d952}
       \field{sortinit}{S}
       \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
       \field{extradatescope}{labelyear}
@@ -404,7 +420,7 @@
       \field{pages}{779\bibrangedash 786}
       \range{pages}{8}
     \endentry
-    \entry{tskhakaya2007particle}{article}{}
+    \entry{tskhakaya2007particle}{article}{}{}
       \name{author}{4}{}{%
         {{un=0,uniquepart=base,hash=5cf5a2b587021d8e97359be100afb1f5}{%
            family={Tskhakaya},
@@ -436,10 +452,12 @@
       }
       \strng{namehash}{e6e2900cea77d1a6937bf1a79b999f3e}
       \strng{fullhash}{a20159bfbe2f4ad090336011555e543b}
+      \strng{fullhashraw}{a20159bfbe2f4ad090336011555e543b}
       \strng{bibnamehash}{e6e2900cea77d1a6937bf1a79b999f3e}
       \strng{authorbibnamehash}{e6e2900cea77d1a6937bf1a79b999f3e}
       \strng{authornamehash}{e6e2900cea77d1a6937bf1a79b999f3e}
       \strng{authorfullhash}{a20159bfbe2f4ad090336011555e543b}
+      \strng{authorfullhashraw}{a20159bfbe2f4ad090336011555e543b}
       \field{sortinit}{T}
       \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
       \field{extradatescope}{labelyear}
