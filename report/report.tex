@@ -1,104 +1,49 @@
-% letter size 
-\documentclass[12pt,twocolumn]{extarticle}
-% page margin
-\usepackage[margin=0.1cm]{geometry}
-\usepackage{amsmath, amssymb}
-\usepackage{xcolor}
-\usepackage{enumitem}
-\usepackage{CJKutf8}
+% Packages & Document Configurations
+\documentclass[twocolumn]{NobArticle}
+\runninghead{Shortened Running Article Title}
+\footertext{\textit{Journal X} (2023) 12:684}
+
 \usepackage{import}
-\usepackage{hyperref} 
+
+% Title
+\title{Incompressible Fluid Simulation: A Comparison}
+
+% Authors
+\author{
+    YUMENG HE, University of Southern California, USA \\
+    HSIN LI, University of Southern California, USA \\
+    YUCHEN CHEN, University of Southern California, USA \\
+    XU CHEN, University of Southern California, USA
+}
+
+% Abstract
+\renewcommand{\maketitlehookd}{%
+\begin{abstract}
+    \noindent Our project is a 2D incompressible fluid simulation implemented in C++ with visualization using OpenGL and GLUT. The main objective is to compare the performance, visual behavior, and numerical characteristics of different fluid simulation methods, including: Grid-based (Stable Fluids), Particle-based (SPH), Particle-In-Cell (PIC),hybrid PIC/FLIP method(PIC/FLIP), Affine Particle-In-Cell (APIC)
+    This simulation provides a visual and algorithmic comparison of each method's strengths and weaknesses.
+    
+    \medskip
+
+    \small{\textbf{Index Terms:} fluid simulation, incompressible, particle, grid, hybird}
+\end{abstract}
+}
 
 \begin{document}
-CSCI580 Report
-% --------------------------------------------------------------
-\section{Introduction}
 
-\subsection{What is your project?}
-% Describe what your project is about.
+\small
+\maketitle
 
-\subsection{What were your main contributions?}
-% List your innovations or implementation features.
+\input{Sections/01-Introduction}
+\input{Sections/02-Background}
+\input{Sections/03-Implementation}
 
-% --------------------------------------------------------------
-\section{Background}
+% \input{Sections/04-Results}
+% \input{Sections/05-Discussion}
+% \input{Sections/06-Conclusion}
 
-\subsection{Existing Methods}
-% Existing math, algorithms, or tools relevant to your goal.
+\section*{Acknowledgements}
+This project received support during the CSCI580 course, instructed by Professor XXX at the University of Southern California, USA.
 
-\subsection{Resources Consulted}
-% Papers, blog posts, YouTube tutorials, etc.
-
-\subsection{Similar Projects}
-% Related online projects and your differences.
-
-% --------------------------------------------------------------
-\section{Methods}
-
-\subsection{Overview of Techniques Used}
-% High-level approach description.
-
-\subsection{Algorithm and Implementation Details}
-% Pseudocode, steps, and explanations.
-% \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-% Grid
-% \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-\import{./sections}{grid.tex}
-\hrule
-
-% \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-% Particle
-% \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-\import{./sections}{particle.tex}
-\hrule
-
-% \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-% pic
-% \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-\import{./sections}{pic.tex}
-\hrule
-
-% \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-% apic
-% \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-\import{./sections}{apic.tex}
-\hrule
-
-\subsection{Intermediate Visualizations}
-% Add figures if needed.
-
-\subsection{Tools and Libraries}
-% Languages, frameworks, or code you learned.
-
-\subsection{Course Concepts Applied}
-% Specific lectures, slides, or ideas you used.
-
-% --------------------------------------------------------------
-\section{Evaluation}
-
-\subsection{Example Results}
-% Show rendered images or performance output.
-
-\subsection{Component Impact Analysis}
-% How each part of your method contributes.
-
-\subsection{Strengths}
-% What went well.
-
-\subsection{Limitations}
-% What could be better.
-
-% --------------------------------------------------------------
-\section{Conclusion}
-
-\subsection{What did you learn?}
-% Personal and technical growth.
-
-\subsection{Team Contribution Breakdown}
-% Who did what.
-
-\subsection{Ideas for Future Work}
-% Optional.
-
+\printbibliography
 
 \end{document}

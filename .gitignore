@@ -6,6 +6,8 @@
 # VS Code settings (optional to ignore)
 # .vscode/
 
+
+
 # CMake build artifacts
 build/
 CMakeFiles/
@@ -48,6 +50,7 @@ cmake_install.cmake
 .vscode/launch.json
 
 # Latex
+report/report.log
 *.aux
 *.log
 *.fls 
