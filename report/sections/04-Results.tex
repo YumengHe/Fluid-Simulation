@@ -1,5 +1,28 @@
 \section{Results}
 
+\subsection{PIC and PIC/FLIP}
+
+We tested both the PIC and PIC/FLIP methods with the same number of particles. Figure~\ref{fig:pic_comparison} shows the final result of the simulation using each method.
+
+The PIC method loses energy fast. Particles move less and quickly fall to the bottom.
+The PIC/FLIP method keeps more energy. Particles move more and look more natural.
+
+\begin{figure*}[h]
+    \centering
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/pic_result.png}
+        \caption{PIC result: motion is more damped.}
+    \end{subfigure}
+    \hspace{0.05\textwidth}
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/pic_flip_result.png}
+        \caption{PIC/FLIP result: motion is more dynamic.}
+    \end{subfigure}
+    \caption{Final particle positions using PIC and PIC/FLIP. Both start from the same initial state, but show different behavior due to how velocity is transferred.}
+    \label{fig:pic_comparison}
+\end{figure*}
+
+
 \subsection{APIC}
 
 We evaluated the performance of the APIC method with different particle counts. Figure~\ref{fig:apic_comparison} shows simulation snapshots at three resolutions—1000, 4000, and 8000 particles—demonstrating how the method handles fluid detail, stability, and distribution over time. Each subfigure compares the final state of the fluid, and highlights how increasing the number of particles leads to smoother, more detailed results.

@@ -48,6 +48,38 @@ The velocity field is updated by subtracting the pressure gradient.
   \end{equation}
 \end{enumerate}
 
+\subsubsection{Intermediate Results and Diagrams (PIC)}
+
+In the following figures, the \textbf{yellow arrows} show the grid velocity at some grid points.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.25\textwidth]{figures/pic_init.png}
+    \caption{Initially, all particles are in the bottom-left corner.}
+    \label{fig:pic_init}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.25\textwidth]{figures/pic_apply_g.png}
+    \caption{After gravity is added, the grid velocity points downward.}
+    \label{fig:pic_gravity}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.25\textwidth]{figures/pic_solve_pr.png}
+    \caption{After solving pressure, the grid velocity becomes balanced.}
+    \label{fig:pic_pressure}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.25\textwidth]{figures/pic_interm.png}
+    \caption{Particles start to move after updating their velocity.}
+    \label{fig:pic_inter}
+\end{figure}
+
 \subsection{PIC/FLIP Implementation}
 
 The PIC/FLIP hybrid method follows a similar pipeline but differs in how particle velocities are updated:
@@ -69,3 +101,12 @@ where a flip\_ratio of 0 corresponds to pure PIC, and values approaching 1 resem
 
 \item Particles are then advected in the same manner as the PIC method, including boundary handling.
 \end{enumerate}
+
+\subsubsection{Intermediate Results and Diagrams (PIC/FLIP)}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.25\textwidth]{figures/pic_flip_interm.png}
+  \caption{With PIC/FLIP, the motion is more dynamic than pure PIC.}
+  \label{fig:pic_flip}
+\end{figure}
+
