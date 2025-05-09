@@ -5,11 +5,10 @@
 #include <iostream>
 #include "input.h"
 #include "grid.h"
-#include "particle.h"  // 首先需要包含头文件
+#include "particle.h" 
 #include "./pic_method/particle_pic.h"
 #include "./pic_method/grid_pic.h"
 #include "constants.h"
-#include "./pic_method/apic.h"
 #include "./pic_method/pic.h"
 
 int pause = 1;
@@ -46,20 +45,12 @@ void idle() {
         }
         else if (!particles.empty()) {
             Update();  // run simulation for particle-based fluid
-        }else if (!apic_particles.empty()) {
-            simul_step_apic(apic_particles, apic_grid, dt);
         }
         else if (!pic_particles.empty()) {
             simul_step(pic_particles, pic_grid, dt_pic);  // 添加PIC的模拟步骤
         }
     }
     
-
-    // for (size_t i = 0; i < apic_particles.size(); ++i) {
-    //     std::cout << "Particle " << i 
-    //                 << " : (x=" << apic_particles[i].x 
-    //                 << ", y=" << apic_particles[i].y << ")\n";
-    // }
 
     glutPostRedisplay(); // request a redraw when cpu is idle
 }
@@ -161,44 +152,6 @@ void loadParticles(const std::string& filename) {
     std::cout << "Loaded " << particles.size() << " particles from " << filename << std::endl;
 }
 
-void loadAPIC(const std::string &filename) {
-    std::ifstream file(filename);
-    if (!file.is_open()) {
-        std::cerr << "Error: Cannot open file " << filename << std::endl;
-        return;
-    }
-
-    // Read time step
-    file >> dt;
-
-    // Read grid information
-    int grid_width_num, grid_height_num;
-    file >> grid_width_num >> grid_height_num;
-    float grid_size =  1.0f / grid_width_num;
-    apic_grid = Grid_PIC(grid_width_num, grid_height_num, grid_size);
-    // Read all particle data
-    float x, y, vx, vy;
-    float B11, B12, B21, B22;
-    while (file >> x >> y >> vx >> vy >> B11 >> B12 >> B21 >> B22) {
-        Particle_PIC particle(x / VIEW_WIDTH, y / VIEW_WIDTH, vx, vy);
-        particle.B(0,0) = B11;
-        particle.B(0,1) = B12;
-        particle.B(1,0) = B21;
-        particle.B(1,1) = B22;
-        // B matrix is already initialized to zero in constructor
-        apic_particles.push_back(particle);
-    }
-
-    file.close();
-
-    std::cout << "Loaded " << apic_particles.size() << " apic_particles\n";
-    std::cout << "Grid size: " << grid_width_num << "x" << grid_height_num << "\n";
-    std::cout << "Grid spacing: " << grid_size << "\n";
-    std::cout << "dt = " << dt << "\n"; // ✅ 打印一下检查
-    std::cout << "First particle: (" << apic_particles[0].x << ", " << apic_particles[0].y << "), "
-          << "vx: " << apic_particles[0].velocity_x << ", vy: " << apic_particles[0].velocity_y << std::endl;
-
-}
 
 void loadPIC(const std::string &filename) {
     std::ifstream file(filename);
