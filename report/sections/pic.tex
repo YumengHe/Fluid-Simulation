@@ -4,14 +4,48 @@ The Particle-In-Cell (PIC) method uses both particles and grids for fluid simula
 
 \begin{enumerate}
 \item \textbf{Transfer to Grid}: Particle velocities are transferred to nearby grid cells using B-spline weighting functions.
+The compact quadratic B-spline kernel used is:
+\begin{equation}
+w(r) =
+\begin{cases}
+0.75 - r^2, & 0 \le r < 0.5 \\
+0.5 \cdot (1.5 - r)^2, & 0.5 \le r < 1.5 \\
+0, & \text{otherwise}
+\end{cases}
+\end{equation}
 
 \item \textbf{Apply Gravity}: Gravity force is applied directly to vertical grid velocities.
+Grid velocity is updated using:
+\begin{equation}
+\vec{v}_{i,j}.y \mathrel{-}= g \cdot \Delta t
+\end{equation}
 
-\item \textbf{Solve Pressure}: The pressure Poisson equation is solved using Jacobi iteration. Initially, divergence is calculated for each grid cell. Then, pressure values are iteratively adjusted to minimize divergence, enforcing incompressibility. The velocity field is updated by subtracting the pressure gradient.
+\item \textbf{Solve Pressure}: The pressure Poisson equation is solved using Jacobi iteration. Initially, divergence is calculated for each grid cell. 
+\begin{equation}
+  \nabla \cdot \vec{v}_{i,j} = \frac{v_{i+1,j}.x - v_{i-1,j}.x}{2} + \frac{v_{i,j+1}.y - v_{i,j-1}.y}{2}
+  \end{equation}
+
+Then, pressure values are iteratively adjusted to minimize divergence, enforcing incompressibility.
+\begin{equation}
+  p_{i,j}^{(k+1)} = \frac{1}{N} \left( \sum_{\text{fluid neighbors}} p^{(k)} - \nabla \cdot \vec{v}_{i,j} \right)
+  \end{equation}
+  where \( N \) is the number of neighboring fluid cells.
+
+The velocity field is updated by subtracting the pressure gradient.
+\begin{equation}
+  \vec{v}_{i,j}.x \mathrel{-}= \frac{p_{i+1,j} - p_{i-1,j}}{2}, \quad
+  \vec{v}_{i,j}.y \mathrel{-}= \frac{p_{i,j+1} - p_{i,j-1}}{2}
+  \end{equation}
 
 \item \textbf{Transfer Back to Particles}: Updated grid velocities are interpolated back onto particles.
+\begin{equation}
+  \vec{v}_p = \sum_{(i,j)} w_{(i,j) \rightarrow p} \cdot \vec{v}_{i,j}
+  \end{equation}
 
 \item \textbf{Move Particles}: Particles are advected according to their updated velocities. Boundary conditions are enforced by repositioning particles inside the domain and setting boundary normal velocities to zero.
+\begin{equation}
+  \vec{x}_p \mathrel{+}= \vec{v}_p \cdot \Delta t
+  \end{equation}
 \end{enumerate}
 
 \subsection{PIC/FLIP Implementation}
