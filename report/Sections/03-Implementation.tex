@@ -1,5 +1,11 @@
 \section{Methods}
-\blindtext
+To accomplish our project goals, we implemented five distinct 2D incompressible fluid simulation methods—Stable Fluids, SPH, PIC, PIC/FLIP, and APIC—using C++ for the core simulation and OpenGL with GLUT for real-time visualization. Each method was developed independently based on its underlying physical principles and algorithmic structure. We focused on observing and comparing the visual behavior and numerical characteristics of each simulation through qualitative analysis. The following sections describe the implementation details and key observations for each method.
+
+\textbf{Tools and Learning} We used C++ for simulation logic and OpenGL with GLUT for real-time visualization across all simulation methods. The Eigen library was employed for efficient matrix operations, particularly for APIC and FLIP methods where affine velocity matrices were involved. 
+
+Throughout the project, we learned how to structure particle-grid transfer systems, implement spatial neighborhood queries using a sorting grid, and visualize thousands of particles in real time. We also gained practical experience with parallel programming, numerical debugging, and enforcing boundary conditions on staggered MAC grids.
+
+\textbf{Course Content Reference} We applied key concepts from the course, including hybrid fluid simulation methods (PIC, FLIP, APIC), particle-grid transfers, SPH kernel functions, external forces, and pressure projection. These topics directly guided our simulation and implementation strategy.
 
 % \begin{figure}[!htpb]
 %     \centering
@@ -8,8 +14,8 @@
 %     \label{fig:tcanther}
 % \end{figure}
 
-\subsection{Method 01}
-\blindtext
-
-\subsubsection{Method 01.A}
-\blindtext
+% \input{Sections/grid}
+% \input{Sections/particle}
+% \input{Sections/pic}
+% \input{Sections/flip}
+\input{Sections/apic}

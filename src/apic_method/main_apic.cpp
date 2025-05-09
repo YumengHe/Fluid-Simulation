@@ -15,6 +15,7 @@ const scalar max_step = 0.01;
 FluidSim sim;
 const Vector2s domain_center(50.0, 50.0);
 const Vector2s origin(0.0, 0.0);
+bool is_paused = false;
 
 void setup_opengl() {
   glEnable(GL_DEPTH_TEST | GL_BLEND | GL_POINT_SMOOTH | GL_LINE_SMOOTH);
@@ -38,17 +39,26 @@ void handle_resize(int w, int h) { glViewport(0, 0, w, h); }
 
 void key_callback(unsigned char key, int x, int y) {
   if (key == 27) std::exit(0);  // ESC
+  if (key == 'p' || key == 'P')
+  {
+    is_paused = !is_paused; // 切换暂停状态
+  }
 }
 
-void tick(int) {
+void tick(int)
+{
   glutPostRedisplay();
   glutTimerFunc(static_cast<int>(frame_interval * 1000.0), tick, 0);
 
-  scalar dt = std::min(max_step, sim.compute_cfl() * cfl_scale);
-  int steps = static_cast<int>(std::ceil(frame_interval / dt));
-  dt = frame_interval / steps;
+  if (!is_paused)
+  { // 只在非暂停状态下更新模拟
+    scalar dt = std::min(max_step, sim.compute_cfl() * cfl_scale);
+    int steps = static_cast<int>(std::ceil(frame_interval / dt));
+    dt = frame_interval / steps;
 
-  for (int i = 0; i < steps; ++i) sim.advance(dt);
+    for (int i = 0; i < steps; ++i)
+      sim.advance(dt);
+  }
 }
 
 int main(int argc, char** argv) {
