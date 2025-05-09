@@ -1,2 +1,53 @@
 \subsection{Particle}
-We used a particle fluid simulation method proposed by Müller \cite{Muller2003} based on Smoothed Particle Hydrodynamics (SPH).
+We used a particle fluid simulation method developed by Monaghan \cite{Monaghan1992SPH}, called Smoothed Particle Hydrodynamics (SPH).
+Our code focused on modeling using SPH formulations with fluid forces such as pressure and viscosity.
+SPH is an interpolation method that evaluates field quantities of each particle based on its local neighborhood using radial symmetrical smoothing kernels.
+
+\subsubsection{Algorithm}
+The core steps of the SPH particle fluid simulation is summarized in Algorithm~\ref{alg:sph}.
+
+\begin{algorithm}[h]
+\caption{SPH Particle Update Loop}\label{alg:sph}
+\begin{algorithmic}[1]
+    \State //\ Compute density and pressure
+    \For{each particle $i$}
+        \For{each neighboring particle $j$}
+            \State Compute distance
+            \If{Within kernel radius}
+                \State Add density contribution $\rho_i = m_j \cdot W(r_{ij}, h)$
+            \EndIf
+        \EndFor
+        \State Compute pressure from density $P = k_p(\rho - \rho_0)$
+    \EndFor
+
+    \State //\ Compute forces on each particle
+    \For{each particle $i$}
+        \State Initialize $f_p \gets 0$, $f_v \gets 0$
+        \For{each neighboring particle $j$}
+            \State Compute distance
+            \If{Within kernel radius}
+                \State Compute pressure force contribution
+                \State $f_p = m_j \cdot \frac{p_i + p_j}{2\rho_j} \cdot \nabla W(r_ij, h)$
+                \State Compute viscosity force contribution
+                \State $f_p = m_j \cdot \frac{v_j - v_i}{2\rho_j} \cdot \nabla^2 W(r_ij, h)$
+            \EndIf
+        \EndFor
+        \State Compute gravity force contribution $f_g = G \cdot \frac{m_i}{\rho_i}$
+        \State Total force on particle $f_i = f_p + f_v + f_g$
+    \EndFor
+
+    \State //\ Integrate velocity and update positions
+    \For{each particle $i$}
+        \State Update velocity $v_i^{t+\Delta t} = v_i^t = \Delta t \cdot \frac{f_i^t}{\rho_i}$
+        \State Update position ${x}_i^{t+\Delta t} = {x}_i^t + \Delta t \cdot {v}_i^{t+\Delta t}$
+        \If{position $x_i$ hits domain boundary}
+            \State Dampen velocity
+            \State Clamp position to boundary
+        \EndIf
+    \EndFor
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Intermediate Results and Diagrams}
+We initialized our SPH simulation with a slight jitter to each particle's initial positions. This is because SPH evalautes its fields based on its neighbors,
+and if particles left and right are evenly spaced, the horizontal forces will cancel out perfectly. This would lead to the particles only bouncing vertically.
