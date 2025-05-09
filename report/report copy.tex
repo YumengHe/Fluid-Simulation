@@ -1,0 +1,46 @@
+% Packages & Document Configurations
+\documentclass[twocolumn]{NobArticle}
+\runninghead{Shortened Running Article Title}
+\footertext{\textit{Journal X} (2023) 12:684}
+
+% Title
+\title{Incompressible Fluid Simulation: A Comparison}
+
+% Authors
+\author{
+    YUMENG HE, University of Southern California, USA \\
+    HSIN LI, University of Southern California, USA \\
+    YUCHEN CHEN, University of Southern California, USA \\
+    XU CHEN, University of Southern California, USA
+}
+
+% Abstract
+\renewcommand{\maketitlehookd}{%
+\begin{abstract}
+    \noindent Our project is a 2D incompressible fluid simulation implemented in C++ with visualization using OpenGL and GLUT. The main objective is to compare the performance, visual behavior, and numerical characteristics of different fluid simulation methods, including: Grid-based (Stable Fluids), Particle-based (SPH), Particle-In-Cell (PIC),hybrid PIC/FLIP method(PIC/FLIP), Affine Particle-In-Cell (APIC)
+    This simulation provides a visual and algorithmic comparison of each method's strengths and weaknesses.
+    
+    \medskip
+
+    \small{\textbf{Index Terms:} fluid simulation, incompressible, particle, grid, hybird}
+\end{abstract}
+}
+
+\begin{document}
+
+\small
+\maketitle
+
+\input{Sections/01-Introduction}
+\input{Sections/02-Background}
+% \input{Sections/03-Methods}
+% \input{Sections/04-Results}
+% \input{Sections/05-Discussion}
+% \input{Sections/06-Conclusion}
+
+\section*{Acknowledgements}
+This project received support during the CSCI580 course, instructed by Professor XXX at the University of Southern California, USA.
+
+\printbibliography
+
+\end{document}

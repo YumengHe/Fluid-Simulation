@@ -1,0 +1,35 @@
+% Introduction
+\section{Introduction}
+
+Fluid simulation is a central topic in physics-based graphics and engineering.
+Researchers study two broad classes of flow.
+Compressible fluids—such as smoke, fire, or drifting snow—change density as they move.
+Incompressible fluids—such as water—preserve volume.
+Our project narrows its focus to incompressible flow because it underpins many game and film effects.
+
+Scientists have pursued fluid solvers for more than three decades.
+Early work in the 1990 s split along two lines. Grid-based methods stored velocity on fixed cells and solved pressure on a lattice.
+Particle methods—notably Smoothed Particle Hydrodynamics (SPH)—tracked discrete parcels of mass.
+Each line had limits: grids diffused small details, while pure particles struggled with volume loss and boundary handling.
+
+Around 2000, hybrid techniques emerged.
+Particle-In-Cell (PIC) used a grid for forces and particles for advection.
+FLIP kept the same layout but reduced numerical damping.
+Material Point Method (MPM) added elastoplastic behavior for snow-like media.
+Affine Particle-In-Cell (APIC) later improved rotational fidelity by carrying local affine velocity.
+These methods mix Eulerian and Lagrangian views to balance stability and detail.
+
+Our project builds an interactive framework that implements five representatives: Stable Fluids (grid), SPH (particle), PIC, hybrid PIC/FLIP, and APIC.
+We run every solver on the same domain, time step, and boundary conditions. We then measure speed, memory use, and visual artifacts.
+The side-by-side view reveals each method's trade-off between diffusion, noise, and stability, and helps artists choose the right tool for a desired effect.
+
+
+% Contribution
+\subsection{Contribution}
+This project as the follow contributions.
+\begin{itemize}
+	\item The codebase supports five fluid solvers behind one interface. Users can swap methods with a single flag.
+	\item The viewer renders density, velocity, and vorticity in real time. It uses GLUT for portability.
+	\item We fix domain size, time step, and boundary conditions across all tests. This isolates algorithmic differences.
+	\item We capture signature phenomena such as diffusion, particle clumping, and energy drift. Screenshots and videos illustrate each effect.
+\end{itemize}
