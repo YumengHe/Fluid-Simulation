@@ -6,8 +6,6 @@
 # VS Code settings (optional to ignore)
 # .vscode/
 
-
-
 # CMake build artifacts
 build/
 CMakeFiles/
@@ -51,8 +49,7 @@ cmake_install.cmake
 
 # Latex
 report/report.log
-*.aux
-*.log
-*.fls 
-*.fdb_latexmk 
-*.run.xml
+report/report.aux
+report/report.run.xml
+report/report.bcf
+report/report.synctex.gz
