@@ -8,27 +8,49 @@ Fluid simulation typically relies on solving the Navier-Stokes equations, which 
 \end{equation}
 where $\mathbf{u}$ is the velocity field, $p$ is the pressure, $\rho$ is the density, $\nu$ is the kinematic viscosity, and $\mathbf{f}$ represents external forces like gravity or user input. The second equation enforces incompressibility.
 
+% \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+% Grid
+% \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 \subsection{Grid-based (Stable Fluids)}
-Grid-based methods store velocity and pressure fields on a fixed Eulerian grid. The Stable Fluids method proposed by Stam \citet{Stam 1999} employs an implicit numerical scheme that guarantees stability at the cost of numerical diffusion. This approach involves four primary steps: advection, diffusion, force application, and pressure projection to ensure incompressibility. Although easy to implement and stable, this method diffuses small-scale features rapidly, causing loss of detail.
+Grid-based methods store velocity and pressure fields on a fixed Eulerian grid.
+The Stable Fluids method proposed by Stam \citep{stam2023stable} employs an implicit numerical scheme that guarantees stability at the cost of numerical diffusion.
+This approach involves four primary steps: advection, diffusion, force application, and pressure projection to ensure incompressibility.
+Although easy to implement and stable, this method diffuses small-scale features rapidly, causing loss of detail.
 
+% \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+% Particle
+% \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 \subsection{Particle-based (SPH)}
-Smoothed Particle Hydrodynamics (SPH) is a purely Lagrangian, particle-based technique. It represents fluid with discrete particles that carry fluid properties such as density and velocity \cite{Monaghan1992SPH}. Particle interactions are computed using smoothing kernels, enabling flexible boundary handling and adaptive resolution. However, SPH often struggles with preserving volume and can produce noisy visual artifacts, especially with low particle counts.
+Smoothed Particle Hydrodynamics (SPH) is a purely Lagrangian, particle-based technique.
+It represents fluid with discrete particles that carry fluid properties such as density and velocity \citep{monaghan1992smoothed}.
+Particle interactions are computed using smoothing kernels, enabling flexible boundary handling and adaptive resolution.
+However, SPH often struggles with preserving volume and can produce noisy visual artifacts, especially with low particle counts.
 
+% \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+% Hybird
+% \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 \subsection{Hybrid Methods}
 Hybrid approaches blend Eulerian grids and Lagrangian particles, seeking a balance between stability, accuracy, and visual realism. Notable hybrid methods include:
 
-\textbf{Particle-In-Cell (PIC)}: PIC \cite{Harlow1964PIC} transfers velocities from particles to a grid to compute pressure and forces, then advects particles using the grid velocities. It offers stability but introduces significant numerical damping.
+\textbf{Particle-In-Cell (PIC)}: 
+PIC \citep{tskhakaya2007particle} transfers velocities from particles to a grid to compute pressure and forces, then advects particles using the grid velocities.
+It offers stability but introduces significant numerical damping.
 
-\textbf{FLuid Implicit Particle (FLIP)}: An improvement over PIC, FLIP \cite{Brackbill1986FLIP} reduces numerical damping by transferring velocity changes, rather than absolute velocities, from grid to particles.
+\textbf{FLuid Implicit Particle (FLIP)}:
+An improvement over PIC, FLIP \citep{brackbill1988flip} reduces numerical damping by transferring velocity changes,
+rather than absolute velocities, from grid to particles.
 
-\textbf{Affine Particle-In-Cell (APIC)}: APIC \cite{Jiang2015APIC} further improves rotational and detailed motion preservation by storing affine velocity transformations for each particle, mitigating excessive dissipation seen in PIC/FLIP methods.
+\textbf{Affine Particle-In-Cell (APIC)}:
+APIC \citep{jiang2015affine} further improves rotational and detailed motion preservation by storing affine velocity transformations for each particle, mitigating excessive dissipation seen in PIC/FLIP methods.
 
-\textbf{Material Point Method (MPM)}: Extending PIC, MPM \cite{Sulsky1995MPM} simulates elastoplastic and granular materials by integrating material deformation through particle-grid interactions. 
+\textbf{Material Point Method (MPM)}:
+Extending PIC, MPM \citep{bardenhagen2000material} simulates elastoplastic and granular materials by integrating material deformation through particle-grid interactions. 
 
 Other advanced hybrid variations include:
 \begin{itemize}
-\item \textbf{PolyPIC} \cite{Fu2017PolyPIC}, which uses polynomial velocity reconstruction to reduce numerical dissipation.
-\item \textbf{MLS-MPM} (Moving Least Squares MPM) \cite{Hu2018MLSMPM}, enhancing accuracy by employing MLS interpolation.
-\item \textbf{Impulse PIC} \cite{Jiang2021ImpulsePIC}, improving collision handling by explicitly resolving impulses at boundaries.
+\item \textbf{PolyPIC} \citep{fu2017polynomial}, which uses polynomial velocity reconstruction to reduce numerical dissipation.
+\item \textbf{MLS-MPM} (Moving Least Squares MPM) \citep{hu2018moving}, enhancing accuracy by employing MLS interpolation.
+\item \textbf{Impulse PIC} \citep{feng2022impulse}, improving collision handling by explicitly resolving impulses at boundaries.
 \end{itemize}
+
 These hybrid methods significantly advance fluid simulation, enabling realistic visualization with reduced artifacts and increased computational stability.

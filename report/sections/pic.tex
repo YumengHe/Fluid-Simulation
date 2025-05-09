@@ -1,1 +1,37 @@
-pic
+\subsection{PIC}
+
+The Particle-In-Cell (PIC) method uses both particles and grids for fluid simulation. Each simulation step involves five primary phases:
+
+\begin{enumerate}
+\item \textbf{Transfer to Grid}: Particle velocities are transferred to nearby grid cells using B-spline weighting functions.
+
+\item \textbf{Apply Gravity}: Gravity force is applied directly to vertical grid velocities.
+
+\item \textbf{Solve Pressure}: The pressure Poisson equation is solved using Jacobi iteration. Initially, divergence is calculated for each grid cell. Then, pressure values are iteratively adjusted to minimize divergence, enforcing incompressibility. The velocity field is updated by subtracting the pressure gradient.
+
+\item \textbf{Transfer Back to Particles}: Updated grid velocities are interpolated back onto particles.
+
+\item \textbf{Move Particles}: Particles are advected according to their updated velocities. Boundary conditions are enforced by repositioning particles inside the domain and setting boundary normal velocities to zero.
+\end{enumerate}
+
+\subsection{PIC/FLIP Implementation}
+
+The PIC/FLIP hybrid method follows a similar pipeline but differs in how particle velocities are updated:
+
+\begin{enumerate}
+\item Before applying gravity, the current grid velocity is stored.
+
+\item After solving the pressure, the difference between the new and old grid velocities is computed.
+
+\item Particle velocities are updated using a blend of PIC and FLIP:
+\begin{equation}
+  \begin{aligned}
+  &\text{blended\_velocity} \\
+  &= \text{ particle\_velocity} \\
+  &+ \text{ flip\_ratio} \cdot (\text{new\_grid\_velocity} - \text{old\_grid\_velocity})
+  \end{aligned}
+\end{equation}
+where a flip\_ratio of 0 corresponds to pure PIC, and values approaching 1 resemble FLIP.
+
+\item Particles are then advected in the same manner as the PIC method, including boundary handling.
+\end{enumerate}

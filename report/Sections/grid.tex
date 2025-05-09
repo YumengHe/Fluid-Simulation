@@ -1,1 +1,29 @@
-grid
+\subsection{Grid}
+
+The first method implemented in our project is the Stable Fluids method introduced by Stam  \citep{stam2023stable}. This grid-based Eulerian approach uses a fixed discretized grid to represent fluid properties, such as velocity and density fields. The method ensures unconditional stability at the expense of numerical diffusion, making it robust for real-time applications.
+
+The numerical solver follows four main computational steps:
+
+\begin{enumerate}
+\item \textbf{Add Source}: Introduce external quantities (density, velocity) into the simulation. Each cell's value is incremented by a source term scaled by the simulation timestep:
+\[
+x_{i,j} \leftarrow x_{i,j} + \Delta t \cdot s_{i,j}
+\]
+
+\item \textbf{Diffuse}: Account for viscosity by spreading fluid properties across the grid. This step employs iterative Gauss-Seidel or Jacobi methods to solve the diffusion equation implicitly:
+\[
+\frac{x_{i,j}^{t+1} - x_{i,j}^{t}}{\Delta t} = \nu \nabla^2 x_{i,j}^{t+1}
+\]
+
+\item \textbf{Project}: Enforce incompressibility by adjusting the velocity field to be divergence-free. The divergence is computed, a pressure field is solved via iterative Jacobi relaxation, and then the pressure gradient is subtracted from the velocity:
+\[
+\nabla^2 p = \nabla \cdot \mathbf{u}, \quad \mathbf{u} \leftarrow \mathbf{u} - \nabla p
+\]
+
+\item \textbf{Advect}: Transport fluid properties through the velocity field. Each grid cell is traced backward in time along the velocity field, and bilinear interpolation reconstructs values:
+\[
+x_{i,j}^{t+1} = x(\mathbf{p} - \Delta t \cdot \mathbf{u}(\mathbf{p},t), t)
+\]
+\end{enumerate}
+
+Finally, appropriate \textbf{Boundary Conditions} are applied after each step: velocity components are inverted at solid boundaries, and scalar fields maintain values by copying adjacent interior cells. These operations are encapsulated within the functions \texttt{vel\_step()} and \texttt{dens\_step()}, which are sequentially called in the main simulation loop (\texttt{simulation()}).

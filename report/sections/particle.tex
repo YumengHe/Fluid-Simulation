@@ -1,12 +1,12 @@
 \subsection{Particle}
-We used a particle fluid simulation method developed by Monaghan \cite{Monaghan1992SPH}, called Smoothed Particle Hydrodynamics (SPH).
+We used a particle fluid simulation method developed by Monaghan \citep{monaghan1992smoothed}, called Smoothed Particle Hydrodynamics (SPH).
 Our code focused on modeling using SPH formulations with fluid forces such as pressure and viscosity.
 SPH is an interpolation method that evaluates field quantities of each particle based on its local neighborhood using radial symmetrical smoothing kernels.
 
 \subsubsection{Algorithm}
 The core steps of the SPH particle fluid simulation is summarized in Algorithm~\ref{alg:sph}.
 
-\begin{algorithm}[h]
+\begin{algorithm}[ht]
 \caption{SPH Particle Update Loop}\label{alg:sph}
 \begin{algorithmic}[1]
     \State //\ Compute density and pressure
