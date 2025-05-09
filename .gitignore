@@ -46,3 +46,10 @@ cmake_install.cmake
 *.out
 *.app
 .vscode/launch.json
+
+# Latex
+*.aux
+*.log
+*.fls 
+*.fdb_latexmk 
+*.run.xml
