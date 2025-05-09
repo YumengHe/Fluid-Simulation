@@ -54,3 +54,6 @@ report/report.aux
 report/report.run.xml
 report/report.bcf
 report/report.synctex.gz
+report/report.bbl 
+report/report.blg
+report/report.fdb_latexmk

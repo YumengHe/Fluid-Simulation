@@ -83,12 +83,18 @@ g++ -o particle_gen particleGenerator.cpp
 ## Grid
 Based on stable fluid method [[1]](#1)[[2]](#2).
 ```bash
-
+./fluid ./fluids/grid/10.grid
+./fluid ./fluids/grid/15.grid
+./fluid ./fluids/grid/20.grid
+./fluid ./fluids/grid/50.grid
 ```
 
 ## Particle
 Based on SPH.
 ```bash
+./fluid
+./fluid ./fluids/grid/template.grid
+./fluid ./fluids/particle/400particles.par
 ./fluid ./fluids/400particles.par
 ```
 ## PIC/FLIP
