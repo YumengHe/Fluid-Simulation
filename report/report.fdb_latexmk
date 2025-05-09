@@ -1,13 +1,13 @@
 # Fdb version 4
-["biber report"] 0 "report.bcf" "report.bbl" "report" 1746764636.05508 0
+["biber report"] 0 "report.bcf" "report.bbl" "report" 1746767841.21784 0
   "Bibliography/Bibliography.bib" 0 -1 0 ""
   "report.bcf" 0 -1 0 "pdflatex"
   (generated)
   "report.bbl"
   "report.blg"
   (rewritten before read)
-["pdflatex"] 1746764634.86915 "/Users/chenxu/Fluid-Simulation/report/report.tex" "report.pdf" "report" 1746764636.05535 0
-  "/Users/chenxu/Fluid-Simulation/report/report.tex" 1746764483.72586 1705 c9a4aa4779f12f932747a9029228d23f ""
+["pdflatex"] 1746767839.69536 "/Users/chenxu/Fluid-Simulation/report/report.tex" "report.pdf" "report" 1746767841.21811 0
+  "/Users/chenxu/Fluid-Simulation/report/report.tex" 1746767357.89028 1724 4f1ff0e3d11834140e56eb9d4d9115c1 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/libertine/lbtn_76gpa5.enc" 1490131464 2933 9ad527ce78d7c5fa0a642dead095f172 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/libertine/lbtn_7grukw.enc" 1490131464 2934 a4a9158faed2e9e89c771b4e3b7fc12f ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/libertine/lbtn_fygcup.enc" 1490131464 2824 67c67e7402c76b84866a6f91f9790b12 ""
@@ -210,14 +210,19 @@
   "Sections/01-Introduction.tex" 1746750813.45927 2304 98265ca1fd8476f33fe183c975bd74b2 ""
   "Sections/02-Background.tex" 1746750813.45946 3349 50bcfadb8a1ce93ce8388b4dabe245b0 ""
   "Sections/03-Implementation.tex" 1746763714.88452 2067 83fc867ac0cf009e3fabec775c466391 ""
+  "Sections/04-Results.tex" 1746767084.98726 1483 5779ee8ffced71efa0ec3551a36ed52e ""
+  "Sections/05-Discussion.tex" 1746767836.61105 1305 f47ce1ae28c7a0d02c7dc7aa18ea81f6 ""
   "Sections/06-Conclusion.tex" 1746764633.57863 1259 330089a8a31fedc93d9173b3a993e13a ""
-  "Sections/apic.tex" 1746763191.26609 2579 47ec53ec2addc91791949623acdbb0d6 ""
+  "Sections/apic.tex" 1746766821.63256 2452 3b9dc816652f71847dbab1172b26b032 ""
+  "figures/apic1000.png" 1746766049.76545 76791 bdd7a4709ed004be8a372c19a8a2d8da ""
+  "figures/apic1000_init.png" 1746766049.76039 81090 8fa0c1826cca0341fb2d68e6bdd54647 ""
   "figures/apic4000.png" 1746762350.5515 109815 719625ed07cc6bb413957974bf32c381 ""
-  "report.aux" 1746764635.84671 3035 015fed8fedd12bf0f51d44c35173cb5a "pdflatex"
+  "figures/apic8000.png" 1746765742.09555 145008 8816a360a4507168153d5c68973861c3 ""
+  "report.aux" 1746767840.99895 4523 0cf013607c59321a4a67bf515a56ceb7 "pdflatex"
   "report.bbl" 0 -1 0 "biber report"
-  "report.out" 1746764635.84743 1411 ce4f89eb271c32ff8be54f6150290321 "pdflatex"
-  "report.run.xml" 1746764635.85017 2374 f37fd1426cc50fe9eac5d26cf3586ec8 "pdflatex"
-  "report.tex" 1746764483.72586 1705 c9a4aa4779f12f932747a9029228d23f ""
+  "report.out" 1746767840.99977 2303 2b8118b4ee8fc4a06aad91264f71856d "pdflatex"
+  "report.run.xml" 1746767841.00254 2374 f37fd1426cc50fe9eac5d26cf3586ec8 "pdflatex"
+  "report.tex" 1746767357.89028 1724 4f1ff0e3d11834140e56eb9d4d9115c1 ""
   (generated)
   "report.aux"
   "report.bcf"

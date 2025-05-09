@@ -1,0 +1,12 @@
+\section{Discussion}
+\subsection{Method Contributions}
+\subsubsection{APIC}
+The APIC method contributed most significantly to the visual quality of our simulations. By introducing an affine velocity field per particle, APIC preserves both rotational motion and local deformation, resulting in smoother, more detailed fluid behavior. Compared to PIC and FLIP, it produced the most visually stable and coherent results, especially at higher particle counts. The use of affine velocity transfer also reduced numerical dissipation and prevented particle clumping, leading to more realistic motion.
+
+\subsection{Strengths}
+\subsubsection{APIC}
+APIC preserved rotational motion and fine detail better than other methods. It produced smooth and stable results even with 10000 particles. Compared to PIC and FLIP, it avoided both dissipation and noise, leading to visually realistic fluid behavior.
+
+\subsection{Limitations}
+\subsubsection{APIC}
+APIC is computationally expensive due to affine matrix operations and additional interpolation. Performance drops at high particle counts, and the method becomes less suitable for real-time applications. It is also more complex to implement than PIC or FLIP, requiring careful handling of matrix math, boundary conditions, and velocity transfers to avoid instability.

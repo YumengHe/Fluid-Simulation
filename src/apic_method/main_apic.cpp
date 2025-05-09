@@ -6,7 +6,7 @@
 #include "fluidsim.h"
 
 // Simulation Parameters
-const int grid_resolution = 100;
+const int grid_resolution = 80;
 const scalar domain_size = 100.0;
 const scalar cfl_scale = 3.0;
 const scalar frame_interval = 1.0 / 60.0;  // 60 FPS
@@ -41,7 +41,7 @@ void key_callback(unsigned char key, int x, int y) {
   if (key == 27) std::exit(0);  // ESC
   if (key == 'p' || key == 'P')
   {
-    is_paused = !is_paused; // 切换暂停状态
+    is_paused = !is_paused; 
   }
 }
 
@@ -51,7 +51,7 @@ void tick(int)
   glutTimerFunc(static_cast<int>(frame_interval * 1000.0), tick, 0);
 
   if (!is_paused)
-  { // 只在非暂停状态下更新模拟
+  { 
     scalar dt = std::min(max_step, sim.compute_cfl() * cfl_scale);
     int steps = static_cast<int>(std::ceil(frame_interval / dt));
     dt = frame_interval / steps;
