@@ -419,6 +419,11 @@ INPUT ./figures/apic4000.png
 INPUT ./figures/apic4000.png
 INPUT ./figures/apic4000.png
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/libertine/LinLibertineTB-tlf-t1.tfm
+INPUT ./Sections/06-Conclusion.tex
+INPUT ./Sections/06-Conclusion.tex
+INPUT ./Sections/06-Conclusion.tex
+INPUT ./Sections/06-Conclusion.tex
+INPUT Sections/06-Conclusion.tex
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/libertine/LinLibertineTI-tlf-t1.tfm
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/libertine/LinLibertineTI-tlf-t1.tfm
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/vf/public/libertine/LinLibertineTI-tlf-t1.vf
