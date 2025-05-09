@@ -1,5 +1,33 @@
 \section{Results}
 
+\subsection{Grid}
+
+We evaluated the performance of the Grid method with a 50x50 grid. Figure~\ref{fig:grid} shows simulation snapshots of the grid simulation.
+
+\begin{figure*}[h]
+    \centering
+    \begin{subfigure}[b]{0.2\textwidth}
+        \includegraphics[width=\textwidth]{figures/grid50_init.png}
+        \caption{initialization}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.2\textwidth}
+        \includegraphics[width=\textwidth]{figures/grid50_1.png}
+        \caption{first stage}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.2\textwidth}
+        \includegraphics[width=\textwidth]{figures/grid50_2.png}
+        \caption{second stage}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.2\textwidth}
+        \includegraphics[width=\textwidth]{figures/grid50_3.png}
+        \caption{third stage}
+    \end{subfigure}
+    \caption{Stages of Stable Fluids simulation 
+    (a) shows the initial grid configuration
+    (b)–(d) show different stages of the simulation}
+    \label{fig:grid}
+\end{figure*}
+
 \subsection{PIC and PIC/FLIP}
 
 We tested both the PIC and PIC/FLIP methods with the same number of particles. Figure~\ref{fig:pic_comparison} shows the final result of the simulation using each method.
@@ -21,7 +49,6 @@ The PIC/FLIP method keeps more energy. Particles move more and look more natural
     \caption{Final particle positions using PIC and PIC/FLIP. Both start from the same initial state, but show different behavior due to how velocity is transferred.}
     \label{fig:pic_comparison}
 \end{figure*}
-
 
 \subsection{APIC}
 
