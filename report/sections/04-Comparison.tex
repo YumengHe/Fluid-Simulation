@@ -43,6 +43,8 @@ Slower \\
 
 We evaluated the performance of the Grid method with a 50x50 grid. Figure~\ref{fig:grid} shows simulation snapshots of the grid simulation.
 
+The grid-based method is easy to use and stable. It works well for smooth and slow fluid motion. But it also has some limits. Small details like sharp edges are often lost because values are spread out too much. It can also look blurry over time. Since the grid is fixed, it is harder to follow fast-moving or thin parts of the fluid. Overall, it is simple and works well for basic fluid scenes, but not good for effects that need high detail.
+
 \begin{figure*}[h]
     \centering
     \begin{subfigure}[b]{0.2\textwidth}
