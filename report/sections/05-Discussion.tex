@@ -35,16 +35,3 @@ Slower \\
 \bottomrule
 \end{tabularx}
 \end{table}
-
-\subsection{Grid}
-
-\subsection{Particle}
-Smoothed Particle Hydrodynamics (SPH) contributed to a fast and scalable fluid simulation. The method is more intuitive, and can be used to model free surfaces, avoiding issues that are present in grid simulation such as grid aliasing.
-Compared to Stable Fluids, SPH is less stable, and can lead to particle clumping if not stabilized. When initializing the particles, the method is sensitive to particle distribution and requires attention to tuning the smoothing kernels.
-\subsection{PIC}
-
-\subsection{PIC/FLIP}
-
-\subsection{APIC}
-The APIC method contributed most significantly to the visual quality of our simulations. By introducing an affine velocity field per particle, APIC preserves both rotational motion and local deformation, resulting in smoother, more detailed fluid behavior. Compared to PIC and FLIP, it produced the most visually stable and coherent results, especially at higher particle counts. The use of affine velocity transfer also reduced numerical dissipation and prevented particle clumping, leading to more realistic motion.
-It is computationally expensive due to affine matrix operations and additional interpolation. Performance drops at high particle counts, and the method becomes less suitable for real-time applications. It is also more complex to implement than PIC or FLIP, requiring careful handling of matrix math, boundary conditions, and velocity transfers to avoid instability.
