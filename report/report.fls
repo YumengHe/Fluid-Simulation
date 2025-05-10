@@ -232,6 +232,9 @@ INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/libertine/T1LinuxLibertineT-T
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/libertine/T1LinuxLibertineT-TLF.fd
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/libertine/T1LinuxLibertineT-TLF.fd
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/libertine/LinLibertineT-tlf-t1.tfm
+INPUT ./report.aux
+INPUT ./report.aux
+INPUT report.aux
 OUTPUT report.aux
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/newtx/omlnxlmi.fd
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/newtx/omlnxlmi.fd
@@ -265,8 +268,14 @@ INPUT ./report.bbl
 INPUT ./report.bbl
 INPUT report.bbl
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/graphics/color.sty
-OUTPUT report.out
+INPUT ./report.out
+INPUT ./report.out
+INPUT report.out
+INPUT report.out
 OUTPUT report.pdf
+INPUT ./report.out
+INPUT ./report.out
+OUTPUT report.out
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/libertine/LinLibertineT-tlf-t1.tfm
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/libertine/LinLibertineT-tlf-t1.tfm
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/libertine/LinLibertineTB-tlf-t1.tfm
@@ -597,6 +606,7 @@ INPUT /usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/libertine/lbtn_7grukw.e
 INPUT report.aux
 INPUT ./report.out
 INPUT ./report.out
+INPUT report.run.xml
 OUTPUT report.run.xml
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/type1/public/newtx/LibertineMathMI.pfb
