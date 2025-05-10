@@ -72,7 +72,37 @@ We evaluated the performance of the Grid method with a 50x50 grid. Figure~\ref{f
 
 \subsection{Particle}
 Smoothed Particle Hydrodynamics (SPH) contributed to a fast and scalable fluid simulation. The method is more intuitive, and can be used to model free surfaces, avoiding issues that are present in grid simulation such as grid aliasing.
-Compared to Stable Fluids, SPH is less stable, and can lead to particle clumping if not stabilized. When initializing the particles, the method is sensitive to particle distribution and requires attention to tuning the smoothing kernels.
+Compared to Stable Fluids, SPH is less stable, and can lead to particle clumping if not stabilized. When initializing the particles, the method is sensitive to particle distribution and requires attention to tuning the smoothing kernels. Figure~\ref{fig:sph} shows the SPH simulation with 400 particles. It handles free surfaces naturally, but can become unstable and prone to clumping over time.
+
+\begin{figure*}[h]
+    \centering
+    \begin{subfigure}[b]{0.2\textwidth}
+        \includegraphics[width=\textwidth]{figures/particle400_1.png}
+        \caption{initialization}
+    \end{subfigure}
+    \hspace{1em}
+    \begin{subfigure}[b]{0.2\textwidth}
+        \includegraphics[width=\textwidth]{figures/particle400_2.png}
+        \caption{first stage}
+    \end{subfigure}
+    \hspace{1em}
+    \begin{subfigure}[b]{0.2\textwidth}
+        \includegraphics[width=\textwidth]{figures/particle400_3.png}
+        \caption{second stage}
+    \end{subfigure}
+    \hspace{1em}
+    \begin{subfigure}[b]{0.2\textwidth}
+        \includegraphics[width=\textwidth]{figures/particle400_4.png}
+        \caption{third stage}
+    \end{subfigure}
+    \caption{
+        Stages of Smoothed Particle Hydrodynamics simulation with 400 particles.
+        (a) shows the initial particle configuration.
+        (b)–(d) show the fluid evolution over time.
+        SPH handles free-surface motion intuitively, but stability decreases compared to grid-based methods.
+        }
+    \label{fig:sph}
+\end{figure*}
 
 \subsection{PIC and PIC/FLIP}
 
@@ -102,7 +132,37 @@ The PIC/FLIP method keeps more energy. Particles move more and look more natural
 \end{figure*}
 
 \subsection{APIC}
-The APIC method contributed most significantly to the visual quality of our simulations. By introducing an affine velocity field per particle, APIC preserves both rotational motion and local deformation, resulting in smoother, more detailed fluid behavior. Compared to PIC and FLIP, it produced the most visually stable and coherent results, especially at higher particle counts. The use of affine velocity transfer also reduced numerical dissipation and prevented particle clumping, leading to more realistic motion.
-It is computationally expensive due to affine matrix operations and additional interpolation. Performance drops at high particle counts, and the method becomes less suitable for real-time applications. It is also more complex to implement than PIC or FLIP, requiring careful handling of matrix math, boundary conditions, and velocity transfers to avoid instability.
+
+The APIC method produced the highest visual quality among all methods tested. By assigning each particle an affine velocity matrix, APIC preserves both rotational motion and local deformation, resulting in smooth and detailed fluid behavior. It outperforms PIC and FLIP in maintaining coherence and reducing numerical dissipation or clumping, especially at higher particle counts.
+
+However, APIC is computationally expensive due to matrix operations and additional interpolation. Performance starts to degrade above 10000 particles, and implementation is more complex compared to PIC or FLIP.
+
+We tested APIC with varying particle counts. Figure~\ref{fig:apic_comparison} shows snapshots at 1000, 4000, and 8000 particles. As particle count increases, the fluid becomes smoother and more realistic. The affine velocity transfer helps preserve structure during motion and reduces artificial viscosity commonly seen in simpler methods.
+\begin{figure*}[h]
+    \centering
+    \begin{subfigure}[b]{0.2\textwidth}
+        \includegraphics[width=\textwidth]{figures/apic1000_init.png}
+        \caption{1000 initial particles}
+    \end{subfigure}
+    \hspace{1em}
+    \begin{subfigure}[b]{0.2\textwidth}
+        \includegraphics[width=\textwidth]{figures/apic1000.png}
+        \caption{1000 particles}
+    \end{subfigure}
+    \hspace{1em}
+    \begin{subfigure}[b]{0.2\textwidth}
+        \includegraphics[width=\textwidth]{figures/apic4000.png}
+        \caption{4000 particles}
+    \end{subfigure}
+    \hspace{1em}
+    \begin{subfigure}[b]{0.2\textwidth}
+        \includegraphics[width=\textwidth]{figures/apic8000.png}
+        \caption{8000 particles}
+    \end{subfigure}
+    \caption{Comparison of APIC simulation results with increasing particle counts. 
+    (a) shows the initial particle configuration, where all particles are placed in the center of the domain. 
+    (b)–(d) show the simulation at the moment particles start to fall under gravity.}
+    \label{fig:apic_comparison}
+\end{figure*}
 
 
